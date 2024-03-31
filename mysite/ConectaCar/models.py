@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Vehicle(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='vehicles')
+    #owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='vehicles')
     make = models.CharField(max_length=50)  # Marca del vehículo, ej. Toyota, Ford
     model = models.CharField(max_length=50)  # Modelo del vehículo, ej. Corolla, Mustang
     year = models.IntegerField()  # Año del vehículo

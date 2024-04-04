@@ -90,7 +90,7 @@ class Vehicle(models.Model):
     )
 
     descripcion = models.TextField(null=True, blank=True)
-    precio_por_dia = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    precio_por_hora = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     disponible = models.BooleanField(default=True)
     latitud = models.FloatField(null=True, blank=True)
     longitud = models.FloatField(null=True, blank=True)
@@ -108,11 +108,11 @@ class ImagenVehiculo(models.Model):
 
 
 
-class Reserva(models.Model):
+class Alquiler(models.Model):
     cliente = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reservas_cliente')
     vehiculo = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, null=True, related_name='reservas')
-    fecha_inicio = models.DateField()
-    fecha_fin = models.DateField()
+    fecha_inicio = models.DateTimeField()
+    fecha_fin = models.DateTimeField()
     precio_total = models.DecimalField(max_digits=8, decimal_places=2)
     fecha_reserva = models.DateTimeField(auto_now_add=True)
     

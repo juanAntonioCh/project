@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -19,7 +21,8 @@ export const Login = () => {
       //console.error('Error en el inicio de sesión');
       console.log('Error en el inicio de sesión')
     }
-  };
+    login()
+  }
 
   return (
     <form onSubmit={handleLogin}>

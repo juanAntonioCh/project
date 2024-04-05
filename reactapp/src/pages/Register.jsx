@@ -17,9 +17,9 @@ export const Register = () => {
         password,
       });
 
-      if (res.data != 'Usuario registrado correctamente'){
+      if (res.data != 'Usuario registrado correctamente') {
         console.log(res.data)
-      } else{
+      } else {
         navigate('/', { replace: true });
       }
 
@@ -30,20 +30,22 @@ export const Register = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Nombre de usuario:
+    <form className="form-container" onSubmit={handleSubmit}>
+      <div className="form-field">
+        <label>Nombre de usuario:</label>
         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </label><br />
-      <label>
-        Correo electrónico:
+      </div>
+      <div className="form-field">
+        <label>Correo electrónico:</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </label><br />
-      <label>
-        Contraseña:
+      </div>
+      <div className="form-field">
+        <label>Contraseña:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </label><br />
-      <button type="submit">Registrarse</button>
+      </div>
+      <div className="form-action">
+        <button type="submit">Registrarse</button>
+      </div>
     </form>
   );
 }

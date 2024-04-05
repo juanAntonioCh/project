@@ -15,13 +15,13 @@ export const BuscadorUbis = () => {
             .then(latLng => {
                 console.log('Success', latLng)
                 setCoordenadas(latLng)
+                //navigate('/vehicle', {replace:true})
             })
             .catch(error => console.error('Error', error));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('hooooooooooooola')
         console.log(coordenadas)
         navigate('/vehicle', {replace:true})
 

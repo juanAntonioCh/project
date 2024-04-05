@@ -10,21 +10,24 @@ export const Home = () => {
 
 
   return (
-    <>
-      <h1>ConectaCar</h1>
-      <BuscadorUbis />
+    <div className="home-container">
+      <h1 className="home-title">ConectaCar</h1>
+      <h2 className="home-title">Dónde necesitas tu coche?</h2>
+      <div className="buscador-ubis-container">
+        <BuscadorUbis />
+      </div>
       <hr />
       {!isAuthenticated ? (
-        <>
-          <Link to='/register'>Registrate aquí</Link>
-          <br />
-          <Link to='/login'>Iniciar sesión</Link>
-        </>
+        <div className="auth-links">
+          <Link to="/register" className="auth-link">Regístrate aquí</Link>
+          <Link to="/login" className="auth-link">Iniciar sesión</Link>
+        </div>
       ) : (
-        <button onClick={logout}>Cerrar sesión</button>
+        <div className="auth-links">
+          <button onClick={logout} className="logout-button">Cerrar sesión</button>
+        </div>
       )}
-
-    </>
-
-  )
+    </div>
+  );
+  
 }

@@ -16,7 +16,7 @@ export const Login = () => {
       localStorage.setItem('token', response.data.key); // Guarda el token
       navigate('/', { replace: true });
       console.log('Inicio de sesión exitoso');
-      
+
     } catch (error) {
       //console.error('Error en el inicio de sesión');
       console.log('Error en el inicio de sesión')
@@ -25,27 +25,30 @@ export const Login = () => {
   }
 
   return (
-    <form onSubmit={handleLogin}>
-      <label>
-        Nombre de usuario:
+    <form className="form-container" onSubmit={handleLogin}>
+      <div className="form-field">
+        <label>Nombre de usuario:</label>
         <input
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-      </label><br />
+      </div>
 
-      <label>
-        Contraseña
+      <div className="form-field">
+        <label>Contraseña:</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-      </label><br />
+      </div>
 
-      <button type="submit">Iniciar Sesión</button>
+      <div className="form-action">
+        <button type="submit">Iniciar Sesión</button>
+      </div>
     </form>
+
   );
 }
 

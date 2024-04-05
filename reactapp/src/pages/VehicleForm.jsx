@@ -48,6 +48,9 @@ export const VehicleForm = () => {
         <label htmlFor="">Descripcion</label>
         <input onChange={crearVehiculo} type="text" name='description' /><br />
 
+        <label htmlFor="">Ubicación</label>
+        <input onChange={crearVehiculo} type="text" name='ubicacion' /><br />
+
         <label htmlFor="">
           Disponible
           <input type="checkbox" name="is_available"/>

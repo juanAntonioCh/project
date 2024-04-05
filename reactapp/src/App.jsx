@@ -4,7 +4,7 @@ import { Vehicle } from './pages/Vehicle'
 import { VehicleForm } from './pages/VehicleForm'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
-import './App.css'
+import './styles/App.css'
 import { Home } from './pages/Home'
 import {AuthProvider} from './context/AuthProvider'
 

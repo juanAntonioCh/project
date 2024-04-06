@@ -54,8 +54,14 @@
 
 .auth-links {
   display: flex;
+  justify-content: flex-end;
+  gap: 10px; 
+  margin-top: 20px;
+}
+
+.rent{
+  display: flex;
   justify-content: center;
-  gap: 10px; /* Espacio entre los botones/enlaces */
   margin-top: 20px;
 }
 
@@ -66,6 +72,20 @@
   padding: 10px 15px;
   border-radius: 5px;
   transition: background-color 0.2s;
+}
+
+.rent-link{
+  text-decoration: none;
+  color: white;
+  background-color: #007bff; 
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+
+}
+
+.rent-link:hover {
+  background-color: #0056b3; 
 }
 
 .auth-link:hover {

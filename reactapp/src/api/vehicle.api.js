@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const conectaCarApi = axios.create({
-    baseURL: 'http://127.0.0.1:8000/ConectaCar/vehicles/ConectaCar/'
+    baseURL: 'http://127.0.0.1:8000/api/vehicles/'
     //baseURL: 'http://127.0.0.1:8000/api/vehicles/'
 })
 
@@ -13,6 +13,14 @@ export const createVehicle = (vehi) => {
     return conectaCarApi.post('/', vehi)
 }
 
-// export const getAllVehicles = () =>{
-//     return axios.get('http://127.0.0.1:8000/ConectaCar/vehicles/ConectaCar/')
-// }
+export const getAllMarcas = () => {
+    return axios.get('http://127.0.0.1:8000/api/marca')
+}
+
+export const getAllModelos = () => {
+    return axios.get('http://127.0.0.1:8000/api/modelo')
+}
+
+export const getModelosMarca = (marcaId) => {
+    return axios.get(`http://127.0.0.1:8000/api/modelos/${marcaId}/`);
+  }

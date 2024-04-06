@@ -3,6 +3,11 @@ import { VehicleList } from '../components/VehicleList'
 
 export const Vehicle = () => {
   return (
-   <VehicleList/>
+    <>
+      <h1>Listado de vehiculos</h1>
+
+      <VehicleList />
+    </>
+
   )
 }

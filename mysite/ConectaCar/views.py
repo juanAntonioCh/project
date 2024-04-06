@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -11,6 +12,23 @@ from .models import *
 class VehicleView(viewsets.ModelViewSet):
     serializer_class = VehicleSerializer
     queryset = Vehicle.objects.all()
+
+
+class MarcaView(viewsets.ModelViewSet):
+    serializer_class = MarcaSerializer
+    queryset = Marca.objects.all()
+
+
+class ModeloView(viewsets.ModelViewSet):
+    serializer_class = ModeloSerializer
+    queryset = Modelo.objects.all()
+
+class ModeloFilter(generics.ListAPIView):
+    serializer_class = ModeloSerializer
+
+    def get_queryset(self):
+        marca_id = self.kwargs['marca_id']
+        return Modelo.objects.filter(marca__id=marca_id)
 
 
 @api_view(['POST'])

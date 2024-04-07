@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/rent-car.css'
-import { createVehicle, getAllMarcas, getAllModelos, getModelosMarca } from '../api/vehicle.api'
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { createVehicle, getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
+import axios from 'axios'
 
 export const RentCar = () => {
   const [marcas, setMarcas] = useState([]);
+  const [tipoCarroceriaChoices, setTipoCarroceriaChoices] = useState([])
+  const [tipoCambioChoices, setTipoCambioChoices] = useState([])
+  const [tipoCombustibleChoices, setTipoCombustibleChoices] = useState([])
   const [modelos, setModelos] = useState([]);
   const [marcaActual, setMarcaActual] = useState('')
+  const [address, setAddress] = useState('');
+  const [userName, setUserName] = useState('');
   const [vehiculo, setVehiculo] = useState({
-    //owner: null,
-    marca: 'Volkswagen',
-    modelo: 'Fiesta',
+    propietario: '',
+    marca: '',
+    modelo: '',
     año: 0,
     matricula: '',
     description: '',
@@ -21,21 +28,45 @@ export const RentCar = () => {
     precio_por_hora: '',
     latitud: '',
     longitud: '',
-    is_available: false
+    is_available: true
   })
 
-  //Obtetener las marcas y modelos de vehículos
+  //Obtetener las marcas y modelos de vehículos. Y los campos choices
   useEffect(() => {
     async function loadData() {
       const list_marcas = await getAllMarcas()
       const list_modelos = await getAllModelos()
+      const choices = await getVehicleChoices()
+
       setMarcas(list_marcas.data)
       setModelos(list_modelos.data)
+
+      setTipoCarroceriaChoices(choices.data.tipo_carroceria)
+      setTipoCambioChoices(choices.data.tipo_cambio)
+      setTipoCombustibleChoices(choices.data.tipo_combustible)
+
     }
     loadData()
   }, [])
 
+  //actualizar el objeto vehiculo con la primera marca y modelo de la lista
+  useEffect(() => {
+    if (marcas.length > 0 && modelos.length > 0) {
+      setVehiculo({
+        ...vehiculo,
+        marca: marcas[0].nombre,
+        modelo: modelos[0].nombre,
+        tipo_carroceria: tipoCarroceriaChoices[0][1],
+        tipo_cambio: tipoCambioChoices[0][1],
+        tipo_combustible: tipoCombustibleChoices[0][1]
+      })
+      //console.log(marcas[0].nombre)
+      //console.log(modelos[0].nombre)
+    }
+  }, [marcas, modelos]);
 
+
+  //actualizar el objeto vehiculo cuando haya algun cambio 
   const handleChange = (e) => {
     setVehiculo({
       ...vehiculo,
@@ -43,7 +74,7 @@ export const RentCar = () => {
     })
   }
 
-  const handleChangeMarca = (e) =>{
+  const handleChangeMarca = (e) => {
     async function loadModelos() {
       //obtener todos los modelos de la marca seleccionada y actualizar la lista en la página
       const list_modelos = await getModelosMarca(e.target.value)
@@ -59,7 +90,7 @@ export const RentCar = () => {
     loadModelos()
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(vehiculo)
   }, [vehiculo])
 
@@ -70,6 +101,49 @@ export const RentCar = () => {
     const res = await createVehicle(vehiculo)
     console.log(res)
   }
+
+  const handleSelect = address => {
+    setAddress(address);
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => {
+        console.log(latLng)
+        setVehiculo({
+          ...vehiculo,
+          latitud: latLng.lat,
+          longitud: latLng.lng,
+        })
+      })
+      .catch(error => console.error('Error', error));
+  };
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get('http://localhost:8000/api/user-details', {
+          headers: {
+            'Authorization': `Token ${token}`
+          }
+        });
+        setUserName(response.data.username); 
+
+      } catch (error) {
+        console.error('Error al obtener los detalles del usuario', error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
+
+  useEffect(()=>{
+    setVehiculo({
+      ...vehiculo,
+      propietario: userName
+    })
+    console.log(userName)
+
+  }, [userName])
 
 
   return (
@@ -110,8 +184,14 @@ export const RentCar = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="tipo_combustible" className="form-label">Tipo de Combustible:</label>
-            <input type="text" className="form-control" id="tipo_combustible" name="tipo_combustible" value={vehiculo.tipo_combustible} onChange={handleChange} />
+            <label htmlFor="tipo_combustible" className="form-label">Tipo de Combustible:</label><br />
+            <select name='tipo_combustible' onChange={handleChange}>
+              {tipoCombustibleChoices.map(combus => (
+                <option value={combus[1]}>
+                  {combus[1]}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-3">
@@ -134,8 +214,14 @@ export const RentCar = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="tipo_carroceria" className="form-label">Tipo de Carrocería:</label>
-            <input type="text" className="form-control" id="tipo_carroceria" name="tipo_carroceria" value={vehiculo.tipo_carroceria} onChange={handleChange} />
+            <label htmlFor="tipo_carroceria" className="form-label">Tipo de Carrocería:</label><br />
+            <select name='tipo_carroceria' onChange={handleChange}>
+              {tipoCarroceriaChoices.map(carro => (
+                <option value={carro[1]}>
+                  {carro[1]}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-3">
@@ -144,18 +230,40 @@ export const RentCar = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="tipo_cambio" className="form-label">Tipo de Cambio:</label>
-            <input type="text" className="form-control" id="tipo_cambio" name="tipo_cambio" value={vehiculo.tipo_cambio} onChange={handleChange} />
+            <label htmlFor="tipo_cambio" className="form-label">Tipo de Cambio:</label><br />
+            <select name='tipo_cambio' onChange={handleChange}>
+              {tipoCambioChoices.map(cambio => (
+                <option value={cambio[1]}>
+                  {cambio[1]}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-3">
-            <label htmlFor="latitud" className="form-label">Latitud:</label>
-            <input type="text" className="form-control" id="latitud" name="latitud" value={vehiculo.latitud} onChange={handleChange} />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="longitud" className="form-label">Longitud:</label>
-            <input type="text" className="form-control" id="longitud" name="longitud" value={vehiculo.longitud} onChange={handleChange} />
+            <label className="form-label">Ubicación de tu vehículo</label>
+            <PlacesAutocomplete
+              value={address}
+              onChange={setAddress}
+              onSelect={handleSelect}
+            >
+              {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                <div>
+                  <input {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
+                  <div>
+                    {loading && <div>Cargando...</div>}
+                    {suggestions.map(suggestion => {
+                      return (
+                        <div key={suggestion.index} {...getSuggestionItemProps(suggestion)}>
+                          <span>{suggestion.description}</span>
+                          {/* {console.log(suggestion)} */}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </PlacesAutocomplete>
           </div>
 
           <div className="mb-3 form-check">

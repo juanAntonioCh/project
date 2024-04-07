@@ -15,13 +15,13 @@ export const Login = () => {
       const response = await axios.post('http://localhost:8000/auth/login/', { username, password });
       localStorage.setItem('token', response.data.key); // Guarda el token
       navigate('/', { replace: true });
+      login()
       console.log('Inicio de sesión exitoso');
 
     } catch (error) {
       //console.error('Error en el inicio de sesión');
       console.log('Error en el inicio de sesión')
     }
-    login()
   }
 
   return (

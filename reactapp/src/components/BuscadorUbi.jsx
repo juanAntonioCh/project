@@ -24,7 +24,6 @@ export const BuscadorUbis = () => {
         e.preventDefault();
         console.log(coordenadas)
         navigate('/vehicle', {replace:true})
-
     }
 
     return (

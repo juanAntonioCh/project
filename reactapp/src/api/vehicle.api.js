@@ -23,4 +23,12 @@ export const getAllModelos = () => {
 
 export const getModelosMarca = (marcaId) => {
     return axios.get(`http://127.0.0.1:8000/api/modelos/${marcaId}/`);
-  }
+}
+
+export const getVehicleChoices = () => {
+    return axios.get('http://127.0.0.1:8000/api/vehicle-choices');
+}
+
+export const UserDetails = () => {
+    return axios.get('http://127.0.0.1:8000/api/user-details');
+}

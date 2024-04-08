@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 
 export const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -17,6 +19,10 @@ export const Register = () => {
         password,
       });
 
+      const response = await axios.post('http://localhost:8000/auth/login/', { username, password });
+      localStorage.setItem('token', response.data.key); // Guardar el token 
+      login()
+
       if (res.data != 'Usuario registrado correctamente') {
         console.log(res.data)
       } else {
@@ -25,7 +31,7 @@ export const Register = () => {
 
     } catch (error) {
       console.error(error);
-      // Manejar errores, como mostrar mensajes de error en el formulario
+      
     }
   };
 

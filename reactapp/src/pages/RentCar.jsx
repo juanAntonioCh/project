@@ -15,11 +15,11 @@ export const RentCar = () => {
   const [userName, setUserName] = useState('');
   const [vehiculo, setVehiculo] = useState({
     propietario: '',
-    marca: '',
-    modelo: '',
+    marca_id: 0,
+    modelo_id: 0,
     año: 0,
     matricula: '',
-    description: '',
+    descripcion: '',
     tipo_carroceria: '',
     tipo_combustible: '',
     consumo: '',
@@ -28,7 +28,8 @@ export const RentCar = () => {
     precio_por_hora: '',
     latitud: '',
     longitud: '',
-    is_available: true
+    color: 'verde',
+    disponible: true
   })
 
   //Obtetener las marcas y modelos de vehículos. Y los campos choices
@@ -49,21 +50,30 @@ export const RentCar = () => {
     loadData()
   }, [])
 
+  async function loadModelos(id_marca) {
+    //obtener todos los modelos de la marca seleccionada y actualizar la lista en la página
+    const list_modelos = await getModelosMarca(id_marca)
+    setModelos(list_modelos.data)
+  }
+
   //actualizar el objeto vehiculo con la primera marca y modelo de la lista
   useEffect(() => {
     if (marcas.length > 0 && modelos.length > 0) {
+
+      loadModelos(marcas[0].id)
+
       setVehiculo({
         ...vehiculo,
-        marca: marcas[0].nombre,
-        modelo: modelos[0].nombre,
-        tipo_carroceria: tipoCarroceriaChoices[0][1],
-        tipo_cambio: tipoCambioChoices[0][1],
-        tipo_combustible: tipoCombustibleChoices[0][1]
+        marca_id: marcas[0].id,
+        modelo_id: modelos[0].id,
+        tipo_carroceria: tipoCarroceriaChoices[0][0],
+        tipo_cambio: tipoCambioChoices[0][0],
+        tipo_combustible: tipoCombustibleChoices[0][0]
       })
       //console.log(marcas[0].nombre)
       //console.log(modelos[0].nombre)
     }
-  }, [marcas, modelos]);
+  }, [marcas]);
 
 
   //actualizar el objeto vehiculo cuando haya algun cambio 
@@ -75,19 +85,36 @@ export const RentCar = () => {
   }
 
   const handleChangeMarca = (e) => {
-    async function loadModelos() {
-      //obtener todos los modelos de la marca seleccionada y actualizar la lista en la página
-      const list_modelos = await getModelosMarca(e.target.value)
-      setModelos(list_modelos.data)
+    // async function loadModelos() {
+    //   //obtener todos los modelos de la marca seleccionada y actualizar la lista en la página
+    //   const list_modelos = await getModelosMarca(e.target.value)
+    //   setModelos(list_modelos.data)
 
-      //cada vez que cambie la marca actyalizamos el modelo al primero que aparece en el select
-      setVehiculo({
-        ...vehiculo,
-        [e.target.name]: e.target.options[e.target.selectedIndex].dataset.nombre,
-        modelo: list_modelos.data[0].nombre
-      })
-    }
-    loadModelos()
+    //   //cada vez que cambie la marca actyalizamos el modelo al primero que aparece en el select
+    //   //console.log('value de la marca', e.target.value)
+    //   setVehiculo({
+    //     ...vehiculo,
+    //     [e.target.name]: Number(e.target.value),
+    //     modelo: list_modelos.data[0].id
+    //   })
+    // }
+    // loadModelos()
+
+    loadModelos(e.target.value)
+
+    setVehiculo({
+      ...vehiculo,
+      [e.target.name]: Number(e.target.value),
+      modelo_id: modelos[0].id
+    })
+  }
+
+  const handleChangeModelo = (e) => {
+    setVehiculo({
+      ...vehiculo,
+      [e.target.name]: Number(e.target.value),
+    })
+
   }
 
   useEffect(() => {
@@ -98,8 +125,14 @@ export const RentCar = () => {
   async function handleSubmit(e) {
     e.preventDefault()
     console.log(vehiculo)
-    const res = await createVehicle(vehiculo)
-    console.log(res)
+    try {
+      const res = await createVehicle(vehiculo)
+      console.log(res)
+    } catch (error) {
+      console.error('Error crear el vehiculo', error.response.data);
+    }
+
+
   }
 
   const handleSelect = address => {
@@ -121,12 +154,13 @@ export const RentCar = () => {
     const fetchUserDetails = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get('http://localhost:8000/api/user-details', {
+        const response = await axios.get('http://127.0.0.1:8000/api/user-details', {
           headers: {
             'Authorization': `Token ${token}`
           }
         });
-        setUserName(response.data.username); 
+        setUserName(response.data.id);
+        //console.log(response)
 
       } catch (error) {
         console.error('Error al obtener los detalles del usuario', error);
@@ -136,13 +170,11 @@ export const RentCar = () => {
     fetchUserDetails();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     setVehiculo({
       ...vehiculo,
       propietario: userName
     })
-    console.log(userName)
-
   }, [userName])
 
 
@@ -152,10 +184,10 @@ export const RentCar = () => {
         {/* Columna 1 */}
         <div className="col-md-6">
           <div className="mb-3">
-            <label htmlFor="marca" className="form-label">Marca:</label><br />
-            <select name='marca' onChange={handleChangeMarca}>
+            <label htmlFor="marca_id" className="form-label">Marca:</label><br />
+            <select name='marca_id' onChange={handleChangeMarca}>
               {marcas.map(marca => (
-                <option key={marca.id} value={marca.id} data-nombre={marca.nombre}>
+                <option key={marca.id} value={marca.id}>
                   {marca.nombre}
                 </option>
               ))}
@@ -163,8 +195,8 @@ export const RentCar = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="modelo" className="form-label">Modelo:</label><br />
-            <select name='modelo' onChange={handleChange}>
+            <label htmlFor="modelo_id" className="form-label">Modelo:</label><br />
+            <select name='modelo_id' onChange={handleChangeModelo}>
               {modelos.map(modelo => (
                 <option key={modelo.id} value={modelo.id}>
                   {modelo.nombre}
@@ -186,8 +218,8 @@ export const RentCar = () => {
           <div className="mb-3">
             <label htmlFor="tipo_combustible" className="form-label">Tipo de Combustible:</label><br />
             <select name='tipo_combustible' onChange={handleChange}>
-              {tipoCombustibleChoices.map(combus => (
-                <option value={combus[1]}>
+              {tipoCombustibleChoices.map((combus, index) => (
+                <option key={index} value={combus[0]}>
                   {combus[1]}
                 </option>
               ))}
@@ -209,15 +241,15 @@ export const RentCar = () => {
         {/* Columna 2 */}
         <div className="col-md-6">
           <div className="mb-3">
-            <label htmlFor="description" className="form-label">Descripción:</label>
-            <textarea className="form-control" id="description" name="description" rows="3" value={vehiculo.description} onChange={handleChange}></textarea>
+            <label htmlFor="descripcion" className="form-label">Descripción:</label>
+            <textarea className="form-control" id="descripcion" name="descripcion" rows="3" value={vehiculo.descripcion} onChange={handleChange}></textarea>
           </div>
 
           <div className="mb-3">
             <label htmlFor="tipo_carroceria" className="form-label">Tipo de Carrocería:</label><br />
             <select name='tipo_carroceria' onChange={handleChange}>
-              {tipoCarroceriaChoices.map(carro => (
-                <option value={carro[1]}>
+              {tipoCarroceriaChoices.map((carro, index) => (
+                <option key={index} value={carro[0]}>
                   {carro[1]}
                 </option>
               ))}
@@ -232,8 +264,8 @@ export const RentCar = () => {
           <div className="mb-3">
             <label htmlFor="tipo_cambio" className="form-label">Tipo de Cambio:</label><br />
             <select name='tipo_cambio' onChange={handleChange}>
-              {tipoCambioChoices.map(cambio => (
-                <option value={cambio[1]}>
+              {tipoCambioChoices.map((cambio, index) => (
+                <option key={index} value={cambio[0]}>
                   {cambio[1]}
                 </option>
               ))}
@@ -264,11 +296,6 @@ export const RentCar = () => {
                 </div>
               )}
             </PlacesAutocomplete>
-          </div>
-
-          <div className="mb-3 form-check">
-            <input type="checkbox" className="form-check-input" id="is_available" name="is_available" checked={vehiculo.is_available} onChange={handleChange} />
-            <label className="form-check-label" htmlFor="is_available">Disponible</label>
           </div>
 
         </div>

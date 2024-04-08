@@ -13,10 +13,10 @@ export const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8000/auth/login/', { username, password });
-      localStorage.setItem('token', response.data.key); // Guarda el token
-      navigate('/', { replace: true });
+      localStorage.setItem('token', response.data.key); // Guardar el token 
       login()
       console.log('Inicio de sesión exitoso');
+      navigate('/', { replace: true });
 
     } catch (error) {
       //console.error('Error en el inicio de sesión');

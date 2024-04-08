@@ -12,15 +12,13 @@ export const VehicleList = () => {
             setVehiculos(res.data)
         }
         loadVehicles()
-
-        console.log('hola')
     }, [])
 
     return (
         <>
             {vehiculos.map(vehi => (
                 <div key={vehi.id}>
-                    <h2>{vehi.marca.nombre} {vehi.modelo.nombre}</h2>
+                    <h2>{vehi.marca_details.nombre} {vehi.modelo_details.nombre} ({vehi.año})</h2>
                     {vehi.imagenes.map((imagen, index) => (
                         <img key={index} src={imagen.imagen} alt={`Imagen de ${vehi.marca} ${vehi.modelo}`} />
                     ))}

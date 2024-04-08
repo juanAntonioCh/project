@@ -82,5 +82,5 @@ class UserDetailsView(APIView):
         return Response({
             'username': user.username,
             'email': user.email,
-            # Cualquier otra información que desees enviar
+            'id': user.id,
         })

@@ -26,6 +26,10 @@ class ModeloView(viewsets.ModelViewSet):
     serializer_class = ModeloSerializer
     queryset = Modelo.objects.all()
 
+class ImagenVehiculoView(viewsets.ModelViewSet):
+    serializer_class = ImagenVehiculoSerializer
+    queryset = ImagenVehiculo.objects.all()
+
 class ModeloFilter(generics.ListAPIView):
     serializer_class = ModeloSerializer
 

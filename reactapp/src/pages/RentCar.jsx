@@ -10,7 +10,7 @@ export const RentCar = () => {
   const [tipoCambioChoices, setTipoCambioChoices] = useState([])
   const [tipoCombustibleChoices, setTipoCombustibleChoices] = useState([])
   const [modelos, setModelos] = useState([]);
-  const [marcaActual, setMarcaActual] = useState('')
+  const [imagenes, setImagenes] = useState([])
   const [address, setAddress] = useState('');
   const [userName, setUserName] = useState('');
   const [vehiculo, setVehiculo] = useState({
@@ -74,6 +74,7 @@ export const RentCar = () => {
       //console.log(modelos[0].nombre)
     }
   }, [marcas]);
+  //}, [marcas, modelos]);
 
 
   //actualizar el objeto vehiculo cuando haya algun cambio 
@@ -122,18 +123,47 @@ export const RentCar = () => {
   }, [vehiculo])
 
 
+
+
   async function handleSubmit(e) {
     e.preventDefault()
     console.log(vehiculo)
+
+    const formData = new FormData();
+    formData.append('vehiculo', 4); 
+    console.log(imagenes)
+    imagenes.forEach((imagen) => {
+      formData.append('imagen', imagen);
+    });
+    console.log(formData)
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/imagenes/', formData, {
+        headers: {},
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error.response);
+    }
+
     try {
       const res = await createVehicle(vehiculo)
       console.log(res)
     } catch (error) {
       console.error('Error crear el vehiculo', error.response.data);
     }
-
-
   }
+
+
+
+
+  const handleImagenesChange = (e) => {
+    setImagenes(Array.from(e.target.files))
+  }
+
+  useEffect(() => {
+    console.log(imagenes)
+  }, [imagenes])
 
   const handleSelect = address => {
     setAddress(address);
@@ -297,6 +327,19 @@ export const RentCar = () => {
               )}
             </PlacesAutocomplete>
           </div>
+
+          <div className="mb-3">
+            <label className="form-label">Imagenes de su vehiculo</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImagenesChange}
+            />
+
+          </div>
+
+
 
         </div>
       </div>

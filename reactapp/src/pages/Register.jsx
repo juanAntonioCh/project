@@ -39,15 +39,15 @@ export const Register = () => {
     <form className="form-container" onSubmit={handleSubmit}>
       <div className="form-field">
         <label>Nombre de usuario:</label>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input className="form-control" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
       </div>
       <div className="form-field">
         <label>Correo electrónico:</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input className="form-control" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
       <div className="form-field">
         <label>Contraseña:</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
       <div className="form-action">
         <button type="submit">Registrarse</button>

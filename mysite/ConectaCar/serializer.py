@@ -14,7 +14,7 @@ class ModeloSerializer(serializers.ModelSerializer):
 class ImagenVehiculoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImagenVehiculo
-        fields = ['imagen']
+        fields = ['vehiculo', 'imagen']
 
 
 class VehicleSerializer(serializers.ModelSerializer):

@@ -31,6 +31,7 @@ export const Login = () => {
         <input
           type="text"
           value={username}
+          className="form-control"
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
@@ -40,6 +41,7 @@ export const Login = () => {
         <input
           type="password"
           value={password}
+          className="form-control"
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>

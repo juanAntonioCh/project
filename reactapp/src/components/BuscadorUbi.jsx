@@ -5,7 +5,6 @@ import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-au
 
 export const BuscadorUbis = () => {
     const [address, setAddress] = useState('');
-    const [coordenadas, setCoordenadas] = useState({})
     const navigate = useNavigate();
 
     const handleSelect = address => {
@@ -14,7 +13,7 @@ export const BuscadorUbis = () => {
             .then(results => getLatLng(results[0]))
             .then(latLng => {
                 console.log('Success', latLng)
-                setCoordenadas(latLng)
+                localStorage.setItem('coordenadas', JSON.stringify(latLng))
                 //navigate('/vehicle', {replace:true})
             })
             .catch(error => console.error('Error', error));
@@ -22,7 +21,6 @@ export const BuscadorUbis = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(coordenadas)
         navigate('/vehicle', {replace:true})
     }
 

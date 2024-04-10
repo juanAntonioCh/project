@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from .serializer import *
 from .models import *
+import math
 
 # Create your views here.
 class VehicleView(viewsets.ModelViewSet):
@@ -35,7 +36,7 @@ class ModeloFilter(generics.ListAPIView):
 
     def get_queryset(self):
         marca_id = self.kwargs['marca_id']
-        return Modelo.objects.filter(marca__id=marca_id)
+        return Modelo.objects.filter(marca__id = marca_id)
     
     
 def get_vehiculo_choices(request):
@@ -75,6 +76,23 @@ def register(request):
     User.objects.create_user(username=username, password=password, email=email)
 
     return Response('Usuario registrado correctamente')
+
+
+def find_vehicles(request):
+    user_lat = float(request.GET.get('lat'))
+    user_long = float(request.GET.get('long'))
+    radius = float(request.GET.get('radius', 10)) # Radio en kilómetros
+
+    #def haversine(lon1, lat1, lon2, lat2):
+        # Calcula la distancia en kilómetros entre dos puntos en la tierra.
+        # Implementación del cálculo Haversine...
+
+    vehicles = Vehicle.objects.all()
+    vehicles_in_radius = [vehicle for vehicle in vehicles if haversine(user_long, user_lat, vehicle.longitud, vehicle.latitud) <= radius]
+
+    # Serializa y retorna los vehículos en el radio
+    # Esto es solo un esquema, necesitarás adaptarlo a tus necesidades
+    return JsonResponse({"vehicles": vehicles_in_radius})
 
 
 class UserDetailsView(APIView):

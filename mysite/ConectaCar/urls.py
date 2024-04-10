@@ -13,6 +13,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('register/', views.register, name='register_user'),
     path('vehicle-choices/', views.get_vehiculo_choices, name='vehiculo-choices'),
+    path('find-vehicles/', views.find_vehicles, name='user-details'),
     path('user-details/', views.UserDetailsView.as_view(), name='user-details'),
     path('modelos/<int:marca_id>/', views.ModeloFilter.as_view(), name='modelos-por-marca'),
 ]

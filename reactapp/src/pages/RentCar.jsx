@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/rent-car.css'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { useNavigate } from 'react-router-dom';
 import { createVehicle, getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
 import axios from 'axios'
 
 export const RentCar = () => {
+  const navigate = useNavigate();
   const [marcas, setMarcas] = useState([]);
   const [tipoCarroceriaChoices, setTipoCarroceriaChoices] = useState([])
   const [tipoCambioChoices, setTipoCambioChoices] = useState([])
@@ -149,6 +151,7 @@ export const RentCar = () => {
     try {
       const res = await createVehicle(vehiculo)
       console.log(res)
+      navigate('/vehicle')
     } catch (error) {
       console.error('Error crear el vehiculo', error.response.data);
     }

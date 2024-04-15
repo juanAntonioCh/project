@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GoogleMap, LoadScriptNext, Marker } from '@react-google-maps/api';
 
 export const Mapa = ({ vehiculos }) => {
-    
+    const [map, setMap] = useState(null);
     const coordenadas = JSON.parse(localStorage.getItem('coordenadas'))
     console.log('Estas son las coordenandas: ', coordenadas)
 
@@ -26,17 +26,51 @@ export const Mapa = ({ vehiculos }) => {
         anchor: new google.maps.Point(0, 20),
     };
 
-    //console.log(vehiculos[0].latitud)
+    const handleLoad = (map) => {
+        setMap(map);
+    };
+
+    const calcularRadio = (zoom) => {
+        const radioBase = 0.015;
+        return radioBase * Math.pow(2, (21 - zoom));
+    };
+
+    function distanciaEntreDosPuntos(lat1, lng1, lat2, lng2) {
+        const R = 6371; // Radio de la Tierra en kilómetros
+        const rad = Math.PI / 180;
+        const deltaLat = (lat2 - lat1) * rad;
+        const deltaLng = (lng2 - lng1) * rad;
+        const a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                  Math.cos(lat1 * rad) * Math.cos(lat2 * rad) *
+                  Math.sin(deltaLng / 2) * Math.sin(deltaLng / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distancia en kilómetros
+    }
+
+    const filtrarVehiculosVisibles = () => {
+        if (!map) return [];
+
+        const zoom = map.getZoom();
+        //const center = map.getCenter();
+        const radioVisible = calcularRadio(zoom);
+
+        return vehiculos.filter(vehiculo => {
+            const distancia = distanciaEntreDosPuntos(defaultCenter.lat, defaultCenter.lng, vehiculo.latitud, vehiculo.longitud);
+            return distancia <= radioVisible;
+        });
+    };
 
     return (
         <LoadScriptNext
             googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
             <GoogleMap
                 mapContainerStyle={mapStyles}
-                zoom={10}
-                center={defaultCenter}>
+                zoom={11.5}
+                center={defaultCenter}
+                onLoad={handleLoad}
+            >
                 {
-                    vehiculos.map(vehiculo => {
+                    filtrarVehiculosVisibles().map(vehiculo => {
                         return (
                             <Marker key={vehiculo.id}
                                 icon={iconMarker}

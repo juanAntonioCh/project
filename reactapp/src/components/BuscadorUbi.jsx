@@ -21,7 +21,7 @@ export const BuscadorUbis = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate('/vehicle', {replace:true})
+        navigate('/vehicle')
     }
 
     return (

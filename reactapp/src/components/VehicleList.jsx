@@ -1,24 +1,9 @@
-import React, { useState } from 'react'
-import { useEffect } from 'react'
+import React from 'react'
 import '../styles/Vehicles.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { getAllVehicles } from '../api/vehicle.api'
-import { Mapa } from './Mapa';
 
-export const VehicleList = () => {
-    const [vehiculos, setVehiculos] = useState([])
-
-    useEffect(() => {
-        async function loadVehicles() {
-            const res = await getAllVehicles()
-            console.log(res.data)
-            setVehiculos(res.data)
-        }
-        loadVehicles()
-    }, [])
-
+export const VehicleList = ({vehiculos}) => {
     return (
-        <div className="container mt-5">
             <div className="row">
                 {vehiculos.map((vehi) => (
                     <div key={vehi.id} className="col-md-4 mb-4">
@@ -52,8 +37,6 @@ export const VehicleList = () => {
                     </div>
                 ))}
             </div>
-            <Mapa vehiculos={vehiculos}/>
-        </div>
         
     )
     

@@ -1,8 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScriptNext, Marker } from '@react-google-maps/api';
+import { VehicleList } from './VehicleList';
+import { getAllVehicles } from '../api/vehicle.api';
 
-export const Mapa = ({ vehiculos }) => {
+export const Mapa = () => {
     const [map, setMap] = useState(null);
+    const [vehiculos, setVehiculos] = useState([])
+
+    useEffect(() => {
+        async function loadVehicles() {
+            const res = await getAllVehicles()
+            console.log(res.data)
+            setVehiculos(res.data)
+        }
+        loadVehicles()
+    }, [])
+
+    useEffect(()=>{
+        console.log(vehiculos)
+    },[vehiculos])
+
     const coordenadas = JSON.parse(localStorage.getItem('coordenadas'))
     console.log('Estas son las coordenandas: ', coordenadas)
 
@@ -31,7 +48,7 @@ export const Mapa = ({ vehiculos }) => {
     };
 
     const calcularRadio = (zoom) => {
-        const radioBase = 0.015;
+        const radioBase = 0.013;
         return radioBase * Math.pow(2, (21 - zoom));
     };
 
@@ -41,8 +58,8 @@ export const Mapa = ({ vehiculos }) => {
         const deltaLat = (lat2 - lat1) * rad;
         const deltaLng = (lng2 - lng1) * rad;
         const a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-                  Math.cos(lat1 * rad) * Math.cos(lat2 * rad) *
-                  Math.sin(deltaLng / 2) * Math.sin(deltaLng / 2);
+            Math.cos(lat1 * rad) * Math.cos(lat2 * rad) *
+            Math.sin(deltaLng / 2) * Math.sin(deltaLng / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c; // Distancia en kilómetros
     }
@@ -61,29 +78,35 @@ export const Mapa = ({ vehiculos }) => {
     };
 
     return (
-        <LoadScriptNext
-            googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
-            <GoogleMap
-                mapContainerStyle={mapStyles}
-                zoom={11.5}
-                center={defaultCenter}
-                onLoad={handleLoad}
-            >
-                {
-                    filtrarVehiculosVisibles().map(vehiculo => {
-                        return (
-                            <Marker key={vehiculo.id}
-                                icon={iconMarker}
-                                position={{
-                                    lat: vehiculo.latitud,
-                                    lng: vehiculo.longitud
-                                }}
-                            />
-                        )
-                    })
-                }
-            </GoogleMap>
-        </LoadScriptNext>
+        <div className="container mt-5">
+            
+            <VehicleList vehiculos={filtrarVehiculosVisibles()}/>
+
+            <LoadScriptNext
+                googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
+                <GoogleMap
+                    mapContainerStyle={mapStyles}
+                    zoom={11.5}
+                    center={defaultCenter}
+                    onLoad={handleLoad}
+                >
+                    {
+                        filtrarVehiculosVisibles().map(vehiculo => {
+                            return (
+                                <Marker key={vehiculo.id}
+                                    icon={iconMarker}
+                                    position={{
+                                        lat: vehiculo.latitud,
+                                        lng: vehiculo.longitud
+                                    }}
+                                />
+                            )
+                        })
+                    }
+                </GoogleMap>
+            </LoadScriptNext>
+        </div>
+
     )
 }
 

@@ -16,7 +16,7 @@ export const BuscadorUbis = () => {
                 localStorage.setItem('coordenadas', JSON.stringify(latLng))
                 //navigate('/vehicle', {replace:true})
             })
-            .catch(error => console.error('Error', error));
+            .catch(error => console.error('Error', error))
     };
 
     const handleSubmit = (e) => {

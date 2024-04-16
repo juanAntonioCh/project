@@ -191,7 +191,7 @@ export const RentCar = () => {
           headers: {
             'Authorization': `Token ${token}`
           }
-        });
+        })
         setUserName(response.data.id);
         //console.log(response)
 

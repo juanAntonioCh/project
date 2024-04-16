@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from .models import *
 
 class MarcaSerializer(serializers.ModelSerializer):
@@ -16,6 +17,11 @@ class ImagenVehiculoSerializer(serializers.ModelSerializer):
         model = ImagenVehiculo
         fields = ['vehiculo', 'imagen']
 
+class PropietarioVehiculoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username']
+
 
 class VehicleSerializer(serializers.ModelSerializer):
     marca_details = MarcaSerializer(source='marca', read_only=True)
@@ -23,6 +29,7 @@ class VehicleSerializer(serializers.ModelSerializer):
     marca_id = serializers.PrimaryKeyRelatedField(queryset=Marca.objects.all(), write_only=True, source='marca')
     modelo_id = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all(), write_only=True, source='modelo')
     imagenes = ImagenVehiculoSerializer(many=True, read_only=True)
+    propietario = PropietarioVehiculoSerializer(many=False, read_only=True)
 
     class Meta:
         model = Vehicle

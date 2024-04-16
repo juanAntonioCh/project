@@ -1,5 +1,6 @@
 import React from 'react'
 import '../styles/Vehicles.css'
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 export const VehicleList = ({vehiculos}) => {
@@ -31,7 +32,7 @@ export const VehicleList = ({vehiculos}) => {
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre} ({vehi.año})</h5>
-                                <a href="#" className="btn btn-primary">Ver más</a>
+                                <Link to={`/vehicle/${vehi.id}`} className="btn btn-primary">Ver más</Link>
                             </div>
                         </div>
                     </div>

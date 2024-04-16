@@ -8,6 +8,7 @@ export const Home = () => {
   const { isAuthenticated, logout } = useContext(AuthContext);
   console.log(isAuthenticated)
 
+  //localStorage.removeItem('coordenadas')
 
   return (
     <div className="home-container">
@@ -31,6 +32,6 @@ export const Home = () => {
         <Link to="/rent-car" className="rent-link">Alquila tu coche</Link>
       </div>
     </div>
-  );
+  )
   
 }

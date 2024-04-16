@@ -41,16 +41,16 @@ export const Mapa = () => {
         rotation: 0,
         scale: 1.8,
         anchor: new google.maps.Point(0, 20),
-    };
+    }
 
     const handleLoad = (map) => {
         setMap(map);
-    };
+    }
 
     const calcularRadio = (zoom) => {
         const radioBase = 0.013;
         return radioBase * Math.pow(2, (21 - zoom));
-    };
+    }
 
     function distanciaEntreDosPuntos(lat1, lng1, lat2, lng2) {
         const R = 6371; // Radio de la Tierra en kilómetros
@@ -74,13 +74,19 @@ export const Mapa = () => {
         return vehiculos.filter(vehiculo => {
             const distancia = distanciaEntreDosPuntos(defaultCenter.lat, defaultCenter.lng, vehiculo.latitud, vehiculo.longitud);
             return distancia <= radioVisible;
-        });
-    };
+        })
+    }
+
+    console.log(filtrarVehiculosVisibles())
 
     return (
         <div className="container mt-5">
-            
-            <VehicleList vehiculos={filtrarVehiculosVisibles()}/>
+
+            {filtrarVehiculosVisibles().length == 0 ? (
+                <h2>No hay vehículos disponibles en esta zona</h2>
+            ) : (
+                <VehicleList vehiculos={filtrarVehiculosVisibles()}/>
+            )}
 
             <LoadScriptNext
                 googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>

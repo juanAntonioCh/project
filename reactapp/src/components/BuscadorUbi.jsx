@@ -31,22 +31,30 @@ export const BuscadorUbis = () => {
             onSelect={handleSelect}
         >
             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                <form onSubmit={handleSubmit}>
-                    <input {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
-                    <div>
-                        {loading && <div>Cargando...</div>}
-                        {suggestions.map(suggestion => {
-                            return (
-                                <div key={suggestion.index} {...getSuggestionItemProps(suggestion)}>
-                                    <span>{suggestion.description}</span>
-                                    {/* {console.log(suggestion)} */}
-                                </div>
-                            );
-                        })}
+                <form onSubmit={handleSubmit} className="form-inline d-flex">
+                    <div className="flex-grow-1 position-relative"> 
+                        <input className='form-control' {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
+
+                        <div className='suggestions-container'>
+                            {loading && <div className="loading">Cargando...</div>}
+                            {suggestions.map((suggestion, index) => {
+                                const className = suggestion.active
+                                    ? 'suggestion-item active'
+                                    : 'suggestion-item';
+                                return (
+                                    <div key={index} {...getSuggestionItemProps(suggestion, { className })}>
+                                        <span>{suggestion.description}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
-                    <input type="submit" value='Buscar' />
+
+                    <button type="submit" className='btn btn-primary'>Buscar</button>
                 </form>
             )}
         </PlacesAutocomplete>
+
+
     );
 }

@@ -42,15 +42,70 @@
   padding: 20px;
 }
 
-.home-title {
-  margin-bottom: 30px;
+.logo {
   text-align: center;
 }
 
+
+/* BUSCADOR UBICACIONES PAGINA PRINCIPAL */
 .buscador-ubis-container {
-  margin: 20px 0;
-  text-align: center;
+  max-width: 600px; 
+  margin: auto;
+  padding: 20px;
 }
+
+.buscador-ubis-container .form-control{
+  border-radius: 20px;
+}
+
+.buscador-ubis-container .btn-primary{
+  border-radius: 15px;
+  margin-left: 15px;
+}
+
+.form-inline {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.flex-grow-1 {
+  flex-grow: 1; 
+  position: relative;
+}
+
+.suggestions-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  max-height: 300px;
+  overflow-y: auto; 
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ccc;
+}
+
+.suggestion-item.active {
+  background-color: #e9ecef;
+}
+
+.loading {
+  padding: 10px;
+}
+
+
+
+
+
+
+
 
 .auth-links {
   display: flex;
@@ -68,28 +123,35 @@
 .auth-link {
   text-decoration: none;
   color: white;
-  background-color: #007bff; 
+  background-color: #054ea1; 
   padding: 10px 15px;
   border-radius: 5px;
   transition: background-color 0.2s;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
 }
 
 .rent-link{
   text-decoration: none;
-  color: white;
-  background-color: #007bff; 
+  font-family: 'Roboto', sans-serif;
+  color: black;
+  background-color: white; 
   padding: 10px 15px;
-  border-radius: 5px;
-  transition: background-color 0.2s;
+  border: 2px solid black;
+  border-radius: 15px;
+  transition: transform 0.5s;
 
 }
 
 .rent-link:hover {
-  background-color: #0056b3; 
+  transform: scale(1.1);
 }
 
 .auth-link:hover {
-  background-color: #0056b3; 
+  background-color: #0057b3ed; 
 }
 
 .logout-button {

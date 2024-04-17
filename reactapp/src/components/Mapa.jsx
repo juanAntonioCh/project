@@ -77,7 +77,7 @@ export const Mapa = () => {
         })
     }
 
-    console.log(filtrarVehiculosVisibles())
+    //console.log(filtrarVehiculosVisibles())
 
     return (
         <div className="container mt-5">

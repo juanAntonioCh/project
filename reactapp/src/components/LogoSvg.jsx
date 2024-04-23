@@ -1,10 +1,10 @@
 import React from 'react'
 
 
-export const LogoSvg = () => {
+export const LogoSvg = ({width, height}) => {
     return (
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-            width="260px" height="260px" viewBox="206 116 612 752"
+            width={width} height={height} viewBox="206 116 612 752"
             preserveAspectRatio="xMidYMid meet">
             <metadata>
                 Created by potrace 1.16, written by Peter Selinger 2001-2019

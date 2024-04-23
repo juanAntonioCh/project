@@ -1,10 +1,11 @@
 import React from 'react'
-import '../styles/Vehicles.css'
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { Navbar } from './Navbar';
 
-export const VehicleList = ({vehiculos}) => {
+export const VehicleList = ({ vehiculos }) => {
     return (
+        <>
             <div className="row">
                 {vehiculos.map((vehi) => (
                     <div key={vehi.id} className="col-md-4 mb-4">
@@ -38,7 +39,8 @@ export const VehicleList = ({vehiculos}) => {
                     </div>
                 ))}
             </div>
-        
+        </>
+
     )
-    
+
 }

@@ -80,7 +80,7 @@ export const Mapa = () => {
     //console.log(filtrarVehiculosVisibles())
 
     return (
-        <div className="container mt-5">
+        <div className="container-fluid mt-5">
 
             {filtrarVehiculosVisibles().length == 0 ? (
                 <h2>No hay vehículos disponibles en esta zona</h2>

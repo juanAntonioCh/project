@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useContext } from "react"
+import '../styles/Home.css'
 import { BuscadorUbis } from '../components/BuscadorUbi'
 import { AuthContext } from '../context/AuthContext'
 import { LogoSvg } from '../components/LogoSvg'
@@ -29,13 +30,12 @@ export const Home = () => {
       )}
       
       <div className="logo">
-        <LogoSvg/>
+        <LogoSvg width={'260px'} height={'260px'}/>
       </div>
       <h2 className="logo">¿Dónde necesitas tu coche?</h2>
       <div className="buscador-ubis-container">
         <BuscadorUbis />
       </div>
-      <hr />
       <div className="rent">
         <Link to="/rent-car" className="rent-link">Alquila tu coche</Link>
       </div>

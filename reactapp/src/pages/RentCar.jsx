@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import '../styles/rent-car.css'
+// import '../styles/rent-car.css'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { useNavigate } from 'react-router-dom';
 import { createVehicle, getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'

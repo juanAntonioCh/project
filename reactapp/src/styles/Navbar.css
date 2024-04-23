@@ -1,0 +1,39 @@
+.nav-buscador-ubis-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+.nav-buscador-ubis-container .form-control {
+    border-radius: 15px;
+}
+
+.nav-buscador-ubis-container .btn-primary {
+    border-radius: 15px;
+    margin-left: 15px;
+}
+
+.navbar-brand {
+    margin-left: 10px;
+}
+
+.nav-rent-link {
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+    background-color: white;
+    padding: 10px 15px;
+    border: 2px solid black;
+    border-radius: 15px;
+    margin-right: 100px;
+    transition: transform 0.5s;
+
+}
+
+.nav-rent-link:hover {
+    transform: scale(1.1);
+}
+
+.nav-svg{
+    margin-right: 40px;
+}

@@ -5,8 +5,9 @@ import { Mapa } from '../components/Mapa'
 
 
 export const VehiclesPage = () => {
-    return (
-        <div className="container-fluid">
+    return ( 
+        <div>
+            {/* <div className="container-fluid"> */}
             <Navbar />
             <Mapa />
         </div>

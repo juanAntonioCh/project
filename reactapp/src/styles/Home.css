@@ -1,66 +1,24 @@
-.form-container {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  max-width: 400px;
-  margin: 40px auto;
-}
-
-
-
-.form-field {
-  margin-bottom: 20px;
-}
-
-.form-field label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form-field input {
-  width: 95%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.form-action button {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.form-action button:hover {
-  background-color: #0056b3;
-}
-
-
 .home-container {
   padding: 20px;
 }
 
-.logo {
+.home-logo {
   text-align: center;
 }
 
 
 /* BUSCADOR UBICACIONES PAGINA PRINCIPAL */
-.buscador-ubis-container {
+.home-buscador-ubis-container {
   max-width: 600px; 
   margin: auto;
   padding: 20px;
 }
 
-.buscador-ubis-container .form-control{
+.home-buscador-ubis-container .form-control{
   border-radius: 20px;
 }
 
-.buscador-ubis-container .btn-primary{
+.home-buscador-ubis-container .btn-primary{
   border-radius: 15px;
   margin-left: 15px;
 }
@@ -109,20 +67,20 @@
 
 
 
-.auth-links {
+.home-auth-links {
   display: flex;
   justify-content: flex-end;
   gap: 10px; 
   margin-top: 20px;
 }
 
-.rent{
+.home-rent{
   display: flex;
   justify-content: center;
   margin-top: 20px;
 }
 
-.auth-link {
+.home-auth-link {
   text-decoration: none;
   color: white;
   background-color: #054ea1; 
@@ -136,7 +94,7 @@
   src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
 }
 
-.rent-link{
+.home-rent-link{
   text-decoration: none;
   font-family: 'Roboto', sans-serif;
   color: black;
@@ -148,15 +106,15 @@
 
 }
 
-.rent-link:hover {
+.home-rent-link:hover {
   transform: scale(1.1);
 }
 
-.auth-link:hover {
+.home-auth-link:hover {
   background-color: #0057b3ed; 
 }
 
-.logout-button {
+.home-logout-button {
   background-color: #dc3545; 
   color: white;
   padding: 10px 15px;
@@ -166,7 +124,7 @@
   transition: background-color 0.2s;
 }
 
-.logout-button:hover {
+.home-logout-button:hover {
   background-color: #c82333; 
 }
 

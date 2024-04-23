@@ -14,6 +14,7 @@ export const BuscadorUbis = () => {
             .then(latLng => {
                 console.log('Success', latLng)
                 localStorage.setItem('coordenadas', JSON.stringify(latLng))
+                console.log(address)
                 //navigate('/vehicle', {replace:true})
             })
             .catch(error => console.error('Error', error))
@@ -21,7 +22,7 @@ export const BuscadorUbis = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate('/vehicle')
+        navigate('/vehicle', {replace:false})
     }
 
     return (

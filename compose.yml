@@ -1,0 +1,60 @@
+services:
+
+  backend:
+    build: ./mysite
+    container_name: backend
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+    depends_on:
+      db:
+        condition: service_healthy  
+    restart: always
+    ports: 
+      - 80:8000
+    networks:
+      - network
+
+  frontend:
+    build: ./reactapp 
+    container_name: frontend
+    ports:
+      - 8080:5173 
+    depends_on:
+      - backend
+    networks:
+      - network
+    
+    
+  db:
+    image: mysql
+    container_name: app_database
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      #- ./database:/var/lib/mysql
+      - bbdd:/var/lib/mysql
+    ports: 
+      - 3306:3306
+    restart: always
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 5
+    networks:
+      - network
+       
+networks:
+  network:
+    name: app_network
+    
+    
+volumes:
+  bbdd:
+    name: volumen1

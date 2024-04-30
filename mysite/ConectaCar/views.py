@@ -3,6 +3,8 @@ from rest_framework import viewsets
 from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework import status
+import json
+from django.core.files.base import ContentFile
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions
@@ -53,7 +55,6 @@ def get_vehiculo_choices(request):
 
 @api_view(['POST'])
 def register(request):
-    print('hoola')
     username = request.data.get('username')
     password = request.data.get('password')
     email = request.data.get('email')
@@ -77,22 +78,58 @@ def register(request):
 
     return Response('Usuario registrado correctamente')
 
+@api_view(['POST'])
+def create_vehicle(request):
+    print(request.data['vehiculo'])
+    vehiculo_data = json.loads(request.data['vehiculo'])
+    
+    marca_id = vehiculo_data.get('marca_id')
+    modelo_id = vehiculo_data.get('modelo_id')
+    propietario_id = vehiculo_data.get('propietario_id')
+    año = vehiculo_data.get('año')
+    matricula = vehiculo_data.get('matricula')
+    descripcion = vehiculo_data.get('descripcion')
+    tipo_carroceria = vehiculo_data.get('tipo_carroceria')
+    tipo_combustible = vehiculo_data.get('tipo_combustible')
+    tipo_cambio = vehiculo_data.get('tipo_cambio')
+    consumo = vehiculo_data.get('consumo')
+    kilometraje = vehiculo_data.get('kilometraje')
+    precio_por_hora = vehiculo_data.get('precio_por_hora')
+    latitud = vehiculo_data.get('latitud')
+    longitud = vehiculo_data.get('longitud')
+    disponible = vehiculo_data.get('disponible')
+    color = vehiculo_data.get('color')
+    
+    print(request.data)
+    user = User.objects.get(pk = propietario_id)
+    marca = Marca.objects.get(pk = marca_id)
+    modelo = Modelo.objects.get(pk = modelo_id)
 
-def find_vehicles(request):
-    user_lat = float(request.GET.get('lat'))
-    user_long = float(request.GET.get('long'))
-    radius = float(request.GET.get('radius', 10)) # Radio en kilómetros
+    vehiculo = Vehicle.objects.create(propietario=user, marca=marca, modelo=modelo, año=año, matricula=matricula,
+                    descripcion=descripcion, tipo_carroceria=tipo_carroceria, tipo_combustible=tipo_combustible, tipo_cambio=tipo_cambio,
+                    consumo=consumo, kilometraje=kilometraje, precio_por_hora=precio_por_hora, latitud=latitud, longitud=longitud,
+                    disponible=disponible, color=color)
 
-    #def haversine(lon1, lat1, lon2, lat2):
-        # Calcula la distancia en kilómetros entre dos puntos en la tierra.
-        # Implementación del cálculo Haversine...
+    # Procesar las imágenes asociadas al vehículo
+    for imagen in request.FILES.getlist('imagen'):
+        # Crear una instancia de UploadedFile a partir de los datos binarios de la imagen
+        print('DENTRO DEL FOOOOOOOOOOOOOOOR')
+        print(imagen)
+        archivo = ContentFile(imagen.read(), name=imagen.name)
+        # Crear una instancia de ImagenVehiculo con el archivo
+        ImagenVehiculo.objects.create(vehiculo=vehiculo, imagen=archivo)
+    
 
-    vehicles = Vehicle.objects.all()
-    vehicles_in_radius = [vehicle for vehicle in vehicles if haversine(user_long, user_lat, vehicle.longitud, vehicle.latitud) <= radius]
 
-    # Serializa y retorna los vehículos en el radio
-    # Esto es solo un esquema, necesitarás adaptarlo a tus necesidades
-    return JsonResponse({"vehicles": vehicles_in_radius})
+
+    # for imagen in request.FILES['imagen']:
+    #     print('DENTRO DEL FOOOOOOOOOOOOOOOR')
+    #     print(imagen)
+    #     ImagenVehiculo.objects.create(vehiculo=vehiculo, imagen=imagen)
+
+    return Response({'mensaje': 'Vehículo creado con éxito'}, status=status.HTTP_201_CREATED)
+
+
 
 
 class UserDetailsView(APIView):

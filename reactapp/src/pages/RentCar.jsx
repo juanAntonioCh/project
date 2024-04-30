@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react'
 // import '../styles/rent-car.css'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { useNavigate } from 'react-router-dom';
-import { createVehicle, getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
+import { getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
 import axios from 'axios'
 
 export const RentCar = () => {
   const navigate = useNavigate();
-  const [marcas, setMarcas] = useState([]);
+  const [listMarcas, setListMarcas] = useState([]);
+  const [listModelos, setListModelos] = useState([]);
   const [tipoCarroceriaChoices, setTipoCarroceriaChoices] = useState([])
   const [tipoCambioChoices, setTipoCambioChoices] = useState([])
   const [tipoCombustibleChoices, setTipoCombustibleChoices] = useState([])
-  const [modelos, setModelos] = useState([]);
   const [imagenes, setImagenes] = useState([])
   const [address, setAddress] = useState('');
-  const [userName, setUserName] = useState('');
+  const [propietario, setPropietario] = useState({});
   const [vehiculo, setVehiculo] = useState({
-    propietario: '',
-    marca_id: 0,
+    propietario_id: '',
+    marca_id: 1,
     modelo_id: 0,
     año: 0,
     matricula: '',
@@ -41,8 +41,8 @@ export const RentCar = () => {
       const list_modelos = await getAllModelos()
       const choices = await getVehicleChoices()
 
-      setMarcas(list_marcas.data)
-      setModelos(list_modelos.data)
+      setListMarcas(list_marcas.data)
+      setListModelos(list_modelos.data)
 
       setTipoCarroceriaChoices(choices.data.tipo_carroceria)
       setTipoCambioChoices(choices.data.tipo_cambio)
@@ -52,31 +52,50 @@ export const RentCar = () => {
     loadData()
   }, [])
 
+
+  //función para OBTENER TODOS LOS MODELOS de la MARCA seleccionada y actualizar el array de modelos
+
   async function loadModelos(id_marca) {
-    //obtener todos los modelos de la marca seleccionada y actualizar la lista en la página
     const list_modelos = await getModelosMarca(id_marca)
-    setModelos(list_modelos.data)
+    setListModelos(list_modelos.data)
   }
+
 
   //actualizar el objeto vehiculo con la primera marca y modelo de la lista
   useEffect(() => {
-    if (marcas.length > 0 && modelos.length > 0) {
+    console.log('*********************************')
+    console.log(listMarcas)
+    console.log(listModelos)
+    if (listMarcas.length > 0) {
 
-      loadModelos(marcas[0].id)
+      loadModelos(listMarcas[0].id)
+      const marcaId = listMarcas[0].id;
+      console.log(listMarcas[0].id)
+      console.log(marcaId)
 
       setVehiculo({
         ...vehiculo,
-        marca_id: marcas[0].id,
-        modelo_id: modelos[0].id,
-        tipo_carroceria: tipoCarroceriaChoices[0][0],
-        tipo_cambio: tipoCambioChoices[0][0],
-        tipo_combustible: tipoCombustibleChoices[0][0]
+        marca_id: marcaId,
       })
       //console.log(marcas[0].nombre)
       //console.log(modelos[0].nombre)
     }
-  }, [marcas]);
+  }, [listMarcas]);
   //}, [marcas, modelos]);
+
+  useEffect(() => {
+    if (listMarcas.length > 0 && listModelos.length > 0) {
+      console.log(listModelos[0].nombre)
+      setVehiculo({
+        ...vehiculo,
+        modelo_id: listModelos[0].id,
+        tipo_carroceria: tipoCarroceriaChoices[0][0],
+        tipo_cambio: tipoCambioChoices[0][0],
+        tipo_combustible: tipoCombustibleChoices[0][0]
+      })
+    }
+
+  }, [listModelos])
 
 
   //actualizar el objeto vehiculo cuando haya algun cambio 
@@ -87,31 +106,18 @@ export const RentCar = () => {
     })
   }
 
+  //actualizar la MARCA del vehiculo cuando se cambie de opción en el formulario
   const handleChangeMarca = (e) => {
-    // async function loadModelos() {
-    //   //obtener todos los modelos de la marca seleccionada y actualizar la lista en la página
-    //   const list_modelos = await getModelosMarca(e.target.value)
-    //   setModelos(list_modelos.data)
-
-    //   //cada vez que cambie la marca actyalizamos el modelo al primero que aparece en el select
-    //   //console.log('value de la marca', e.target.value)
-    //   setVehiculo({
-    //     ...vehiculo,
-    //     [e.target.name]: Number(e.target.value),
-    //     modelo: list_modelos.data[0].id
-    //   })
-    // }
-    // loadModelos()
-
     loadModelos(e.target.value)
 
     setVehiculo({
       ...vehiculo,
       [e.target.name]: Number(e.target.value),
-      modelo_id: modelos[0].id
+      modelo_id: listModelos[0].id
     })
   }
 
+  //actualizar el MODELO del vehiculo cuando se cambie de opción en el formulario
   const handleChangeModelo = (e) => {
     setVehiculo({
       ...vehiculo,
@@ -132,29 +138,32 @@ export const RentCar = () => {
     console.log(vehiculo)
 
     const formData = new FormData();
-    formData.append('vehiculo', 4); 
     console.log(imagenes)
     imagenes.forEach((imagen) => {
       formData.append('imagen', imagen);
     });
+    formData.append('vehiculo', JSON.stringify(vehiculo))
     console.log(formData)
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/imagenes/', formData, {
-        headers: {},
+      const response = await axios.post('http://127.0.0.1:8000/api/create-vehicle/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
       console.log(response.data);
+      navigate('/vehicle')
     } catch (error) {
       console.error('Error al enviar el formulario:', error.response);
     }
 
-    try {
-      const res = await createVehicle(vehiculo)
-      console.log(res)
-      navigate('/vehicle')
-    } catch (error) {
-      console.error('Error crear el vehiculo', error.response.data);
-    }
+    // try {
+    //   const res = await createVehicle(vehiculo)
+    //   console.log(res)
+    //   navigate('/vehicle')
+    // } catch (error) {
+    //   console.error('Error crear el vehiculo', error.response.data);
+    // }
   }
 
 
@@ -167,6 +176,7 @@ export const RentCar = () => {
   useEffect(() => {
     console.log(imagenes)
   }, [imagenes])
+
 
   const handleSelect = address => {
     setAddress(address);
@@ -192,7 +202,9 @@ export const RentCar = () => {
             'Authorization': `Token ${token}`
           }
         })
-        setUserName(response.data.id);
+        setPropietario(response.data.id);
+        console.log('EL USUARIO ES  ', response.data)
+        console.log(response.data.id)
         //console.log(response)
 
       } catch (error) {
@@ -206,9 +218,9 @@ export const RentCar = () => {
   useEffect(() => {
     setVehiculo({
       ...vehiculo,
-      propietario: userName
+      propietario_id: propietario
     })
-  }, [userName])
+  }, [propietario])
 
 
   return (
@@ -219,7 +231,7 @@ export const RentCar = () => {
           <div className="mb-3">
             <label htmlFor="marca_id" className="form-label">Marca:</label><br />
             <select name='marca_id' onChange={handleChangeMarca}>
-              {marcas.map(marca => (
+              {listMarcas.map(marca => (
                 <option key={marca.id} value={marca.id}>
                   {marca.nombre}
                 </option>
@@ -230,7 +242,7 @@ export const RentCar = () => {
           <div className="mb-3">
             <label htmlFor="modelo_id" className="form-label">Modelo:</label><br />
             <select name='modelo_id' onChange={handleChangeModelo}>
-              {modelos.map(modelo => (
+              {listModelos.map(modelo => (
                 <option key={modelo.id} value={modelo.id}>
                   {modelo.nombre}
                 </option>

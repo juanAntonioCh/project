@@ -5,8 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const VehicleDetailView = () => {
     const { id } = useParams();
+    console.log(id)
     const [vehicle, setVehicle] = useState(null);
     const [loading, setLoading] = useState(true);
+    
 
     useEffect(() => {
         const fetchVehicle = async () => {
@@ -14,6 +16,7 @@ export const VehicleDetailView = () => {
                 const { data } = await axios.get(`http://localhost:8000/api/vehicles/${id}`);
                 setVehicle(data);
                 setLoading(false);
+                console.log(vehicle)
             } catch (error) {
                 console.error("Error fetching vehicle", error);
                 setLoading(false);
@@ -56,7 +59,7 @@ export const VehicleDetailView = () => {
             </div>
             <div className="card mt-3">
                 <div className="card-body">
-                    <p className="card-text"><strong>Propietario:</strong> {vehicle.propietario.username}</p>
+                    <p className="card-text"><strong>Propietario: </strong> {vehicle.propietario_details.username}</p>
                     <p className="card-text"><strong>Matrícula:</strong> {vehicle.matricula}</p>
                     <p className="card-text"><strong>Color:</strong> {vehicle.color}</p>
                     <p className="card-text"><strong>Kilometraje:</strong> {vehicle.kilometraje}</p>

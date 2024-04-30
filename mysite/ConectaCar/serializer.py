@@ -20,23 +20,18 @@ class ImagenVehiculoSerializer(serializers.ModelSerializer):
 class PropietarioVehiculoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username']
+        fields = ['id', 'username']
 
 
 class VehicleSerializer(serializers.ModelSerializer):
     marca_details = MarcaSerializer(source='marca', read_only=True)
     modelo_details = ModeloSerializer(source='modelo', read_only=True)
+    propietario_details = PropietarioVehiculoSerializer(source='propietario', read_only=True)
     marca_id = serializers.PrimaryKeyRelatedField(queryset=Marca.objects.all(), write_only=True, source='marca')
     modelo_id = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all(), write_only=True, source='modelo')
+    propietario_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True, source='propietario')
     imagenes = ImagenVehiculoSerializer(many=True, read_only=True)
-    propietario = PropietarioVehiculoSerializer(many=False, read_only=True)
 
     class Meta:
         model = Vehicle
         fields = '__all__'
-
-    def create(self, validated_data):
-        # `validated_data` ya tendrá 'marca' y 'modelo' como instancias del modelo gracias a `source='marca'` y `source='modelo'`
-        # así que puedes pasar `validated_data` directamente a `Vehicle.objects.create()`
-        vehicle = Vehicle.objects.create(**validated_data)
-        return vehicle

@@ -9,9 +9,9 @@ export const getAllVehicles = () => {
     return conectaCarApi.get('/')
 }
 
-export const createVehicle = (vehi) => {
-    return conectaCarApi.post('/', vehi)
-}
+// export const createVehicle = (vehi) => {
+//     return conectaCarApi.post('/', vehi)
+// }
 
 export const getAllMarcas = () => {
     return axios.get('http://127.0.0.1:8000/api/marca')

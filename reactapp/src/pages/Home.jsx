@@ -7,8 +7,9 @@ import { AuthContext } from '../context/AuthContext'
 import { LogoSvg } from '../components/LogoSvg'
 
 export const Home = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, logout, user} = useContext(AuthContext);
   console.log(isAuthenticated)
+  console.log(user)
 
   //localStorage.removeItem('coordenadas')
 
@@ -25,6 +26,8 @@ export const Home = () => {
         </div>
       ) : (
         <div className="home-auth-links">
+          {/* <Link to={`/vehicle/${vehi.id}`} className="btn btn-primary">Mis vehiculos publicados</Link> */}
+          <Link to={`/my-vehicles/${user}`}>Mis vehiculos publicados</Link>
           <button onClick={logout} className="home-logout-button">Cerrar sesión</button>
         </div>
       )}

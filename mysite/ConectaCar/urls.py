@@ -16,4 +16,6 @@ urlpatterns = [
     path('user-details/', views.UserDetailsView.as_view(), name='user-details'),
     path('modelos/<int:marca_id>/', views.ModeloFilter.as_view(), name='modelos-por-marca'),
     path('create-vehicle/', views.create_vehicle, name='create-vehicle'),
+    path('vehicles/user/<int:id>/', views.get_user_vehicles, name='vehicles-user'),
+    path('vehicle/image/update/<int:id>/', views.update_vehicle_image, name='image-update'),
 ]

@@ -4,8 +4,11 @@ import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-au
 import { useNavigate } from 'react-router-dom';
 import { getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
 import axios from 'axios'
+import { useContext } from "react"
+import { AuthContext } from '../context/AuthContext';
 
 export const RentCar = () => {
+  const {user} = useContext(AuthContext);
   const navigate = useNavigate();
   const [listMarcas, setListMarcas] = useState([]);
   const [listModelos, setListModelos] = useState([]);
@@ -14,7 +17,7 @@ export const RentCar = () => {
   const [tipoCombustibleChoices, setTipoCombustibleChoices] = useState([])
   const [imagenes, setImagenes] = useState([])
   const [address, setAddress] = useState('');
-  const [propietario, setPropietario] = useState({});
+  //const [propietario, setPropietario] = useState({});
   const [vehiculo, setVehiculo] = useState({
     propietario_id: '',
     marca_id: 1,
@@ -33,6 +36,19 @@ export const RentCar = () => {
     color: 'verde',
     disponible: true
   })
+
+  //ver los cambios en el vehiculo
+  useEffect(() => {
+    console.log(vehiculo)
+  }, [vehiculo])
+
+
+  useEffect(() => {
+    setVehiculo({
+      ...vehiculo,
+      propietario_id: user
+    })
+  }, [user])
 
   //Obtetener las marcas y modelos de vehículos. Y los campos choices
   useEffect(() => {
@@ -54,7 +70,6 @@ export const RentCar = () => {
 
 
   //función para OBTENER TODOS LOS MODELOS de la MARCA seleccionada y actualizar el array de modelos
-
   async function loadModelos(id_marca) {
     const list_modelos = await getModelosMarca(id_marca)
     setListModelos(list_modelos.data)
@@ -77,8 +92,6 @@ export const RentCar = () => {
         ...vehiculo,
         marca_id: marcaId,
       })
-      //console.log(marcas[0].nombre)
-      //console.log(modelos[0].nombre)
     }
   }, [listMarcas]);
   //}, [marcas, modelos]);
@@ -94,7 +107,6 @@ export const RentCar = () => {
         tipo_combustible: tipoCombustibleChoices[0][0]
       })
     }
-
   }, [listModelos])
 
 
@@ -126,13 +138,6 @@ export const RentCar = () => {
 
   }
 
-  useEffect(() => {
-    console.log(vehiculo)
-  }, [vehiculo])
-
-
-
-
   async function handleSubmit(e) {
     e.preventDefault()
     console.log(vehiculo)
@@ -152,21 +157,11 @@ export const RentCar = () => {
         }
       });
       console.log(response.data);
-      navigate('/vehicle')
+      navigate('/')
     } catch (error) {
       console.error('Error al enviar el formulario:', error.response);
     }
-
-    // try {
-    //   const res = await createVehicle(vehiculo)
-    //   console.log(res)
-    //   navigate('/vehicle')
-    // } catch (error) {
-    //   console.error('Error crear el vehiculo', error.response.data);
-    // }
   }
-
-
 
 
   const handleImagenesChange = (e) => {
@@ -192,36 +187,6 @@ export const RentCar = () => {
       })
       .catch(error => console.error('Error', error));
   };
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user-details', {
-          headers: {
-            'Authorization': `Token ${token}`
-          }
-        })
-        setPropietario(response.data.id);
-        console.log('EL USUARIO ES  ', response.data)
-        console.log(response.data.id)
-        //console.log(response)
-
-      } catch (error) {
-        console.error('Error al obtener los detalles del usuario', error);
-      }
-    };
-
-    fetchUserDetails();
-  }, []);
-
-  useEffect(() => {
-    setVehiculo({
-      ...vehiculo,
-      propietario_id: propietario
-    })
-  }, [propietario])
-
 
   return (
     <form onSubmit={handleSubmit} className="container mt-4">
@@ -351,11 +316,7 @@ export const RentCar = () => {
               multiple
               onChange={handleImagenesChange}
             />
-
           </div>
-
-
-
         </div>
       </div>
 

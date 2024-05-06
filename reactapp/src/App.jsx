@@ -7,6 +7,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { RentCar } from './pages/RentCar'
 import { VehicleDetailView } from './components/VehicleDetailView'
 import { VehiclesPage } from './pages/VehiclesPage'
+import { VehiclesUserPage } from './pages/VehiclesUserPage'
+import { EditVehiclePage } from './pages/EditVehiclePage'
+import { EditVehicle } from './components/EditVehicle'
+import { EditVehicleImages } from './components/EditVehicleImages'
 
 function App() {
 
@@ -21,6 +25,9 @@ function App() {
             <Route path='/register' element={<Register />}></Route>
             <Route path='/rent-car' element={<RentCar />}></Route>
             <Route path='/vehicle/:id' element={<VehicleDetailView />} />
+            <Route path='/my-vehicles/:id' element={<VehiclesUserPage />} />
+            <Route path='/edit-vehicle/:id' element={<EditVehicle />} />
+            <Route path='/edit-vehicle/images/:id' element={<EditVehicleImages />} />
           </Routes>
       </AuthProvider>
     </BrowserRouter>

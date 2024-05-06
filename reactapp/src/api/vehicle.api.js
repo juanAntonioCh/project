@@ -9,10 +9,6 @@ export const getAllVehicles = () => {
     return conectaCarApi.get('/')
 }
 
-// export const createVehicle = (vehi) => {
-//     return conectaCarApi.post('/', vehi)
-// }
-
 export const getAllMarcas = () => {
     return axios.get('http://127.0.0.1:8000/api/marca')
 }
@@ -31,4 +27,8 @@ export const getVehicleChoices = () => {
 
 export const UserDetails = () => {
     return axios.get('http://127.0.0.1:8000/api/user-details');
+}
+
+export const getUserVehicles = (userId) => {
+    return axios.get(`http://127.0.0.1:8000/api/vehicles/user/${userId}/`);
 }

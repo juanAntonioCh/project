@@ -1,13 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import '../styles/Home.css'
 import { BuscadorUbis } from '../components/BuscadorUbi'
 import { AuthContext } from '../context/AuthContext'
 import { LogoSvg } from '../components/LogoSvg'
+import { BuscadorVehiculos } from '../components/BuscadorVehiculos'
 
 export const Home = () => {
-  const { isAuthenticated, logout, user} = useContext(AuthContext);
+  const { isAuthenticated, logout, user } = useContext(AuthContext);
   console.log(isAuthenticated)
   console.log(user)
 
@@ -31,9 +32,9 @@ export const Home = () => {
           <button onClick={logout} className="home-logout-button">Cerrar sesión</button>
         </div>
       )}
-      
+
       <div className="home-logo">
-        <LogoSvg width={'260px'} height={'260px'}/>
+        <LogoSvg width={'260px'} height={'260px'} />
       </div>
       <h2 className="home-logo">¿Dónde necesitas tu coche?</h2>
       <div className="home-buscador-ubis-container">

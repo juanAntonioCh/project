@@ -162,6 +162,12 @@ def update_vehicle_image(request, id):
         return Response('Imagen no proporcionada')
 
 
+@api_view(['GET'])
+def filtrar_vehiculos(request):
+    vehiculos = Vehicle.objects.all()
+    return Response('filtrando')
+
+
 
 class UserDetailsView(APIView):
     permission_classes = [permissions.IsAuthenticated]

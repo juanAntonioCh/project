@@ -38,7 +38,7 @@ export const Home = () => {
       </div>
       <h2 className="home-logo">¿Dónde necesitas tu coche?</h2>
       <div className="home-buscador-ubis-container">
-        <BuscadorUbis />
+        <BuscadorVehiculos />
       </div>
       <div className="home-rent">
         <Link to="/rent-car" className="home-rent-link">Alquila tu coche</Link>

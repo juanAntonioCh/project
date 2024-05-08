@@ -9,60 +9,27 @@
 
 /* BUSCADOR UBICACIONES PAGINA PRINCIPAL */
 .home-buscador-ubis-container {
-  max-width: 600px; 
-  margin: auto;
-  padding: 20px;
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  height: 35vh; 
 }
 
 .home-buscador-ubis-container .form-control{
   border-radius: 20px;
+  width: 450px;
+  height: 50px;
+  margin-left: 150px;
+  margin-bottom: 15px;
 }
 
 .home-buscador-ubis-container .btn-primary{
   border-radius: 15px;
-  margin-left: 15px;
+  margin-top: 30px;
+  width: 200px;
+  font-size: 18px;
+  margin-left: 260px;
 }
-
-.form-inline {
-  display: flex;
-  width: 100%;
-  align-items: center;
-}
-
-.flex-grow-1 {
-  flex-grow: 1; 
-  position: relative;
-}
-
-.suggestions-container {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: white;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  max-height: 300px;
-  overflow-y: auto; 
-}
-
-.suggestion-item {
-  padding: 10px;
-  cursor: pointer;
-  border-bottom: 1px solid #ccc;
-}
-
-.suggestion-item.active {
-  background-color: #e9ecef;
-}
-
-.loading {
-  padding: 10px;
-}
-
-
-
-
 
 
 

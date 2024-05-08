@@ -13,11 +13,19 @@ export const VehiclesUser = ({ vehiculos }) => {
                         <div className="card">
                             <div id={`carousel${vehi.id}`} className="carousel slide" data-bs-ride="carousel">
                                 <div className="carousel-inner">
-                                    {vehi.imagenes.map((imagen, index) => (
-                                        <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                                            <img src={imagen.imagen} className="d-block w-100 card-img-top" alt={`Imagen ${index + 1} de ${vehi.marca_details.nombre} ${vehi.modelo_details.nombre}`} />
+
+                                    {vehi.imagenes.length > 0 ? (
+                                        vehi.imagenes.map((imagen, index) => (
+                                            <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                                <img src={imagen.imagen} className="d-block w-100 card-img-top" alt={`Imagen ${index + 1} de ${vehi.marca_details.nombre} ${vehi.modelo_details.nombre}`} />
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="carousel-item active">
+                                            <img src="https://gomore.imgix.net/images/default_car_picture.png?ixlib=rails-2.1.2&amp;w=560&amp;h=373" className="d-block w-100 card-img-top img-responsive w-100% h-auto br2" alt="Imagen por defecto" loading="lazy"></img>
                                         </div>
-                                    ))}
+                                    )}
+
                                 </div>
                                 {vehi.imagenes.length > 1 && (
                                     <>

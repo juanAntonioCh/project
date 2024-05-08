@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { GoogleMap, LoadScriptNext, Marker } from '@react-google-maps/api';
 import { VehicleList } from './VehicleList';
 import { getAllVehicles } from '../api/vehicle.api';
+import { AuthContext } from '../context/AuthContext';
 
 export const Mapa = () => {
     const [map, setMap] = useState(null);
     const [vehiculos, setVehiculos] = useState([])
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         async function loadVehicles() {
@@ -18,6 +20,7 @@ export const Mapa = () => {
 
     useEffect(()=>{
         console.log(vehiculos)
+        console.log('UUUUUUUSERRRR: ', user)
     },[vehiculos])
 
     const coordenadas = JSON.parse(localStorage.getItem('coordenadas'))
@@ -64,6 +67,8 @@ export const Mapa = () => {
         return R * c; // Distancia en kilómetros
     }
 
+    //FUNCION PARA MOSTAR LOS VEHICULOS QUE SE ENCUENTREN DENTRO DE UN DETERMINADO RADIO EN BASE A LA UBICACION QUE SOLICITE EL USUARIO
+    //Y TAMBIEN OCULTAR LOS VEHICULOS QUE PERTENEZCA AL USUARIO QUE TIENE LA SESION ACTIVA
     const filtrarVehiculosVisibles = () => {
         if (!map) return [];
 
@@ -73,7 +78,7 @@ export const Mapa = () => {
 
         return vehiculos.filter(vehiculo => {
             const distancia = distanciaEntreDosPuntos(defaultCenter.lat, defaultCenter.lng, vehiculo.latitud, vehiculo.longitud);
-            return distancia <= radioVisible;
+            return distancia <= radioVisible && vehiculo.propietario != user;
         })
     }
 

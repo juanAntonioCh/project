@@ -1,0 +1,42 @@
+.date-picker {
+    max-width: 175px;
+    margin-left: 30px;
+}
+
+.time-picker {
+    max-width: 140px;
+    margin-left: 10px;
+}
+
+.suggestions-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 300px;
+    max-width: 480px;
+    overflow-y: auto;
+    margin-left: 150px;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
+
+.suggestion-item.active {
+    background-color: #e9ecef;
+}
+
+.loading {
+    padding: 10px;
+}
+
+.buscador{
+    margin-bottom: 20px;
+
+}

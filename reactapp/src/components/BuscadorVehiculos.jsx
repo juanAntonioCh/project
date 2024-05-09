@@ -18,20 +18,25 @@ export const BuscadorVehiculos = () => {
     const [startHour, setStartHour] = useState(null);
     const [endHour, setEndHour] = useState(null);
     const [address, setAddress] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log(error)
+    }, [error])
 
     const handleStartDateChange = (e) => {
         const day = e.$D;
         const month = e.$M + 1; // Los meses en Day.js son base cero, por lo que se suma 1
         const year = e.$y;
-        setStartDate(`${day}-${month}-${year}`)
+        setStartDate(`${year}-${month}-${day}`)
 
     }
     const handleEndDateChange = (e) => {
         const day = e.$D;
         const month = e.$M + 1; // Los meses en Day.js son base cero, por lo que se suma 1
         const year = e.$y;
-        setEndDate(`${day}-${month}-${year}`)
+        setEndDate(`${year}-${month}-${day}`)
 
     }
     const handleStartHourChange = (e) => {
@@ -90,9 +95,64 @@ export const BuscadorVehiculos = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!address) {
+            setError('Por favor, introduce una dirección.')
+            return;
+        }
+        if (!startDate) {
+            setError('Por favor, selecciona una fecha de inicio.')
+            return;
+        }
+
+        if (!startHour) {
+            setError('Por favor, selecciona una hora de inicio.')
+            return;
+        }
+
+        const currentDate = new Date();
+        const [startYear, startMonth, startDay] = startDate.split('-')
+        const [startHour2, startMinute] = startHour.split(':')
+        const startDateAsDate = new Date(startYear, startMonth - 1, startDay, startHour2, startMinute)
+
+        if (startDateAsDate < currentDate) {
+            console.log('Fecha seleccionada ', startDate, ' Hora seleccionada ', startHour)
+            setError('La fecha de inicio no puede ser anterior a la fecha actual.')
+            return;
+        }
+
+        if (!endDate) {
+            setError('Por favor, selecciona una fecha de fin.')
+            return;
+        }
+        if (!endHour) {
+            setError('Por favor, selecciona una hora de fin.')
+            return;
+        }
+
+        const [endYear, endMonth, endDay] = endDate.split('-')
+        const [endHour2, endMinute] = endHour.split(':')
+        const endDateAsDate = new Date(endYear, endMonth - 1, endDay, endHour2, endMinute)
+
+        if (endDateAsDate < startDateAsDate) {
+            console.log('Fecha seleccionada ', endDate, ' Hora seleccionada ', endHour)
+            setError('La fecha de fin no puede ser anterior a la fecha de inicio.')
+            return;
+        }
+
+        const differenceInMilliseconds = endDateAsDate - startDateAsDate;
+        const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
+
+        console.log('LA DIFERENCIA DE HORAS ES: ', differenceInHours)
+
+        if (differenceInHours < 1){
+            setError('No se puede alquilar un vehículo menos de una hora')
+            return;
+        }
+
+        setError('');
         const rentDuration = calculateHourDifference(startDate, startHour, endDate, endHour)
         console.log('Horas de alquiler:', rentDuration);
-        navigate('/vehicle', { replace: false })
+        navigate('/vehicle', { state: { rentDuration, address } })
     }
 
     return (

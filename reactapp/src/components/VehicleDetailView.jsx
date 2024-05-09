@@ -73,6 +73,8 @@ export const VehicleDetailView = () => {
                     <p className="card-text"><strong>Kilometraje:</strong> {vehicle.kilometraje}</p>
                     <p className="card-text"><strong>Consumo:</strong> {vehicle.consumo}</p>
                     <p className="card-text"><strong>Tipo de Combustible:</strong> {vehicle.tipo_combustible}</p>
+                    <p className="card-text"><strong>Tipo de Cambio:</strong> {vehicle.tipo_cambio}</p>
+                    <p className="card-text"><strong>Tipo de Carrocería:</strong> {vehicle.tipo_carroceria}</p>
                     <p className="card-text"><strong>Precio por Hora:</strong> {vehicle.precio_por_hora}</p>
                 </div>
                 <button className='btn btn-success'>Alquilar</button>

@@ -3,11 +3,23 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Navbar } from './Navbar';
 
-export const VehicleList = ({ vehiculos }) => {
+export const VehicleList = ({ vehiculos, rentDuration }) => {
+
+    //const rentDuration = rentDuration
+    console.log('VEHICLE LIST: ', rentDuration)
+
+    const calcularPrecioAlquiler = (precioPorHora, rentDuration) => {
+        const {hours, minutes} = rentDuration;
+        const totalMinutes = hours * 60 + minutes;
+        const precioTotal = (totalMinutes / 60) * precioPorHora;
+        return precioTotal.toFixed(2);
+    };
+    
     return (
         <>
             <div className="row">
                 {vehiculos.map((vehi) => (
+                    
                     <div key={vehi.id} className="col-md-4 mb-4">
                         <div className="card">
                             <div id={`carousel${vehi.id}`} className="carousel slide" data-bs-ride="carousel">
@@ -41,7 +53,7 @@ export const VehicleList = ({ vehiculos }) => {
                             <div className="card-body">
                                 <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre} ({vehi.año})</h5>
                                 <Link to={`/vehicle/${vehi.id}`} className="btn btn-primary">Ver más</Link>
-                                <p>Precio del alquiler: </p>
+                                <p>Precio del alquiler: {calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration)}</p>
                             </div>
                         </div>
                     </div>

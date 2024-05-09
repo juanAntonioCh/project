@@ -4,7 +4,7 @@ import { VehicleList } from './VehicleList';
 import { getAllVehicles } from '../api/vehicle.api';
 import { AuthContext } from '../context/AuthContext';
 
-export const Mapa = () => {
+export const Mapa = ({ rentDuration, address }) => {
     const [map, setMap] = useState(null);
     const [vehiculos, setVehiculos] = useState([])
     const { user } = useContext(AuthContext);
@@ -18,10 +18,10 @@ export const Mapa = () => {
         loadVehicles()
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(vehiculos)
-        console.log('UUUUUUUSERRRR: ', user)
-    },[vehiculos])
+        //console.log('UUUUUUUSERRRR: ', user)
+    }, [vehiculos])
 
     const coordenadas = JSON.parse(localStorage.getItem('coordenadas'))
     console.log('Estas son las coordenandas: ', coordenadas)
@@ -67,8 +67,8 @@ export const Mapa = () => {
         return R * c; // Distancia en kilómetros
     }
 
-    //FUNCION PARA MOSTAR LOS VEHICULOS QUE SE ENCUENTREN DENTRO DE UN DETERMINADO RADIO EN BASE A LA UBICACION QUE SOLICITE EL USUARIO
-    //Y TAMBIEN OCULTAR LOS VEHICULOS QUE PERTENEZCA AL USUARIO QUE TIENE LA SESION ACTIVA
+    //Funcion para mostrar tan solo los vehiculos que se encuentren en la ubicación seleccionada, no pertenezcan al 
+    //usuario que tiene la sesión activa y estén disponibles, es decir, no los haya alquilado nadie
     const filtrarVehiculosVisibles = () => {
         if (!map) return [];
 
@@ -78,19 +78,22 @@ export const Mapa = () => {
 
         return vehiculos.filter(vehiculo => {
             const distancia = distanciaEntreDosPuntos(defaultCenter.lat, defaultCenter.lng, vehiculo.latitud, vehiculo.longitud);
-            return distancia <= radioVisible && vehiculo.propietario != user;
+            return distancia <= radioVisible && vehiculo.propietario != user && vehiculo.disponible;
         })
     }
 
     //console.log(filtrarVehiculosVisibles())
 
     return (
-        <div className="container-fluid mt-5">
+        <div className="container-fluid mt-4">
 
             {filtrarVehiculosVisibles().length == 0 ? (
                 <h2>No hay vehículos disponibles en esta zona</h2>
             ) : (
-                <VehicleList vehiculos={filtrarVehiculosVisibles()}/>
+                <>
+                    <p>{filtrarVehiculosVisibles().length} vehículos disponibles en {address}</p>
+                    <VehicleList vehiculos={filtrarVehiculosVisibles()} rentDuration={rentDuration} />
+                </>
             )}
 
             <LoadScriptNext

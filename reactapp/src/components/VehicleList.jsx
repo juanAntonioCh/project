@@ -5,7 +5,6 @@ import { Navbar } from './Navbar';
 
 export const VehicleList = ({ vehiculos, rentDuration }) => {
 
-    //const rentDuration = rentDuration
     console.log('VEHICLE LIST: ', rentDuration)
 
     const calcularPrecioAlquiler = (precioPorHora, rentDuration) => {
@@ -22,7 +21,7 @@ export const VehicleList = ({ vehiculos, rentDuration }) => {
                     
                     <div key={vehi.id} className="col-md-4 mb-4">
                         <div className="card">
-                            <div id={`carousel${vehi.id}`} className="carousel slide" data-bs-ride="carousel">
+                            <div id={`carousel${vehi.id}`} className="carousel slide">
                                 <div className="carousel-inner">
 
                                     {vehi.imagenes.length > 0 ? (

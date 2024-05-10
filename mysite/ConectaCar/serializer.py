@@ -22,6 +22,12 @@ class PropietarioVehiculoSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username']
 
+class AlquilerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alquiler
+        fields = '__all__'
+
+
 
 class VehicleSerializer(serializers.ModelSerializer):
     marca_details = MarcaSerializer(source='marca', read_only=True)

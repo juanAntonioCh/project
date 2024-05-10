@@ -7,6 +7,7 @@ router.register(r'vehicles', views.VehicleView, 'vehicles')
 router.register(r'marca', views.MarcaView, 'marca')
 router.register(r'modelo', views.ModeloView, 'modelo')
 router.register(r'imagenes', views.ImagenVehiculoView, 'imagenes')
+router.register(r'alquiler', views.AlquilerView, 'alquiler')
 #router.register(r'', views.VehicleView, 'vehicles')
 
 urlpatterns = [

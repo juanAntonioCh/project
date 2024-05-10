@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { AlquilerCard } from './AlquilerCard';
 
 export const VehicleDetailView = () => {
     const { id } = useParams();
     console.log(id)
     const [vehicle, setVehicle] = useState(null);
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         const fetchVehicle = async () => {
@@ -70,15 +70,16 @@ export const VehicleDetailView = () => {
                     <p className="card-text"><strong>Propietario: </strong> {vehicle.propietario_details.username}</p>
                     <p className="card-text"><strong>Matrícula:</strong> {vehicle.matricula}</p>
                     <p className="card-text"><strong>Color:</strong> {vehicle.color}</p>
-                    <p className="card-text"><strong>Kilometraje:</strong> {vehicle.kilometraje}</p>
-                    <p className="card-text"><strong>Consumo:</strong> {vehicle.consumo}</p>
-                    <p className="card-text"><strong>Tipo de Combustible:</strong> {vehicle.tipo_combustible}</p>
-                    <p className="card-text"><strong>Tipo de Cambio:</strong> {vehicle.tipo_cambio}</p>
-                    <p className="card-text"><strong>Tipo de Carrocería:</strong> {vehicle.tipo_carroceria}</p>
+                    <p className="card-text"><strong>Kilometraje:</strong> {vehicle.kilometraje} km</p>
+                    <p className="card-text"><strong>Consumo:</strong> {vehicle.consumo} <i>l/100</i></p>
+                    <p className="card-text"><strong>Combustible:</strong> {vehicle.tipo_combustible}</p>
+                    <p className="card-text"><strong>Cambio:</strong> {vehicle.tipo_cambio}</p>
+                    <p className="card-text"><strong>Carrocería:</strong> {vehicle.tipo_carroceria}</p>
                     <p className="card-text"><strong>Precio por Hora:</strong> {vehicle.precio_por_hora}</p>
                 </div>
-                <button className='btn btn-success'>Alquilar</button>
+                <AlquilerCard/>
             </div>
+
 
 
         </div>

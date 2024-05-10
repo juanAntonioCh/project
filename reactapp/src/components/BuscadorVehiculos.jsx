@@ -144,7 +144,7 @@ export const BuscadorVehiculos = () => {
 
         console.log('LA DIFERENCIA DE HORAS ES: ', differenceInHours)
 
-        if (differenceInHours < 1){
+        if (differenceInHours < 1) {
             setError('No se puede alquilar un vehículo menos de una hora')
             return;
         }
@@ -171,17 +171,16 @@ export const BuscadorVehiculos = () => {
                                 <div className='suggestions-container'>
                                     {loading && <div className="loading">Cargando...</div>}
                                     {suggestions.map((suggestion, index) => {
-                                        const className = suggestion.active
-                                            ? 'suggestion-item active'
-                                            : 'suggestion-item';
+                                        const className = suggestion.active ? 'suggestion-item active' : 'suggestion-item';
                                         return (
-                                            <div key={index} {...getSuggestionItemProps(suggestion, { className })}>
+                                            <div key={index} className={className} onClick={() => getSuggestionItemProps(suggestion)}>
                                                 <span>{suggestion.description}</span>
                                             </div>
                                         );
                                     })}
                                 </div>
                             </div>
+
                         </div>
                     )}
                 </PlacesAutocomplete>

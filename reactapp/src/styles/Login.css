@@ -1,6 +1,10 @@
+.login-body {
+  background: linear-gradient(to right, #5ab3fc, white);
+  width: 100vw;
+  height: 100vh;
+}
 
-
-.login-image{
-  background-image: url('https://www.bbva.com/wp-content/uploads/2021/09/BBVA-car_sharing-movilidad-sostenible-vehiculos.jpg');
+.login-image {
+  background-image: url('../imgs/login.jpeg');
   background-size: cover;
 }

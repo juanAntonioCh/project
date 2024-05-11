@@ -1,4 +1,14 @@
+.register-body {
+    background: linear-gradient(to right, #5ab3fc, white);
+    width: 100vw;
+    height: 100vh;
+  }
 
+  .register-image {
+    background-image: url('../imgs/register.jpg');
+    /* background-image: url('https://teltonika-gps.com/cdn/extras/9080/car-sharing-rental-header-1920x1280.webp'); */
+    background-size: cover;
+  }
   
 
 

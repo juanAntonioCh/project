@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Register.css'
 import axios from 'axios';
+import { LogoSvg } from '../components/LogoSvg';
 
 export const Register = () => {
   const [username, setUsername] = useState('');
@@ -54,58 +55,76 @@ export const Register = () => {
   };
 
   return (
-    <form className="form-container needs-validation" noValidate onSubmit={handleSubmit}>
+    <>
+      <div className="register-body">
+        <div className='container'>
+          <div className="row pt-5">
+            <div className="col-lg-6 d-none d-lg-block register-image">
+            </div>
 
-      <div className="form-group mb-4 position-relative">
-        <label htmlFor="username" className="form-label">Nombre de usuario</label>
-        <input type="text" className="form-control" id="username"
-          value={username} onChange={(e) => setUsername(e.target.value)}
-          required />
-        <div className="valid-tooltip">
-          Perfecto!
-        </div>
-        <div className="invalid-tooltip">
-          Este campo es obligatorio
+            <div className="col-12 col-lg-6 bg-white">
+
+            <form className="form-container needs-validation p-4" noValidate onSubmit={handleSubmit}>
+                <div className="text-end">
+                  <LogoSvg width={'100px'} height={'100px'} />
+                </div>
+                <h1 className="mb-5 pt-4 text-center fs-3 fw-bold">¡Pon tu coche a trabajar!</h1>
+
+                <div className="form-group mb-4 position-relative">
+                  <label htmlFor="username" className="form-label">Nombre de usuario</label>
+                  <input type="text" className="form-control" id="username"
+                    value={username} onChange={(e) => setUsername(e.target.value)}
+                    required />
+                  <div className="valid-tooltip">
+                    Perfecto!
+                  </div>
+                  <div className="invalid-tooltip">
+                    Este campo es obligatorio
+                  </div>
+                </div>
+
+                <div className="form-group mb-3 position-relative">
+                  <label htmlFor="email" className="form-label">Correo electrónico</label>
+                  <input type="email" className="form-control"
+                    id="email"
+                    title="Ingresa un correo electrónico válido"
+                    value={email} onChange={(e) => setEmail(e.target.value)}
+                    required />
+                  <div className="valid-tooltip">
+                    Perfecto!
+                  </div>
+                  <div className="invalid-tooltip">
+                    Este campo es obligatorio
+                  </div>
+                </div>
+
+                <div className="form-group mb-4 position-relative">
+                  <label htmlFor="inputPassword5" className="form-label">Contraseña</label>
+                  <input type="password" id="inputPassword5" className="form-control" value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                    title="La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra y un número"
+                    aria-describedby="passwordHelpBlock"
+                    required
+                  />
+                  <div id="passwordHelpBlock" className="form-text"></div>
+                  <div className="valid-tooltip">
+                    Perfecto!
+                  </div>
+                  <div className="invalid-tooltip">
+                    Este campo es obligatorio
+                  </div>
+                </div>
+
+                <div className="form-action">
+                  <button className="btn btn-primary w-100 mb-3" type="submit">Registarse</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="form-group mb-3 position-relative">
-        <label htmlFor="email" className="form-label">Correo electrónico</label>
-        <input type="email" className="form-control"
-          id="email"
-          title="Ingresa un correo electrónico válido"
-          value={email} onChange={(e) => setEmail(e.target.value)}
-          required />
-        <div className="valid-tooltip">
-          Perfecto!
-        </div>
-        <div className="invalid-tooltip">
-          Este campo es obligatorio
-        </div>
-      </div>
-
-      <div className="form-group mb-4 position-relative">
-        <label htmlFor="inputPassword5" className="form-label">Contraseña</label>
-        <input type="password" id="inputPassword5" className="form-control" value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" 
-          title="La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra y un número"
-          aria-describedby="passwordHelpBlock"
-          required
-        />
-        <div id="passwordHelpBlock" className="form-text"></div>
-        <div className="valid-tooltip">
-          Perfecto!
-        </div>
-        <div className="invalid-tooltip">
-          Este campo es obligatorio
-        </div>
-      </div>
-
-      <div className="form-action">
-        <button type="submit">Registrarse</button>
-      </div>
-    </form>
+    </>
   );
 }
 

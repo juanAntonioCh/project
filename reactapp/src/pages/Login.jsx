@@ -55,10 +55,9 @@ export const Login = () => {
   }
 
   return (
-    <StyledBody>
-      <div className="container login-body">
+    <div className="login-body">
+      <div className='container'>
         <div className="row pt-5">
-
           <div className="col-lg-6 d-none d-lg-block login-image">
           </div>
 
@@ -110,7 +109,7 @@ export const Login = () => {
           </div>
         </div>
       </div>
-      </StyledBody>
+    </div>
 
   );
 }

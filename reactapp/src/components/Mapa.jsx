@@ -1,13 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GoogleMap, LoadScriptNext, Marker } from '@react-google-maps/api';
 import { VehicleList } from './VehicleList';
+import '../styles/Vehicles.css'
+import Pagination from 'react-bootstrap/Pagination';
 import { getAllVehicles } from '../api/vehicle.api';
 import { AuthContext } from '../context/AuthContext';
+
+const VehiculosPorPagina = 6;
 
 export const Mapa = ({ rentDuration, address }) => {
     const [map, setMap] = useState(null);
     const [vehiculos, setVehiculos] = useState([])
     const { user } = useContext(AuthContext);
+    const [paginaActual, setPaginaActual] = useState(1);
+
+    // Función para calcular el índice del primer vehículo en la página actual
+    const indiceInicial = (paginaActual - 1) * VehiculosPorPagina;
+
+    // Función para manejar el cambio de página
+    const handlePageChange = (pageNumber) => {
+        setPaginaActual(pageNumber);
+    };
 
     useEffect(() => {
         async function loadVehicles() {
@@ -27,8 +40,9 @@ export const Mapa = ({ rentDuration, address }) => {
     console.log('Estas son las coordenandas: ', coordenadas)
 
     const mapStyles = {
-        height: "400px",
-        width: "100%"
+        height: "600px",
+        width: "100%",
+        borderRadius: '20px',
     };
 
     const defaultCenter = {
@@ -82,43 +96,81 @@ export const Mapa = ({ rentDuration, address }) => {
         })
     }
 
-    //console.log(filtrarVehiculosVisibles())
+    // Cálculo del número total de páginas
+    const totalPaginas = Math.ceil(filtrarVehiculosVisibles().length / VehiculosPorPagina);
+
+    // Función para obtener los vehículos para la página actual
+    const obtenerVehiculosPorPagina = () => {
+        return filtrarVehiculosVisibles().slice(indiceInicial, indiceInicial + VehiculosPorPagina);
+    };
 
     return (
         <div className="container-fluid mt-4">
+            <div className="row">
 
-            {filtrarVehiculosVisibles().length == 0 ? (
-                <h2>No hay vehículos disponibles en esta zona</h2>
-            ) : (
-                <>
-                    <p>{filtrarVehiculosVisibles().length} vehículos disponibles en {address}</p>
-                    <VehicleList vehiculos={filtrarVehiculosVisibles()} rentDuration={rentDuration} />
-                </>
-            )}
+                {filtrarVehiculosVisibles().length == 0 ? (
+                    <h2>No hay vehículos disponibles en esta zona</h2>
+                ) : (
+                    <>
+                        <p>Resultados de: <strong>{address}</strong></p>
+                        <p>{filtrarVehiculosVisibles().length} vehículos encontrados</p>
+                        <div className='col-md-6'>
+                            <VehicleList vehiculos={obtenerVehiculosPorPagina()} rentDuration={rentDuration} />
+                        </div>
+                    </>
+                )}
 
-            <LoadScriptNext
-                googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
-                <GoogleMap
-                    mapContainerStyle={mapStyles}
-                    zoom={11.5}
-                    center={defaultCenter}
-                    onLoad={handleLoad}
-                >
-                    {
-                        filtrarVehiculosVisibles().map(vehiculo => {
-                            return (
-                                <Marker key={vehiculo.id}
-                                    icon={iconMarker}
-                                    position={{
-                                        lat: vehiculo.latitud,
-                                        lng: vehiculo.longitud
-                                    }}
-                                />
-                            )
-                        })
-                    }
-                </GoogleMap>
-            </LoadScriptNext>
+                <div className='col-md-6'>
+                    <LoadScriptNext
+                        googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
+                        <GoogleMap
+                            mapContainerStyle={mapStyles}
+                            zoom={11.5}
+                            center={defaultCenter}
+                            onLoad={handleLoad}
+                        >
+                            {
+                                obtenerVehiculosPorPagina().map(vehiculo => {
+                                    return (
+                                        <Marker key={vehiculo.id}
+                                            icon={iconMarker}
+                                            position={{
+                                                lat: vehiculo.latitud,
+                                                lng: vehiculo.longitud
+                                            }}
+                                        />
+                                    )
+                                })
+                            }
+                        </GoogleMap>
+                    </LoadScriptNext>
+
+                    <div className='mt-4'>
+                        <Pagination>
+                            <Pagination.Prev
+                                onClick={() => handlePageChange(paginaActual - 1)}
+                                disabled={paginaActual === 1}
+                            />
+                            {[...Array(totalPaginas)].map((_, index) => (
+                                <Pagination.Item
+                                    key={index + 1}
+                                    active={index + 1 === paginaActual}
+                                    onClick={() => handlePageChange(index + 1)}
+                                >
+                                    {index + 1}
+                                </Pagination.Item>
+                            ))}
+                            <Pagination.Next
+                                onClick={() => handlePageChange(paginaActual + 1)}
+                                disabled={paginaActual === totalPaginas}
+                            />
+                        </Pagination>
+
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
     )

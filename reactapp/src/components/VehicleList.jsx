@@ -8,19 +8,18 @@ export const VehicleList = ({ vehiculos, rentDuration }) => {
     console.log('VEHICLE LIST: ', rentDuration)
 
     const calcularPrecioAlquiler = (precioPorHora, rentDuration) => {
-        const {hours, minutes} = rentDuration;
+        const { hours, minutes } = rentDuration;
         const totalMinutes = hours * 60 + minutes;
         const precioTotal = (totalMinutes / 60) * precioPorHora;
         return precioTotal.toFixed(2);
     };
-    
+
     return (
-        <>
-            <div className="row">
+            <div className='row'>
+
                 {vehiculos.map((vehi) => (
-                    
-                    <div key={vehi.id} className="col-md-4 mb-4">
-                        <div className="card">
+                    <div key={vehi.id} className="col-lg-4 mb-4">
+                        <div className="card h-100">
                             <div id={`carousel${vehi.id}`} className="carousel slide">
                                 <div className="carousel-inner">
 
@@ -32,7 +31,7 @@ export const VehicleList = ({ vehiculos, rentDuration }) => {
                                         ))
                                     ) : (
                                         <div className="carousel-item active">
-                                            <img src="https://gomore.imgix.net/images/default_car_picture.png?ixlib=rails-2.1.2&amp;w=560&amp;h=373" className="d-block w-100 card-img-top img-responsive w-100% h-auto br2" alt="Imagen por defecto" loading="lazy"></img>
+                                            <img src='https://gomore.imgix.net/images/default_car_picture.png?ixlib=rails-2.1.2&amp;w=560&amp;h=373' className="d-block w-100 card-img-top img-responsive h-auto br2" alt="Imagen por defecto" loading="lazy"></img>
                                         </div>
                                     )}
                                 </div>
@@ -58,8 +57,6 @@ export const VehicleList = ({ vehiculos, rentDuration }) => {
                     </div>
                 ))}
             </div>
-        </>
-
     )
 
 }

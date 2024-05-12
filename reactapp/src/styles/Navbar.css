@@ -1,11 +1,15 @@
 .nav-buscador-ubis-container {
-    max-width: 600px;
     margin: auto;
     padding: 20px;
 }
 
+.navbar{
+    background-color: white;
+    border-bottom: 1px solid rgb(214, 212, 212);
+}
+
 .nav-buscador-ubis-container .form-control {
-    border-radius: 15px;
+    border-radius: 5px;
 }
 
 .nav-buscador-ubis-container .btn-primary {

@@ -112,9 +112,10 @@ export const Mapa = ({ rentDuration, address }) => {
                     <h2>No hay vehículos disponibles en esta zona</h2>
                 ) : (
                     <>
-                        <p>Resultados de: <strong>{address}</strong></p>
-                        <p>{filtrarVehiculosVisibles().length} vehículos encontrados</p>
+                        <p>Filtros ...</p>
+                        <hr />
                         <div className='col-md-6'>
+                            <p>Resultados de: <strong>{address}</strong>: {filtrarVehiculosVisibles().length} vehículos encontrados</p>
                             <VehicleList vehiculos={obtenerVehiculosPorPagina()} rentDuration={rentDuration} />
                         </div>
                     </>

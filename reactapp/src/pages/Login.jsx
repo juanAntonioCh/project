@@ -99,12 +99,12 @@ export const Login = () => {
                 </div>
               </div>
 
-              <p>¿No tienes cuenta? <Link to='/register'>Registrate</Link></p>
-              <p><a href="">Recuperar password</a></p>
-
               <div className="form-action">
                 <button className="btn btn-primary w-100 mb-3" type="submit">Iniciar Sesión</button>
               </div>
+
+              <p>¿No tienes cuenta? <Link to='/register'>Registrate</Link></p>
+              <p><a href="">Recuperar contraseña</a></p>
             </form>
           </div>
         </div>

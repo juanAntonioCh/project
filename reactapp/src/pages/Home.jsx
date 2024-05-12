@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useContext, useState } from "react"
 import '../styles/Home.css'
-import { BuscadorUbis } from '../components/BuscadorUbi'
 import { AuthContext } from '../context/AuthContext'
 import { LogoSvg } from '../components/LogoSvg'
 import { BuscadorVehiculos } from '../components/BuscadorVehiculos'

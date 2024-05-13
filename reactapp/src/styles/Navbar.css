@@ -1,13 +1,15 @@
-.nav-buscador-ubis-container {
+/* .nav-buscador-ubis-container {
     margin: auto;
-}
+} */
 
 .navbar{
+    padding: 0;
     background-color: white;
     border-bottom: 1px solid rgb(214, 212, 212);
 }
 
 .nav-buscador-ubis-container .form-control {
+    border: 2px solid #5ab3fc;
     border-radius: 5px;
 }
 

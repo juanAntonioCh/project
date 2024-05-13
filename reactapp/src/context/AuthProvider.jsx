@@ -5,6 +5,28 @@ import axios from 'axios'
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    console.log(error)
+  }, [error])
+
+  //botón de X para cerrar la alerta
+  const handleCloseAlert = () => {
+    setError(null);
+  };
+
+  //limpiar la alerta pasados 4 segundos
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError(null);
+      }, 4000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error]);
+
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -45,7 +67,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, user , error, setError, handleCloseAlert}}>
       {children}
     </AuthContext.Provider>
   )

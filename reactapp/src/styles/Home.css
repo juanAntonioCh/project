@@ -1,11 +1,15 @@
-
+.alert-container {
+  position: fixed; /* o position: absolute; dependiendo de tus necesidades */
+  top: 85px; /* ajusta la posición vertical según tus necesidades */
+  z-index: 9999; /* asegura que esté por encima de otros elementos */
+  width: 100%; /* opcional, ajusta el ancho según sea necesario */
+}
 
 .home-container {
-  padding: 20px;
   width: 100vw;
   height: 90vh;
-  /* background: url('../imgs/background_couple.jpg');
-  background-size: cover; */
+  background: url('../imgs/background-playa.jpg');
+  background-size: cover;
 }
 
 
@@ -27,7 +31,7 @@
   border-radius: 20px;
   width: 450px;
   height: 50px;
-  margin-left: 150px;
+  /* margin-left: 150px; */
   margin-bottom: 15px;
 }
 
@@ -40,15 +44,13 @@
 }
 
 
-
-
-.home-auth-links {
+/* .home-auth-links {
  
 }
 
 .home-rent{
 
-}
+} */
 
 .home-auth-link {
   text-decoration: none;
@@ -63,7 +65,7 @@
   text-decoration: none;
   color: black;
   background-color: white; 
-  padding: 10px 15px;
+  padding: 10px 10px;
   border: 2px solid black;
   border-radius: 15px;
   transition: transform 0.5s;
@@ -71,7 +73,7 @@
 }
 
 .home-rent-link:hover {
-  transform: scale(1.1);
+  transform: scale(1.07);
 }
 
 .home-auth-link:hover {

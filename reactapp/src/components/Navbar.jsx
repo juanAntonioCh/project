@@ -20,30 +20,34 @@ export const Navbar = ({ option }) => {
     const renderNavOptions = () => {
         if (option === 'HOME') {
             return (
-                <div className="home-auth-links">
-                    {!isAuthenticated ? (
-                        <>
-                            <Link to="/register" className="home-auth-link m-2">Regístrate aquí</Link>
-                            <Link to="/login" className="home-auth-link m-2">Iniciar sesión</Link>
-                        </>
-                    ) : (
-                        <div className='d-flex align-items-center'>
-                            {/* <div className="home-rent">
+                <div className="d-flex flex-grow-1 justify-content-end">
+                    <div className="home-auth-links d-none d-md-block">
+                        {!isAuthenticated ? (
+                            <>
+                                <Link to="/rent-car" className="home-rent-link flex-fill mx-4">Alquila tu coche</Link>
+                                <Link to="/register" className="home-auth-link">Regístrate aquí</Link>
+                                <Link to="/login" className="home-auth-link mx-4">Iniciar sesión</Link>
+                            </>
+                        ) : (
+                            <div className=''>
+                                {/* <div className="home-rent">
                                 <Link to="/rent-car" className="home-rent-link m-4">Alquila tu coche</Link>
                                 <Link to={`/my-vehicles/${user}`} className='btn btn-info'>Mis vehiculos publicados</Link>
                                 <button onClick={logout} className="btn btn-danger">Cerrar sesión</button>
                             </div> */}
-                            <Link to="/rent-car" className="home-rent-link flex-fill mx-4">Alquila tu coche</Link>
-                            <UserMenu handleLogout={logout}/>
+                                <Link to="/rent-car" className="home-rent-link flex-fill mx-4">Alquila tu coche</Link>
 
-                        </div>
-                    )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             );
         } else if (option === 'VEHICLE PAGE') {
             return (
-                <div className="nav-buscador-ubis-container ">
-                    <BuscadorUbiComponent />
+                <div className="d-flex flex-grow-1 justify-content-start">
+                    <div className="nav-buscador-ubis-container mx-4 d-none d-md-block">
+                        <BuscadorUbiComponent />
+                    </div>
                 </div>
             )
         } else {
@@ -52,13 +56,53 @@ export const Navbar = ({ option }) => {
     };
 
     return (
-        <nav className="navbar d-flex align-items-center">
+        <nav className="navbar">
             <div>
-                <span className="navbar-brand">
-                    <LogoSvg width={'75px'} height={'75px'} />
-                </span>
+                <Link to='/' className="navbar-brand">
+                    <LogoSvg width={'80px'} height={'80px'} />
+                </Link>
             </div>
+
             {renderNavOptions()}
+
+            <button className="navbar-toggler d-md-none mx-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+                aria-controls="offcanvasExample">
+                <span className="navbar-toggler-icon"></span>
+            </button>
+
+            <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                <div className="offcanvas-header">
+                    <LogoSvg width={'110px'} height={'110px'} />
+                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div className="offcanvas-body">
+                    <div className='d-flex flex-column'>
+                        <Link to="/rent-car" className="w-50 m-2">Alquila tu coche</Link>
+                        {!isAuthenticated ? (
+                            <>
+                                <Link to="/register" className="w-50 m-2">Regístrate aquí</Link>
+                                <Link to="/login" className="w-50 m-2">Iniciar sesión</Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link to={`/my-vehicles/${user}`} className="w-50 m-2">Mis vehículos</Link>
+                                <Link to="#" className="w-50 m-2">Mis alquileres</Link>
+                                <hr />
+                                <button onClick={logout} className="btn btn-danger m-2">Cerrar sesión</button>
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            <div className='d-none d-md-block'>
+                {isAuthenticated && (
+                    <UserMenu handleLogout={logout} />
+                )}
+            </div>
+
+
+
 
         </nav>
     );

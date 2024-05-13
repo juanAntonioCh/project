@@ -75,7 +75,7 @@ def register(request):
         return Response('La contraseña es obligatoria')
        
     elif User.objects.filter(username=username).exists():
-        return Response('El nombre de usuario ya existe')
+        return Response('Este nombre de usuario ya existe. Escoge uno distinto')
         #return Response({'error': 'El nombre de usuario ya existe'},
         #                status=status.HTTP_400_BAD_REQUEST)
     

@@ -18,7 +18,7 @@
     max-height: 300px;
     max-width: 480px;
     overflow-y: auto;
-    margin-left: 150px;
+    /* margin-left: 150px; */
 }
 
 .suggestion-item {

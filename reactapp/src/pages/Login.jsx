@@ -6,23 +6,19 @@ import styled from 'styled-components';
 import { AuthContext } from '../context/AuthContext';
 import { LogoSvg } from '../components/LogoSvg';
 
-const StyledBody = styled.body`
-    background: linear-gradient(to right, #5ab3fc, white);
-    height: 793px;
-  `;
+// const StyledBody = styled.body`
+//     background: linear-gradient(to right, #5ab3fc, white);
+//     height: 793px;
+//   `;
 
 export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [usernameError, setUserNameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const [error, setError] = useState(null)
-  const { login } = useContext(AuthContext);
+  const { login , error, setError, handleCloseAlert} = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleCloseAlert = () => {
-    setError(null);
-  };
 
   useEffect(() => {
     // Obtener todos los formularios para aplicarle las clases de Bootstrap
@@ -63,9 +59,11 @@ export const Login = () => {
   return (
     <div className="login-body">
       {error && (
-        <div className="alert alert-danger alert-dismissible fade show" role="alert">
-          {error}
-          <button type="button" className="btn-close login-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+        <div className="alert-container">
+          <div className="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{error}</strong>
+            <button type="button" className="btn-close login-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+          </div>
         </div>
       )}
       <div className='container'>

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Register.css'
 import axios from 'axios';
@@ -9,23 +9,8 @@ export const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-  const { login } = useContext(AuthContext);
+  const { login , error, setError, handleCloseAlert} = useContext(AuthContext);
   const navigate = useNavigate();
-
-  const handleCloseAlert = () => {
-    setError(null);
-  };
-
-  // useEffect(() => {
-  //   let timeout;
-  //   if (error) {
-  //     timeout = setTimeout(() => {
-  //       setError(null);
-  //     }, 5000);
-  //   }
-  //   return () => clearTimeout(timeout);
-  // }, [error]);
 
   useEffect(() => {
     // Obtener todos los formularios para aplicarle las clases de Bootstrap
@@ -74,13 +59,15 @@ export const Register = () => {
     <>
       <div className="register-body">
         {error && (
-          <div className="alert alert-danger alert-dismissible fade show" role="alert">
-            {error}
-            <button type="button" className="btn-close register-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+          <div className="alert-container">
+            <div className="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>{error}</strong>
+              <button type="button" className="btn-close login-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+            </div>
           </div>
         )}
         <div className='container'>
-          <div className="row pt-5">
+          <div className="row pt-4">
             <div className="col-lg-6 d-none d-lg-block register-image">
             </div>
 
@@ -147,6 +134,7 @@ export const Register = () => {
                 <div className="form-action">
                   <button className="btn btn-primary w-100 mb-3" type="submit">Registarse</button>
                 </div>
+                <p>¿Ya tienes una cuenta? <Link to='/login'>Inicia sesión</Link></p>
               </form>
             </div>
           </div>

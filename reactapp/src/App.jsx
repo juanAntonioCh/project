@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
 import { Home } from './pages/Home'
@@ -14,6 +14,7 @@ import { EditVehiclePage } from './pages/EditVehiclePage'
 import { EditVehicle } from './components/EditVehicle'
 import { EditVehicleImages } from './components/EditVehicleImages'
 import { Navbar } from './components/Navbar';
+import { AuthContext } from './context/AuthContext';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
 
 function AppRoutes() {
   const location = useLocation();
+  const { isAuthenticated } = useContext(AuthContext)
 
   // Define las opciones de navegación específicas de cada página
   const getNavbarOptions = () => {

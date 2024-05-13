@@ -7,26 +7,7 @@ import { LogoSvg } from '../components/LogoSvg'
 import { BuscadorVehiculos } from '../components/BuscadorVehiculos'
 
 export const Home = () => {
-  const { isAuthenticated, logout, user } = useContext(AuthContext);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    console.log(error)
-  }, [error])
-
-  const handleCloseAlert = () => {
-    setError(null);
-  };
-
-  useEffect(() => {
-    let timeout;
-    if (error) {
-      timeout = setTimeout(() => {
-        setError(null);
-      }, 4000);
-    }
-    return () => clearTimeout(timeout);
-  }, [error]);
+  const { isAuthenticated, logout, user , error, setError, handleCloseAlert} = useContext(AuthContext);
 
   console.log(isAuthenticated)
   console.log(user)
@@ -36,9 +17,11 @@ export const Home = () => {
   return (
     <div className="home-container">
       {error && (
-        <div className="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong>{error}</strong>
-          <button type="button" className="btn-close login-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+        <div className="alert-container">
+          <div className="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{error}</strong>
+            <button type="button" className="btn-close login-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+          </div>
         </div>
       )}
       <div className="home-logo">

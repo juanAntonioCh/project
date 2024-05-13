@@ -3,7 +3,9 @@
 .home-container {
   padding: 20px;
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
+  /* background: url('../imgs/background_couple.jpg');
+  background-size: cover; */
 }
 
 
@@ -41,16 +43,11 @@
 
 
 .home-auth-links {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px; 
-  margin-top: 20px;
+ 
 }
 
 .home-rent{
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+
 }
 
 .home-auth-link {

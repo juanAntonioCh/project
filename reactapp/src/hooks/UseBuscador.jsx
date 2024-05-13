@@ -8,11 +8,6 @@ export const UseBuscador = () => {
     const [startHour, setStartHour] = useState(null);
     const [endHour, setEndHour] = useState(null);
     const [address, setAddress] = useState('');
-    const [error, setError] = useState('');
-
-    useEffect(() => {
-        console.log(error)
-    }, [error])
 
     const handleStartDateChange = (e) => {
         const day = e.$D;
@@ -88,7 +83,6 @@ export const UseBuscador = () => {
         startHour, 
         endHour,
         address, setAddress,
-        error, setError,
         handleStartDateChange,
         handleEndDateChange,
         handleStartHourChange,

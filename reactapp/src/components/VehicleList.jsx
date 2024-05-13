@@ -18,7 +18,7 @@ export const VehicleList = ({ vehiculos, rentDuration }) => {
             <div className='row'>
 
                 {vehiculos.map((vehi) => (
-                    <div key={vehi.id} className="col-lg-4 mb-4">
+                    <div key={vehi.id} className="col-md-6 col-lg-4 mb-4">
                         <div className="card h-100">
                             <div id={`carousel${vehi.id}`} className="carousel slide">
                                 <div className="carousel-inner">

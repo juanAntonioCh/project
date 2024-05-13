@@ -15,7 +15,7 @@ export const VehiclesPage = () => {
     return ( 
         <div>
             {/* <div className="container-fluid"> */}
-            <Navbar />
+            {/* <Navbar /> */}
             {/* <FiltrosModal/> */}
             <Mapa rentDuration={rentDuration} address={address}/>
         </div>

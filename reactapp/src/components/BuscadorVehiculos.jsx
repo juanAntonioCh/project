@@ -12,17 +12,17 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import '../styles/BuscadorVehiculos.css'
 import { UseBuscador } from '../hooks/UseBuscador';
 
-export const BuscadorVehiculos = () => {
+export const BuscadorVehiculos = ({setError}) => {
     const navigate = useNavigate();
     const { startDate, endDate,
         startHour, endHour,
         address, setAddress,
-        error, setError,
         handleStartDateChange,
         handleEndDateChange,
         handleStartHourChange,
         handleEndHourChange,
         calculateHourDifference, handleSelect } = UseBuscador()
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -76,7 +76,7 @@ export const BuscadorVehiculos = () => {
         console.log('LA DIFERENCIA DE HORAS ES: ', differenceInHours)
 
         if (differenceInHours < 1) {
-            setError('No se puede alquilar un vehículo menos de una hora')
+            setError('No es posible alquilar un vehículo por menos de una hora')
             return;
         }
 

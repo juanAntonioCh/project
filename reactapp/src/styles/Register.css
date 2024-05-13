@@ -1,14 +1,17 @@
 .register-body {
-    background: linear-gradient(to right, #5ab3fc, white);
-    width: 100vw;
-    height: 100vh;
-  }
+  background: linear-gradient(to right, #5ab3fc, white);
+  /* background-image: url('../imgs/background1.webp'); */
+  /* background-size: cover; */
+  width: 100vw;
+  height: 90vh;
+}
 
-  .register-image {
-    background-image: url('../imgs/register.jpg');
-    /* background-image: url('https://teltonika-gps.com/cdn/extras/9080/car-sharing-rental-header-1920x1280.webp'); */
-    background-size: cover;
-  }
-  
+.register-alert-button {
+  margin-right: 20px;
+}
 
-
+.register-image {
+  background-image: url('../imgs/register.jpg');
+  /* background-image: url('https://teltonika-gps.com/cdn/extras/9080/car-sharing-rental-header-1920x1280.webp'); */
+  background-size: cover;
+}

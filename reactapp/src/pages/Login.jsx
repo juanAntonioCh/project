@@ -16,8 +16,13 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const [usernameError, setUserNameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [error, setError] = useState(null)
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const handleCloseAlert = () => {
+    setError(null);
+  };
 
   useEffect(() => {
     // Obtener todos los formularios para aplicarle las clases de Bootstrap
@@ -48,6 +53,7 @@ export const Login = () => {
     } catch (error) {
       //console.error('Error en el inicio de sesión');
       console.log('Error en el inicio de sesión', error)
+      setError('Nombre de usuario o contraseña incorrectos')
       setUserNameError(true)
       setPasswordError(true)
       console.log(e.target)
@@ -56,6 +62,12 @@ export const Login = () => {
 
   return (
     <div className="login-body">
+      {error && (
+        <div className="alert alert-danger alert-dismissible fade show" role="alert">
+          {error}
+          <button type="button" className="btn-close login-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+        </div>
+      )}
       <div className='container'>
         <div className="row pt-5">
           <div className="col-lg-6 d-none d-lg-block login-image">
@@ -75,9 +87,11 @@ export const Login = () => {
                 <input type="text" className="form-control" id="exampleFormControlInput1"
                   value={username} onChange={(e) => setUsername(e.target.value)}
                   required />
-                <div className="valid-tooltip">
-                  Perfecto!
-                </div>
+                {!error && (
+                  <div className="valid-tooltip">
+                    Perfecto!
+                  </div>
+                )}
                 <div className="invalid-tooltip">
                   Este campo es obligatorio
                 </div>
@@ -91,9 +105,11 @@ export const Login = () => {
                   required
                 />
                 <div id="passwordHelpBlock" className="form-text"></div>
-                <div className="valid-tooltip">
-                  Perfecto!
-                </div>
+                {!error && (
+                  <div className="valid-tooltip">
+                    Perfecto!
+                  </div>
+                )}
                 <div className="invalid-tooltip">
                   Este campo es obligatorio
                 </div>

@@ -9,8 +9,23 @@ export const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const handleCloseAlert = () => {
+    setError(null);
+  };
+
+  // useEffect(() => {
+  //   let timeout;
+  //   if (error) {
+  //     timeout = setTimeout(() => {
+  //       setError(null);
+  //     }, 5000);
+  //   }
+  //   return () => clearTimeout(timeout);
+  // }, [error]);
 
   useEffect(() => {
     // Obtener todos los formularios para aplicarle las clases de Bootstrap
@@ -38,14 +53,15 @@ export const Register = () => {
         password,
       });
 
-      const response = await axios.post('http://localhost:8000/auth/login/', { username, password });
-      localStorage.setItem('token', response.data.key); // Guardar el token 
-      login()
-
-      if (res.data != 'Usuario registrado correctamente') {
-        console.log(res.data)
-      } else {
+      if (res.data == 'Usuario registrado correctamente') {
+        const response = await axios.post('http://localhost:8000/auth/login/', { username, password });
+        localStorage.setItem('token', response.data.key); // Guardar el token 
+        login()
         navigate('/', { replace: true });
+
+      } else {
+        console.log(res.data)
+        setError(res.data)
       }
 
     } catch (error) {
@@ -57,6 +73,12 @@ export const Register = () => {
   return (
     <>
       <div className="register-body">
+        {error && (
+          <div className="alert alert-danger alert-dismissible fade show" role="alert">
+            {error}
+            <button type="button" className="btn-close register-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+          </div>
+        )}
         <div className='container'>
           <div className="row pt-5">
             <div className="col-lg-6 d-none d-lg-block register-image">
@@ -64,7 +86,7 @@ export const Register = () => {
 
             <div className="col-12 col-lg-6 bg-white">
 
-            <form className="form-container needs-validation p-4" noValidate onSubmit={handleSubmit}>
+              <form className="form-container needs-validation p-4" noValidate onSubmit={handleSubmit}>
                 <div className="text-end">
                   <LogoSvg width={'100px'} height={'100px'} />
                 </div>
@@ -75,9 +97,11 @@ export const Register = () => {
                   <input type="text" className="form-control" id="username"
                     value={username} onChange={(e) => setUsername(e.target.value)}
                     required />
-                  <div className="valid-tooltip">
-                    Perfecto!
-                  </div>
+                  {!error && (
+                    <div className="valid-tooltip">
+                      Perfecto!
+                    </div>
+                  )}
                   <div className="invalid-tooltip">
                     Este campo es obligatorio
                   </div>
@@ -90,9 +114,11 @@ export const Register = () => {
                     title="Ingresa un correo electrónico válido"
                     value={email} onChange={(e) => setEmail(e.target.value)}
                     required />
-                  <div className="valid-tooltip">
-                    Perfecto!
-                  </div>
+                  {!error && (
+                    <div className="valid-tooltip">
+                      Perfecto!
+                    </div>
+                  )}
                   <div className="invalid-tooltip">
                     Este campo es obligatorio
                   </div>
@@ -108,9 +134,11 @@ export const Register = () => {
                     required
                   />
                   <div id="passwordHelpBlock" className="form-text"></div>
-                  <div className="valid-tooltip">
-                    Perfecto!
-                  </div>
+                  {!error && (
+                    <div className="valid-tooltip">
+                      Perfecto!
+                    </div>
+                  )}
                   <div className="invalid-tooltip">
                     Este campo es obligatorio
                   </div>

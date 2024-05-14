@@ -15,13 +15,16 @@ import { EditVehicle } from './components/EditVehicle'
 import { EditVehicleImages } from './components/EditVehicleImages'
 import { Navbar } from './components/Navbar';
 import { AuthContext } from './context/AuthContext';
+import { VehiclesProvider } from './context/VehiclesProvider';
 
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppRoutes />
+        <VehiclesProvider>
+          <AppRoutes />
+        </VehiclesProvider>
       </AuthProvider>
     </BrowserRouter>
   );

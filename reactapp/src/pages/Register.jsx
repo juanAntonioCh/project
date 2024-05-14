@@ -67,7 +67,7 @@ export const Register = () => {
           </div>
         )}
         <div className='container'>
-          <div className="row pt-4">
+          <div className="row pt-5">
             <div className="col-lg-6 d-none d-lg-block register-image">
             </div>
 

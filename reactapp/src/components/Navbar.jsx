@@ -96,8 +96,14 @@ export const Navbar = ({ option }) => {
             </div>
 
             <div className='d-none d-md-block'>
-                {isAuthenticated && (
+                {isAuthenticated ? (
                     <UserMenu handleLogout={logout} />
+                ) : (
+                    <>
+                        {/* <Link to="/rent-car" className="home-rent-link flex-fill mx-4">Alquila tu coche</Link>
+                        <Link to="/register" className="home-auth-link">Regístrate aquí</Link>
+                        <Link to="/login" className="home-auth-link mx-4">Iniciar sesión</Link> */}
+                    </>
                 )}
             </div>
 

@@ -12,8 +12,71 @@ const VehiculosPorPagina = 6;
 
 export const Mapa = ({ rentDuration, address }) => {
     const [paginaActual, setPaginaActual] = useState(1);
+    const { user } = useContext(AuthContext);
+    const [vehiculos, setVehiculos] = useState([])
+    const [map, setMap] = useState(null);
+    const [maxPrice, setMaxPrice] = useState(100);
+    const [minPrice, setMinPrice] = useState(0);
+    const [priceRange, setPriceRange] = useState([0, 90]);
+    const [vehiculosFiltrados, setVehiculosFiltrados] = useState([])
+    const { calcularPrecioAlquiler } = useContext(VehiclesContext);
 
-    const { vehiculosFiltrados, vehiculosVisibles, setVehiculosVisibles, calcularPrecioAlquiler, priceRange, maxPrice, minPrice, handleChanges, setMap, defaultCenter } = useContext(VehiclesContext)
+    useEffect(() => {
+        async function loadVehicles() {
+            const res = await getAllVehicles()
+            console.log(res.data)
+            setVehiculos(res.data)
+        }
+        loadVehicles()
+    }, [])
+
+    const coordenadas = JSON.parse(localStorage.getItem('coordenadas'))
+    //console.log('Estas son las coordenandas: ', coordenadas)
+
+    const defaultCenter = {
+        lat: coordenadas.lat, lng: coordenadas.lng
+    }
+
+    const calcularRadio = (zoom) => {
+        const radioBase = 0.013;
+        return radioBase * Math.pow(2, (21 - zoom));
+    }
+
+    function distanciaEntreDosPuntos(lat1, lng1, lat2, lng2) {
+        const R = 6371; // Radio de la Tierra en kilómetros
+        const rad = Math.PI / 180;
+        const deltaLat = (lat2 - lat1) * rad;
+        const deltaLng = (lng2 - lng1) * rad;
+        const a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+            Math.cos(lat1 * rad) * Math.cos(lat2 * rad) *
+            Math.sin(deltaLng / 2) * Math.sin(deltaLng / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distancia en kilómetros
+    }
+
+    //Funcion para mostrar tan solo los vehiculos que se encuentren en la ubicación seleccionada, no pertenezcan al 
+    //usuario que tiene la sesión activa y estén disponibles, es decir, no los haya alquilado nadie
+    const filtrarVehiculosVisibles = () => {
+        if (!map) return [];
+
+        const zoom = map.getZoom();
+        //const center = map.getCenter();
+        const radioVisible = calcularRadio(zoom);
+
+        return vehiculos.filter(vehiculo => {
+            const distancia = distanciaEntreDosPuntos(defaultCenter.lat, defaultCenter.lng, vehiculo.latitud, vehiculo.longitud);
+            return distancia <= radioVisible && vehiculo.propietario != user && vehiculo.disponible;
+        })
+    }
+
+    useEffect(() => {
+        console.log(vehiculosFiltrados)
+    }, [vehiculosFiltrados])
+
+    useEffect(() => {
+        const vehiculosVisibles = filtrarVehiculosVisibles();
+        setVehiculosFiltrados(vehiculosVisibles);
+    }, [map, vehiculos]);
 
     // Función para calcular el índice del primer vehículo en la página actual
     const indiceInicial = (paginaActual - 1) * VehiculosPorPagina;
@@ -44,38 +107,37 @@ export const Mapa = ({ rentDuration, address }) => {
     }
 
     // Cálculo del número total de páginas
-    const totalPaginas = Math.ceil(vehiculosVisibles.length / VehiculosPorPagina);
+    const totalPaginas = Math.ceil(vehiculosFiltrados.length / VehiculosPorPagina);
 
     // Función para obtener los vehículos para la página actual
     const obtenerVehiculosPorPagina = () => {
-        return vehiculosVisibles.slice(indiceInicial, indiceInicial + VehiculosPorPagina);
+        return vehiculosFiltrados.slice(indiceInicial, indiceInicial + VehiculosPorPagina);
     };
 
     useEffect(() => {
-        const filtrarVehiculos = () => {
-            const vehiculosFilter = vehiculosFiltrados.filter(vehi => {
+        const filtroPrecio = () => {
+            const vehiculosFiltradosPrecio = filtrarVehiculosVisibles().filter(vehi => {
                 const precioAlquiler = calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration);
                 return precioAlquiler >= priceRange[0] && precioAlquiler <= priceRange[1];
             });
-            setVehiculosVisibles(vehiculosFilter);
+            setVehiculosFiltrados(vehiculosFiltradosPrecio);
         };
     
-        filtrarVehiculos();
-        //console.log(priceRange)
-    }, [priceRange, rentDuration]);
+        filtroPrecio();
+    }, [priceRange]);
 
-    useEffect(() => {
-        console.log(vehiculosVisibles)
-        console.log(vehiculosFiltrados)
-    }, [vehiculosVisibles])
+
+    function handleChanges(e, newValue) {
+        //console.log(newValue)
+        setPriceRange(newValue);
+    }
 
     return (
         <div className="container-fluid mt-4">
             <div className="row">
 
-                {vehiculosVisibles.length == 0 ? (
+                {vehiculosFiltrados.length == 0 ? (
                     <>
-                        <Slider value={priceRange} onChange={handleChanges} valueLabelDisplay="auto" min={minPrice} max={maxPrice} style={{ width: '400px', marginLeft: '30px' }} />
                         <h2>No hay vehículos disponibles en esta zona</h2>
                     </>
                 ) : (
@@ -83,8 +145,9 @@ export const Mapa = ({ rentDuration, address }) => {
                         <Slider value={priceRange} onChange={handleChanges} valueLabelDisplay="auto" min={minPrice} max={maxPrice} style={{ width: '400px', marginLeft: '30px' }} />
                         <hr />
                         <div className='col-md-6'>
-                            <p>Resultados de: <strong>{address}</strong>: {vehiculosVisibles.length} vehículos encontrados</p>
-                            <VehicleList vehiculos={obtenerVehiculosPorPagina()} rentDuration={rentDuration} />
+                            <p>Resultados de: <strong>{address}</strong>: {vehiculosFiltrados.length} vehículos encontrados</p>
+                            <VehicleList vehiculos={obtenerVehiculosPorPagina()} setMaxPrice={setMaxPrice} setMinPrice={setMinPrice}
+                                setPriceRange={setPriceRange} rentDuration={rentDuration} />
                         </div>
                     </>
                 )}

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Register.css'
 import axios from 'axios';
@@ -9,8 +9,23 @@ export const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login , error, setError, handleCloseAlert} = useContext(AuthContext);
+  const [error, setError] = useState(null);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const handleCloseAlert = () => {
+    setError(null);
+  };
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError(null);
+      }, 5000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error]);
 
   useEffect(() => {
     // Obtener todos los formularios para aplicarle las clases de Bootstrap
@@ -134,7 +149,6 @@ export const Register = () => {
                 <div className="form-action">
                   <button className="btn btn-primary w-100 mb-3" type="submit">Registarse</button>
                 </div>
-                <p>¿Ya tienes una cuenta? <Link to='/login'>Inicia sesión</Link></p>
               </form>
             </div>
           </div>

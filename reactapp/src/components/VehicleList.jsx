@@ -4,12 +4,12 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Navbar } from './Navbar';
 import { VehiclesContext } from '../context/VehiclesContext';
 
-export const VehicleList = ({ vehiculos, rentDuration }) => {
+export const VehicleList = ({ vehiculos, rentDuration , setMaxPrice, setMinPrice, setPriceRange}) => {
+    const { calcularPrecioAlquiler } = useContext(VehiclesContext);
 
-    const { priceRange, calcularPrecioAlquiler, vehiculosVisibles, setMaxPrice, setPriceRange, minPrice, setMinPrice } = useContext(VehiclesContext);
-
+    //Ajustar los rangos de Precios en el filtro
     useEffect(() => {
-        const preciosPorHora = vehiculosVisibles.map(vehi => calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration));
+        const preciosPorHora = vehiculos.map(vehi => calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration));
         const preciosNumericos = preciosPorHora.filter(precio => !isNaN(precio));
         const maxPrecio = Math.max(...preciosNumericos);
         const minPrecio = Math.min(...preciosNumericos);

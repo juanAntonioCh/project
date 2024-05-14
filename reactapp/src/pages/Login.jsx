@@ -16,9 +16,13 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const [usernameError, setUserNameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const { login , error, setError, handleCloseAlert} = useContext(AuthContext);
+  const [error, setError] = useState(null)
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const handleCloseAlert = () => {
+    setError(null);
+  };
 
   useEffect(() => {
     // Obtener todos los formularios para aplicarle las clases de Bootstrap

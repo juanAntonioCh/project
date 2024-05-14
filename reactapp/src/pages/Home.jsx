@@ -7,12 +7,31 @@ import { LogoSvg } from '../components/LogoSvg'
 import { BuscadorVehiculos } from '../components/BuscadorVehiculos'
 
 export const Home = () => {
-  const { isAuthenticated, logout, user , error, setError, handleCloseAlert} = useContext(AuthContext);
+  const { isAuthenticated, logout, user } = useContext(AuthContext);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    console.log(error)
+  }, [error])
+
+  const handleCloseAlert = () => {
+    setError(null);
+  };
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError(null);
+      }, 4000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error]);
 
   console.log(isAuthenticated)
   console.log(user)
 
-  //localStorage.removeItem('coordenadas')
+  localStorage.removeItem('coordenadas')
 
   return (
     <div className="home-container">

@@ -7,6 +7,8 @@ import Slider from '@mui/material/Slider';
 import { getAllVehicles } from '../api/vehicle.api';
 import { AuthContext } from '../context/AuthContext';
 import { VehiclesContext } from '../context/VehiclesContext';
+import { Filtros } from './Filtros';
+import { UseFiltros } from '../hooks/UseFiltros';
 
 const VehiculosPorPagina = 6;
 
@@ -20,6 +22,10 @@ export const Mapa = ({ rentDuration, address }) => {
     const [priceRange, setPriceRange] = useState([0, 90]);
     const [vehiculosFiltrados, setVehiculosFiltrados] = useState([])
     const { calcularPrecioAlquiler } = useContext(VehiclesContext);
+    const { marca, setMarca, marcasSeleccionadas, handleMarcasSeleccionadasChange } = useContext(VehiclesContext)
+
+
+    console.log('la MARCA ESDE MAPA ', marca)
 
     useEffect(() => {
         async function loadVehicles() {
@@ -122,9 +128,35 @@ export const Mapa = ({ rentDuration, address }) => {
             });
             setVehiculosFiltrados(vehiculosFiltradosPrecio);
         };
-    
+
         filtroPrecio();
     }, [priceRange]);
+
+
+    useEffect(() => {
+        console.log('***********')
+        console.log(marcasSeleccionadas)
+    }, [marcasSeleccionadas])
+
+    useEffect(() => {
+        console.log(marcasSeleccionadas)
+        if (marcasSeleccionadas == [0]) {
+            console.log('hoooooooliiiiiiiiiiiiiiii')
+            return
+        } else {
+            const filtroMarca = () => {
+                const vehiculosFiltradosMarca = filtrarVehiculosVisibles().filter(vehi => {
+                    console.log(`La marca del vehiculo es ${typeof vehi.marca} y la marca selecionada es ${typeof marca}`)
+                    console.log(marcasSeleccionadas)
+                    return marcasSeleccionadas.includes(vehi.marca);
+                });
+                console.log('EL RESULTADO ESSSS ', vehiculosFiltradosMarca)
+                setVehiculosFiltrados(vehiculosFiltradosMarca);
+            };
+
+            filtroMarca();
+        }
+    }, [marcasSeleccionadas]);
 
 
     function handleChanges(e, newValue) {
@@ -139,10 +171,13 @@ export const Mapa = ({ rentDuration, address }) => {
                 {vehiculosFiltrados.length == 0 ? (
                     <>
                         <h2>No hay vehículos disponibles en esta zona</h2>
+                        <img src="https://getaround.com/packs/images/illustrations/light/character_in_jeep-663819942a9c81f9b29cb10c4471fb0a.svg"
+                            alt="" style={{ width: '400px', height: '400px' }} />
                     </>
                 ) : (
                     <>
-                        <Slider value={priceRange} onChange={handleChanges} valueLabelDisplay="auto" min={minPrice} max={maxPrice} style={{ width: '400px', marginLeft: '30px' }} />
+                        <Filtros priceRange={priceRange} handleChanges={handleChanges} minPrice={minPrice} maxPrice={maxPrice} />
+
                         <hr />
                         <div className='col-md-6'>
                             <p>Resultados de: <strong>{address}</strong>: {vehiculosFiltrados.length} vehículos encontrados</p>

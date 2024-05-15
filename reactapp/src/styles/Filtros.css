@@ -1,0 +1,29 @@
+/* Estilos para el contenedor de los botones */
+.filtros-marca-container {
+    align-items: center;
+    display: inline-block;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+
+/* Estilos para los botones */
+.filtros-marca {
+    background-color: white;
+    padding:  5px 12px 5px 12px;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    margin: 0px 12px 18px 0px;
+    transition: transform 0.3s;
+}
+
+.filtros-marca.seleccionado {
+    background-color: lightblue;
+  }
+
+.filtros-marca:hover {
+    border: 2px solid lightblue;
+    transform: scale(1.15);
+}

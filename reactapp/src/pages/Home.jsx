@@ -31,7 +31,9 @@ export const Home = () => {
   console.log(isAuthenticated)
   console.log(user)
 
-  localStorage.removeItem('coordenadas')
+  useEffect(() => {
+    localStorage.removeItem('coordenadas')
+  }, [])
 
   return (
     <div className="home-container">

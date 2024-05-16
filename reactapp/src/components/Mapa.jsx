@@ -20,12 +20,8 @@ export const Mapa = ({ rentDuration, address }) => {
     const [maxPrice, setMaxPrice] = useState(100);
     const [minPrice, setMinPrice] = useState(0);
     const [priceRange, setPriceRange] = useState([0, 90]);
-    const [vehiculosFiltrados, setVehiculosFiltrados] = useState([])
     const { calcularPrecioAlquiler } = useContext(VehiclesContext);
-    const { marca, setMarca, marcasSeleccionadas, handleMarcasSeleccionadasChange } = useContext(VehiclesContext)
-
-
-    console.log('la MARCA ESDE MAPA ', marca)
+    const { marca, setMarca, marcasSeleccionadas, vehiculosFiltrados, setVehiculosFiltrados, vehiculosIniciales, setVehiculosIniciales } = useContext(VehiclesContext)
 
     useEffect(() => {
         async function loadVehicles() {
@@ -82,6 +78,7 @@ export const Mapa = ({ rentDuration, address }) => {
     useEffect(() => {
         const vehiculosVisibles = filtrarVehiculosVisibles();
         setVehiculosFiltrados(vehiculosVisibles);
+        setVehiculosIniciales(vehiculosVisibles)
     }, [map, vehiculos]);
 
     // Función para calcular el índice del primer vehículo en la página actual
@@ -133,32 +130,6 @@ export const Mapa = ({ rentDuration, address }) => {
     }, [priceRange]);
 
 
-    useEffect(() => {
-        console.log('***********')
-        console.log(marcasSeleccionadas)
-    }, [marcasSeleccionadas])
-
-    useEffect(() => {
-        console.log(marcasSeleccionadas)
-        if (marcasSeleccionadas == [0]) {
-            console.log('hoooooooliiiiiiiiiiiiiiii')
-            return
-        } else {
-            const filtroMarca = () => {
-                const vehiculosFiltradosMarca = filtrarVehiculosVisibles().filter(vehi => {
-                    console.log(`La marca del vehiculo es ${typeof vehi.marca} y la marca selecionada es ${typeof marca}`)
-                    console.log(marcasSeleccionadas)
-                    return marcasSeleccionadas.includes(vehi.marca);
-                });
-                console.log('EL RESULTADO ESSSS ', vehiculosFiltradosMarca)
-                setVehiculosFiltrados(vehiculosFiltradosMarca);
-            };
-
-            filtroMarca();
-        }
-    }, [marcasSeleccionadas]);
-
-
     function handleChanges(e, newValue) {
         //console.log(newValue)
         setPriceRange(newValue);
@@ -168,8 +139,11 @@ export const Mapa = ({ rentDuration, address }) => {
         <div className="container-fluid mt-4">
             <div className="row">
 
-                {vehiculosFiltrados.length == 0 ? (
+                {vehiculosIniciales.length == 0 ? (
                     <>
+                        <Filtros priceRange={priceRange} handleChanges={handleChanges} minPrice={minPrice} maxPrice={maxPrice} />
+
+                        <hr />
                         <h2>No hay vehículos disponibles en esta zona</h2>
                         <img src="https://getaround.com/packs/images/illustrations/light/character_in_jeep-663819942a9c81f9b29cb10c4471fb0a.svg"
                             alt="" style={{ width: '400px', height: '400px' }} />
@@ -181,7 +155,7 @@ export const Mapa = ({ rentDuration, address }) => {
                         <hr />
                         <div className='col-md-6'>
                             <p>Resultados de: <strong>{address}</strong>: {vehiculosFiltrados.length} vehículos encontrados</p>
-                            <VehicleList vehiculos={obtenerVehiculosPorPagina()} setMaxPrice={setMaxPrice} setMinPrice={setMinPrice}
+                            <VehicleList vehiculosPagina={obtenerVehiculosPorPagina()} vehiculos={vehiculosFiltrados} setMaxPrice={setMaxPrice} setMinPrice={setMinPrice}
                                 setPriceRange={setPriceRange} rentDuration={rentDuration} />
                         </div>
                     </>

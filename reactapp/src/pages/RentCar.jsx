@@ -34,6 +34,8 @@ export const RentCar = () => {
     latitud: '',
     longitud: '',
     color: 'verde',
+    potencia: 0,
+    numero_plazas: 5,
     disponible: true
   })
 

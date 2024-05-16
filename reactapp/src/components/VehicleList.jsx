@@ -4,7 +4,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Navbar } from './Navbar';
 import { VehiclesContext } from '../context/VehiclesContext';
 
-export const VehicleList = ({ vehiculos, rentDuration , setMaxPrice, setMinPrice, setPriceRange}) => {
+export const VehicleList = ({ vehiculosPagina, vehiculos, rentDuration , setMaxPrice, setMinPrice, setPriceRange}) => {
     const { calcularPrecioAlquiler } = useContext(VehiclesContext);
 
     //Ajustar los rangos de Precios en el filtro
@@ -18,11 +18,12 @@ export const VehicleList = ({ vehiculos, rentDuration , setMaxPrice, setMinPrice
         setPriceRange([minPrecio, maxPrecio])
         //console.log(maxPrecio);
     }, [])
+    //}, [vehiculos])
 
     return (
         <div className='row'>
 
-            {vehiculos.map((vehi) => (
+            {vehiculosPagina.map((vehi) => (
                 <div key={vehi.id} className="col-md-6 col-lg-4 mb-4">
                     <div className="card h-100">
                         <div id={`carousel${vehi.id}`} className="carousel slide">
@@ -55,8 +56,10 @@ export const VehicleList = ({ vehiculos, rentDuration , setMaxPrice, setMinPrice
                         </div>
                         <div className="card-body">
                             <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre} ({vehi.año})</h5>
-                            <Link to={`/vehicle/${vehi.id}`} className="btn btn-primary">Ver más</Link>
                             <p>Precio del alquiler: {calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration)}</p>
+                            <p>{vehi.tipo_carroceria}</p>
+                            <p>{vehi.tipo_cambio}</p>
+                            <Link to={`/vehicle/${vehi.id}`} className="btn btn-primary">Ver más</Link>
                         </div>
                     </div>
                 </div>

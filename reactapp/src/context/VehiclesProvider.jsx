@@ -5,25 +5,26 @@ import { getAllVehicles } from "../api/vehicle.api";
 import { AuthContext } from "./AuthContext";
 
 export const VehiclesProvider = ({ children }) => {
-    const [marcasSeleccionadas, setMarcasSeleccionadas] = useState([]);
-    const [marca, setMarca] = useState(0)
+    const [vehiculosFiltrados, setVehiculosFiltrados] = useState([])
+    const [vehiculosIniciales, setVehiculosIniciales] = useState([])
 
-    const handleMarcasSeleccionadasChange = (marca) => {
-        const index = marcasSeleccionadas.indexOf(marca);
-        if (index === -1) {
-            // Si la marca no está seleccionada, añadirla a la lista
-            setMarcasSeleccionadas([...marcasSeleccionadas, marca]);
-        } else {
-            // Si la marca ya está seleccionada, quitarla de la lista
-            const nuevasMarcas = [...marcasSeleccionadas];
-            nuevasMarcas.splice(index, 1);
-            setMarcasSeleccionadas(nuevasMarcas);
-        }
-    }
+    // const handleMarcasSeleccionadasChange = (marca) => {
+    //     const index = marcasSeleccionadas.indexOf(marca);
+    //     if (index === -1) {
+    //         // Si la marca no está seleccionada, añadirla a la lista
+    //         setMarcasSeleccionadas([...marcasSeleccionadas, marca]);
+    //     } else {
+    //         // Si la marca ya está seleccionada, quitarla de la lista
+    //         const nuevasMarcas = [...marcasSeleccionadas];
+    //         nuevasMarcas.splice(index, 1);
+    //         setMarcasSeleccionadas(nuevasMarcas);
+    //     }
+    // }
 
-    useEffect(()=>{
-        handleMarcasSeleccionadasChange(Number(marca))
-    }, [marca])
+    // useEffect(() => {
+    //     handleMarcasSeleccionadasChange(Number(marca))
+    // }, [marca])
+
 
     const calcularPrecioAlquiler = (precioPorHora, rentDuration) => {
         const { hours, minutes } = rentDuration;
@@ -33,7 +34,8 @@ export const VehiclesProvider = ({ children }) => {
     };
 
     return (
-        <VehiclesContext.Provider value={{calcularPrecioAlquiler, marca, setMarca, marcasSeleccionadas, setMarcasSeleccionadas, handleMarcasSeleccionadasChange}}>
+        <VehiclesContext.Provider value={{ calcularPrecioAlquiler, 
+        vehiculosFiltrados, setVehiculosFiltrados, vehiculosIniciales, setVehiculosIniciales }}>
             {children}
         </VehiclesContext.Provider>
     )

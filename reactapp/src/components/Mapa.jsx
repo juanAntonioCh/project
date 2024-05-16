@@ -144,9 +144,11 @@ export const Mapa = ({ rentDuration, address }) => {
                         <Filtros priceRange={priceRange} handleChanges={handleChanges} minPrice={minPrice} maxPrice={maxPrice} />
 
                         <hr />
+                        <div className='col-md-6'>
                         <h2>No hay vehículos disponibles en esta zona</h2>
                         <img src="https://getaround.com/packs/images/illustrations/light/character_in_jeep-663819942a9c81f9b29cb10c4471fb0a.svg"
                             alt="" style={{ width: '400px', height: '400px' }} />
+                        </div>
                     </>
                 ) : (
                     <>

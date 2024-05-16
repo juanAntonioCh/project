@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { LogoSvg } from './LogoSvg';
+import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import '../styles/Navbar.css'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -14,36 +15,14 @@ import { AuthContext } from '../context/AuthContext';
 import { UserMenu } from './UserMenu';
 
 export const Navbar = ({ option }) => {
+    const location = useLocation();
     const { isAuthenticated, logout, user } = useContext(AuthContext);
 
     // Función para renderizar las opciones de autenticación
     const renderNavOptions = () => {
-        if (option === 'HOME') {
+        if (option === 'VEHICLE PAGE') {
             return (
-                <div className="d-flex flex-grow-1 justify-content-end">
-                    <div className="home-auth-links d-none d-md-block">
-                        {!isAuthenticated ? (
-                            <>
-                                <Link to="/rent-car" className="home-rent-link flex-fill mx-4">Alquila tu coche</Link>
-                                <Link to="/register" className="home-auth-link">Regístrate aquí</Link>
-                                <Link to="/login" className="home-auth-link mx-4">Iniciar sesión</Link>
-                            </>
-                        ) : (
-                            <div className=''>
-                                {/* <div className="home-rent">
-                                <Link to="/rent-car" className="home-rent-link m-4">Alquila tu coche</Link>
-                                <Link to={`/my-vehicles/${user}`} className='btn btn-info'>Mis vehiculos publicados</Link>
-                                <button onClick={logout} className="btn btn-danger">Cerrar sesión</button>
-                            </div> */}
-                                <Link to="/rent-car" className="home-rent-link flex-fill mx-4">Alquila tu coche</Link>
 
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
-        } else if (option === 'VEHICLE PAGE') {
-            return (
                 <div className="d-flex flex-grow-1 justify-content-start">
                     <div className="nav-buscador-ubis-container mx-4 d-none d-md-block">
                         <BuscadorUbiComponent />
@@ -97,13 +76,29 @@ export const Navbar = ({ option }) => {
 
             <div className='d-none d-md-block'>
                 {isAuthenticated ? (
-                    <UserMenu handleLogout={logout} />
+                    <div className="d-flex align-items-center">
+                        {location.pathname !== '/rent-car' ? (
+                            <Link to="/rent-car" className="home-rent-link flex-fill mx-4">Alquila tu coche</Link>)
+                            : null}
+                        <UserMenu handleLogout={logout} />
+                    </div>
+
                 ) : (
-                    <>
-                        {/* <Link to="/rent-car" className="home-rent-link flex-fill mx-4">Alquila tu coche</Link>
-                        <Link to="/register" className="home-auth-link">Regístrate aquí</Link>
-                        <Link to="/login" className="home-auth-link mx-4">Iniciar sesión</Link> */}
-                    </>
+                    <div className="d-flex flex-grow-1 justify-content-end">
+                        <div className="home-auth-links d-none d-md-block">
+                            {!isAuthenticated && location.pathname !== '/register' && location.pathname !== '/login' ? (
+                                <>
+                                    {location.pathname !== '/rent-car' ? (
+                                        <Link to="/rent-car" className="home-rent-link flex-fill mx-4">Alquila tu coche</Link>)
+                                        : null}
+
+                                    <Link to="/register" className="home-auth-link">Regístrate aquí</Link>
+                                    <Link to="/login" className="home-auth-link mx-4">Iniciar sesión</Link>
+                                </>
+                            ) : null}
+
+                        </div>
+                    </div>
                 )}
             </div>
 

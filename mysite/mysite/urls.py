@@ -7,7 +7,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('dj_rest_auth.urls')),
     path('api/', include('ConectaCar.urls'))
-
 ]
 
 if settings.DEBUG:

@@ -6,7 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 export const UserMenu = ({ handleLogout }) => {
     const { user } = useContext(AuthContext);
     return (
-        <Dropdown className='mx-3'>
+        <Dropdown className='mx-4'>
             <Dropdown.Toggle variant="light" id="dropdown-basic">
                 <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="lightgrey" className="bi bi-person-circle" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />

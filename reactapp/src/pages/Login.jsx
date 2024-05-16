@@ -41,6 +41,16 @@ export const Login = () => {
     });
   }, []);
 
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError(null);
+      }, 4000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -121,8 +131,8 @@ export const Login = () => {
                 <button className="btn btn-primary w-100 mb-3" type="submit">Iniciar Sesión</button>
               </div>
 
-              <p>¿No tienes cuenta? <Link to='/register'>Registrate</Link></p>
-              <p><a href="">Recuperar contraseña</a></p>
+              <p>¿No tienes cuenta? <Link to='/register'>Regístrate</Link></p>
+              <p>¿Has olvidado tu contraseña? <Link to='/password/reset'>Recuperar contraseña</Link></p>
             </form>
           </div>
         </div>

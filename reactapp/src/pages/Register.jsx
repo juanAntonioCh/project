@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Register.css'
 import axios from 'axios';
@@ -69,6 +69,16 @@ export const Register = () => {
 
     }
   };
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError(null);
+      }, 4000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error]);
 
   return (
     <>
@@ -149,6 +159,8 @@ export const Register = () => {
                 <div className="form-action">
                   <button className="btn btn-primary w-100 mb-3" type="submit">Registarse</button>
                 </div>
+                <p>¿Ya tienes una cuenta? <Link to='/login'>Inicia sesión</Link></p>
+
               </form>
             </div>
           </div>

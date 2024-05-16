@@ -15,6 +15,7 @@ import { EditVehicle } from './components/EditVehicle'
 import { EditVehicleImages } from './components/EditVehicleImages'
 import { Navbar } from './components/Navbar';
 import { VehiclesProvider } from './context/VehiclesProvider';
+import { PasswordReset } from './pages/PasswordReset';
 
 
 function App() {
@@ -38,9 +39,12 @@ function AppRoutes() {
       return 'HOME';
     } else if (location.pathname === '/vehicle') {
       return 'VEHICLE PAGE';
+    } else if (location.pathname === '/register') {
+      return 'REGISTER';
     } else {
       return [];
     }
+    
   };
 
   return (
@@ -57,6 +61,7 @@ function AppRoutes() {
         <Route path='/my-vehicles/:id' element={<VehiclesUserPage />} />
         <Route path='/edit-vehicle/:id' element={<EditVehicle />} />
         <Route path='/edit-vehicle/images/:id' element={<EditVehicleImages />} />
+        <Route path='/password/reset' element={<PasswordReset />} />
       </Routes>
     </>
   );

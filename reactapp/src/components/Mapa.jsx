@@ -138,29 +138,27 @@ export const Mapa = ({ rentDuration, address }) => {
     return (
         <div className="container-fluid mt-4">
             <div className="row">
+                <Filtros priceRange={priceRange} handleChanges={handleChanges} minPrice={minPrice} maxPrice={maxPrice} />
+                <hr />
 
-                {vehiculosIniciales.length == 0 ? (
-                    <>
-                        <Filtros priceRange={priceRange} handleChanges={handleChanges} minPrice={minPrice} maxPrice={maxPrice} />
-
-                        <hr />
-                        <div className='col-md-6'>
-                        <h2>No hay vehículos disponibles en esta zona</h2>
+                {vehiculosIniciales.length === 0 ? (
+                    <div className='col-md-6 d-flex flex-column align-items-center'>
                         <img src="https://getaround.com/packs/images/illustrations/light/character_in_jeep-663819942a9c81f9b29cb10c4471fb0a.svg"
                             alt="" style={{ width: '400px', height: '400px' }} />
-                        </div>
-                    </>
+                        <h4 className='mt-4'>Oops! No hay vehículos disponibles en esta zona</h4>
+                    </div>
+                ) : vehiculosFiltrados.length === 0 ? (
+                    <div className='col-md-6 d-flex flex-column align-items-center'>
+                        <img src="https://getaround.com/packs/images/illustrations/light/character_in_jeep-663819942a9c81f9b29cb10c4471fb0a.svg"
+                            alt="" style={{ width: '400px', height: '400px' }} />
+                        <h4 className='mt-4'>Oops! No hay resultados para estos filtros</h4>
+                    </div>
                 ) : (
-                    <>
-                        <Filtros priceRange={priceRange} handleChanges={handleChanges} minPrice={minPrice} maxPrice={maxPrice} />
-
-                        <hr />
-                        <div className='col-md-6'>
-                            <p>Resultados de: <strong>{address}</strong>: {vehiculosFiltrados.length} vehículos encontrados</p>
-                            <VehicleList vehiculosPagina={obtenerVehiculosPorPagina()} vehiculos={vehiculosFiltrados} setMaxPrice={setMaxPrice} setMinPrice={setMinPrice}
-                                setPriceRange={setPriceRange} rentDuration={rentDuration} />
-                        </div>
-                    </>
+                    <div className='col-md-6'>
+                        <p>Resultados de: <strong>{address}</strong>: {vehiculosFiltrados.length} vehículos encontrados</p>
+                        <VehicleList vehiculosPagina={obtenerVehiculosPorPagina()} vehiculos={vehiculosFiltrados} setMaxPrice={setMaxPrice} setMinPrice={setMinPrice}
+                            setPriceRange={setPriceRange} rentDuration={rentDuration} />
+                    </div>
                 )}
 
                 <div className='col-md-6'>

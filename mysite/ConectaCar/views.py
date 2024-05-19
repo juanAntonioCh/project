@@ -12,6 +12,21 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from .serializer import *
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+from django.views import View
+from django.urls import reverse_lazy
+from django.contrib.auth import login
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import EmailMultiAlternatives
 from .models import *
 
 # Create your views here.
@@ -83,6 +98,102 @@ def register(request):
 
     return Response('Usuario registrado correctamente')
 
+
+@api_view(['POST'])
+def forgot_password(request):
+    email = request.data.get('email')
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        #return Response('Mal')
+        return Response('No user associated with this email', status=400)
+
+    token = default_token_generator.make_token(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    current_site = get_current_site(request)
+    domain = current_site.domain
+    protocol = 'https' if request.is_secure() else 'http'
+    
+    # Construct the password reset URL
+    reset_url = f"http://localhost:5173/reset-password-confirm/{uid}/{token}"
+
+    # Render the email template with context
+    email_subject = 'Solicitud de cambio de contraseña'
+    email_body = render_to_string('password_reset_email.html', {
+        'user': user,
+        'reset_url': reset_url,
+        'domain': domain,
+    })
+
+    #print(user.email)
+
+    email = EmailMultiAlternatives(
+        email_subject,
+        email_body,
+        '1817826@alu.murciaeduca.es',
+        [user.email]
+    )
+    email.attach_alternative(email_body, "text/html")
+    email.send()
+
+
+    return Response('Email sent', status=200)
+    #return Response('Bien')
+
+@api_view(['POST'])
+def reset_password_confirm(request):
+    uidb64 = request.data.get('uidb64')
+    token = request.data.get('token')
+    new_password = request.data.get('password')
+
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        return Response({'error': 'Invalid link'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if default_token_generator.check_token(user, token):
+        user.set_password(new_password)
+        user.save()
+        return Response({'success': 'Password has been reset'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+""" class PasswordResetConfirmView(View):
+    template_name = 'password_reset_confirm.html'
+
+    def get(self, request, uidb64=None, token=None):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            form = SetPasswordForm(user)
+            return render(request, self.template_name, {'form': form, 'validlink': True})
+        else:
+            return render(request, self.template_name, {'validlink': False})
+
+    def post(self, request, uidb64=None, token=None):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            form = SetPasswordForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                login(request, user)
+                return redirect(reverse_lazy('password_reset_complete'))
+            else:
+                return render(request, self.template_name, {'form': form, 'validlink': True})
+        else:
+            return render(request, self.template_name, {'validlink': False}) """
+    
 
 
 @api_view(['POST'])

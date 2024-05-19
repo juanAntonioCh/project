@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GoogleMap, LoadScriptNext, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScriptNext, Marker, useJsApiLoader } from '@react-google-maps/api';
+//import { AdvancedMarkerElement } from '@googlemaps/marker';
 import { VehicleList } from './VehicleList';
 import '../styles/Vehicles.css'
 import Pagination from 'react-bootstrap/Pagination';
@@ -9,6 +10,7 @@ import { AuthContext } from '../context/AuthContext';
 import { VehiclesContext } from '../context/VehiclesContext';
 import { Filtros } from './Filtros';
 import { UseFiltros } from '../hooks/UseFiltros';
+import { MapComponent } from './Map';
 
 const VehiculosPorPagina = 6;
 
@@ -129,6 +131,8 @@ export const Mapa = ({ rentDuration, address }) => {
         filtroPrecio();
     }, [priceRange]);
 
+    console.log(obtenerVehiculosPorPagina())
+
 
     function handleChanges(e, newValue) {
         //console.log(newValue)
@@ -162,8 +166,12 @@ export const Mapa = ({ rentDuration, address }) => {
                 )}
 
                 <div className='col-md-6'>
-                    <LoadScriptNext
-                        googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
+                    {/* {!vehiculosIniciales.length === 0 ? (
+                        <MapComponent vehiculos={obtenerVehiculosPorPagina()} />
+                    ) : <p>Cargando</p>
+                    } */}
+
+                    <LoadScriptNext googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
                         <GoogleMap
                             mapContainerStyle={mapStyles}
                             zoom={11.5}

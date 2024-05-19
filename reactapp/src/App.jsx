@@ -16,6 +16,7 @@ import { EditVehicleImages } from './components/EditVehicleImages'
 import { Navbar } from './components/Navbar';
 import { VehiclesProvider } from './context/VehiclesProvider';
 import { PasswordReset } from './pages/PasswordReset';
+import { PasswordResetConfirm } from './pages/PasswordResetConfirm';
 
 
 function App() {
@@ -62,6 +63,7 @@ function AppRoutes() {
         <Route path='/edit-vehicle/:id' element={<EditVehicle />} />
         <Route path='/edit-vehicle/images/:id' element={<EditVehicleImages />} />
         <Route path='/password/reset' element={<PasswordReset />} />
+        <Route path="/reset-password-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
       </Routes>
     </>
   );

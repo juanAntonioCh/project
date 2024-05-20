@@ -21,6 +21,8 @@ export const RentCar = () => {
   const [imagenes, setImagenes] = useState([])
   const [address, setAddress] = useState('');
   const [pagination, setPagination] = useState(0)
+  const [error, setError] = useState('')
+  const [noLogin, setNoLogin] = useState('')
   const [vehiculo, setVehiculo] = useState({
     propietario_id: '', marca_id: 1, modelo_id: 0, año: 2010, matricula: '', descripcion: '', tipo_carroceria: '',
     tipo_combustible: '', consumo: '', kilometraje: '', tipo_cambio: '', precio_por_hora: '', latitud: '', longitud: '', color: 'verde',
@@ -40,6 +42,23 @@ export const RentCar = () => {
       propietario_id: user
     })
   }, [user])
+
+  useEffect(() => {
+    // Obtener todos los formularios para aplicarle las clases de Bootstrap
+    const forms = document.querySelectorAll('.needs-validation');
+    console.log('los formus son: ', forms);
+
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, []);
 
 
   //Obtetener las marcas y modelos de vehículos. Y los campos choices
@@ -129,10 +148,29 @@ export const RentCar = () => {
     }
   }, [listModelos])
 
+  const validarVehiculo = () => {
+    for (let key in vehiculo) {
+      if (vehiculo[key] === '') {
+        return false;
+      }
+    }
+    return true;
+  };
+
 
   async function handleSubmit(e) {
     e.preventDefault()
     console.log(vehiculo)
+
+    if (vehiculo.propietario_id === '') {
+      setNoLogin('Inicia sesión para publicar tu vehículo ')
+      return
+    }
+
+    if (!validarVehiculo()) {
+      setError('Porfavor, comprueba que todos los campos del formulario estén completos')
+      return
+    }
 
     const formData = new FormData();
     console.log(imagenes)
@@ -168,7 +206,10 @@ export const RentCar = () => {
     console.log(pagination)
   }, [pagination])
 
-
+  const handleCloseAlert = () => {
+    setError(null);
+    setNoLogin(null)
+  };
 
   const handleSelect = address => {
     setAddress(address);
@@ -287,30 +328,30 @@ export const RentCar = () => {
               <div className="form-group mb-4 position-relative">
                 <label className="form-label">Ubicación de tu vehículo</label>
                 <PlacesAutocomplete
-                    value={address}
-                    onChange={setAddress}
-                    onSelect={handleSelect}
+                  value={address}
+                  onChange={setAddress}
+                  onSelect={handleSelect}
                 >
-                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                        <div className="form-inline d-flex">
-                            <div className="flex-grow-1 position-relative">
-                                <input className='form-control' {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
+                  {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                    <div className="form-inline d-flex">
+                      <div className="flex-grow-1 position-relative">
+                        <input className='form-control' {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
 
-                                <div className='suggestions-container'>
-                                    {loading && <div className="loading">Cargando...</div>}
-                                    {suggestions.map((suggestion, index) => {
-                                        const className = suggestion.active ? 'suggestion-item active' : 'suggestion-item';
-                                        return (
-                                            <div key={index} className={className} onClick={() => getSuggestionItemProps(suggestion)}>
-                                                <span>{suggestion.description}</span>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
+                        <div className='suggestions-container'>
+                          {loading && <div className="loading">Cargando...</div>}
+                          {suggestions.map((suggestion, index) => {
+                            const className = suggestion.active ? 'suggestion-item active' : 'suggestion-item';
+                            return (
+                              <div key={index} className={className} onClick={() => getSuggestionItemProps(suggestion)}>
+                                <span>{suggestion.description}</span>
+                              </div>
+                            );
+                          })}
                         </div>
-                    )}
+                      </div>
+
+                    </div>
+                  )}
                 </PlacesAutocomplete>
               </div>
               <div className="form-group mb-4 position-relative">
@@ -338,6 +379,22 @@ export const RentCar = () => {
 
   return (
     <div className="rent-car-body">
+      {noLogin && (
+        <div className="alert-container">
+          <div className="alert alert-warning alert-dismissible fade show " role="alert">
+            <strong><Link to='/login'>Inicia sesión</Link> para publicar tu vehículo</strong>
+            <button type="button" className="btn-close login-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+          </div>
+        </div>
+      )}
+      {error && (
+        <div className="alert-container">
+          <div className="alert alert-danger alert-dismissible fade show " role="alert">
+            <strong>{error}</strong>
+            <button type="button" className="btn-close login-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+          </div>
+        </div>
+      )}
 
       <div className='container'>
         <div className="row pt-5">

@@ -42,13 +42,13 @@ export const PasswordReset = () => {
     }, [error]);
 
 
-
     useEffect(() => {
         console.log(email)
     }, [email])
 
     const handleCloseAlert = () => {
         setError(null);
+        setSuccess(null)
     };
 
     const handlePasswordReset = async (e) => {

@@ -2,14 +2,8 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Login.css'
-import styled from 'styled-components';
 import { AuthContext } from '../context/AuthContext';
 import { LogoSvg } from '../components/LogoSvg';
-
-// const StyledBody = styled.body`
-//     background: linear-gradient(to right, #5ab3fc, white);
-//     height: 793px;
-//   `;
 
 export const Login = () => {
   const [username, setUsername] = useState('');
@@ -113,6 +107,8 @@ export const Login = () => {
                 <label htmlFor="inputPassword5" className="form-label">Contraseña</label>
                 <input type="password" id="inputPassword5" className="form-control" value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  // pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                  // title="La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra y un número"
                   aria-describedby="passwordHelpBlock"
                   required
                 />
@@ -131,7 +127,7 @@ export const Login = () => {
                 <button className="btn btn-primary w-100 mb-3" type="submit">Iniciar Sesión</button>
               </div>
 
-              <p>¿No tienes cuenta? <Link to='/register'>Regístrate</Link></p>
+              <p className='mt-3'>¿No tienes cuenta? <Link to='/register'>Regístrate</Link></p>
               <p>¿Has olvidado tu contraseña? <Link to='/password/reset'>Recuperar contraseña</Link></p>
             </form>
           </div>

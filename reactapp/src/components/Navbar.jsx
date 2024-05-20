@@ -25,7 +25,7 @@ export const Navbar = ({ option }) => {
 
                 <div className="d-flex flex-grow-1 justify-content-start">
                     <div className="nav-buscador-ubis-container mx-4 d-none d-md-block">
-                        <BuscadorUbiComponent />
+                        {/* <BuscadorUbiComponent /> */}
                     </div>
                 </div>
             )

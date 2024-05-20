@@ -8,6 +8,7 @@ import { FiltrosModal } from './Filtros';
 
 export const VehiclesPage = () => {
     const location = useLocation()
+    //console.log(location)
     const rentDuration = location.state && location.state.rentDuration
     const address = location.state && location.state.address
 

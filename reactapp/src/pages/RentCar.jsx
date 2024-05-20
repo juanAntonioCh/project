@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 // import '../styles/rent-car.css'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
 import axios from 'axios'
+import '../styles/CrearVehiculoPage.css'
 import { useContext } from "react"
 import { AuthContext } from '../context/AuthContext';
+import { LogoSvg } from '../components/LogoSvg';
+import { useRent } from '../hooks/UseRent';
 
 export const RentCar = () => {
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [listMarcas, setListMarcas] = useState([]);
   const [listModelos, setListModelos] = useState([]);
@@ -17,27 +20,13 @@ export const RentCar = () => {
   const [tipoCombustibleChoices, setTipoCombustibleChoices] = useState([])
   const [imagenes, setImagenes] = useState([])
   const [address, setAddress] = useState('');
-  //const [propietario, setPropietario] = useState({});
+  const [pagination, setPagination] = useState(0)
   const [vehiculo, setVehiculo] = useState({
-    propietario_id: '',
-    marca_id: 1,
-    modelo_id: 0,
-    año: 0,
-    matricula: '',
-    descripcion: '',
-    tipo_carroceria: '',
-    tipo_combustible: '',
-    consumo: '',
-    kilometraje: '',
-    tipo_cambio: '',
-    precio_por_hora: '',
-    latitud: '',
-    longitud: '',
-    color: 'verde',
-    potencia: 0,
-    numero_plazas: 5,
-    disponible: true
+    propietario_id: '', marca_id: 1, modelo_id: 0, año: 2010, matricula: '', descripcion: '', tipo_carroceria: '',
+    tipo_combustible: '', consumo: '', kilometraje: '', tipo_cambio: '', precio_por_hora: '', latitud: '', longitud: '', color: 'verde',
+    potencia: 0, numero_plazas: 5, disponible: true
   })
+  //const [propietario, setPropietario] = useState({});
 
   //ver los cambios en el vehiculo
   useEffect(() => {
@@ -51,6 +40,7 @@ export const RentCar = () => {
       propietario_id: user
     })
   }, [user])
+
 
   //Obtetener las marcas y modelos de vehículos. Y los campos choices
   useEffect(() => {
@@ -75,6 +65,34 @@ export const RentCar = () => {
   async function loadModelos(id_marca) {
     const list_modelos = await getModelosMarca(id_marca)
     setListModelos(list_modelos.data)
+  }
+
+  //actualizar la MARCA del vehiculo cuando se cambie de opción en el formulario
+  const handleChangeMarca = (e) => {
+    loadModelos(e.target.value)
+
+    setVehiculo({
+      ...vehiculo,
+      [e.target.name]: Number(e.target.value),
+      modelo_id: listModelos[0].id
+    })
+  }
+
+  //actualizar el MODELO del vehiculo cuando se cambie de opción en el formulario
+  const handleChangeModelo = (e) => {
+    setVehiculo({
+      ...vehiculo,
+      [e.target.name]: Number(e.target.value),
+    })
+
+  }
+
+  //actualizar el objeto vehiculo cuando haya algun cambio 
+  const handleChange = (e) => {
+    setVehiculo({
+      ...vehiculo,
+      [e.target.name]: e.target.value
+    })
   }
 
 
@@ -112,34 +130,6 @@ export const RentCar = () => {
   }, [listModelos])
 
 
-  //actualizar el objeto vehiculo cuando haya algun cambio 
-  const handleChange = (e) => {
-    setVehiculo({
-      ...vehiculo,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  //actualizar la MARCA del vehiculo cuando se cambie de opción en el formulario
-  const handleChangeMarca = (e) => {
-    loadModelos(e.target.value)
-
-    setVehiculo({
-      ...vehiculo,
-      [e.target.name]: Number(e.target.value),
-      modelo_id: listModelos[0].id
-    })
-  }
-
-  //actualizar el MODELO del vehiculo cuando se cambie de opción en el formulario
-  const handleChangeModelo = (e) => {
-    setVehiculo({
-      ...vehiculo,
-      [e.target.name]: Number(e.target.value),
-    })
-
-  }
-
   async function handleSubmit(e) {
     e.preventDefault()
     console.log(vehiculo)
@@ -174,6 +164,11 @@ export const RentCar = () => {
     console.log(imagenes)
   }, [imagenes])
 
+  useEffect(() => {
+    console.log(pagination)
+  }, [pagination])
+
+
 
   const handleSelect = address => {
     setAddress(address);
@@ -190,141 +185,202 @@ export const RentCar = () => {
       .catch(error => console.error('Error', error));
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="container mt-4">
-      <div className="row">
-        {/* Columna 1 */}
-        <div className="col-md-6">
-          <div className="mb-3">
-            <label htmlFor="marca_id" className="form-label">Marca:</label><br />
-            <select name='marca_id' onChange={handleChangeMarca}>
-              {listMarcas.map(marca => (
-                <option key={marca.id} value={marca.id}>
-                  {marca.nombre}
-                </option>
-              ))}
-            </select>
+  const renderPageContent = () => {
+    switch (pagination) {
+      case 0:
+        return (
+          <div className='row'>
+            <div className='col-6'>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="marca_id" className="form-label">Marca:</label><br />
+                <select name='marca_id' onChange={handleChangeMarca}>
+                  {listMarcas.map(marca => (
+                    <option key={marca.id} value={marca.id}>
+                      {marca.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="modelo_id" className="form-label">Modelo:</label><br />
+                <select name='modelo_id' onChange={handleChangeModelo}>
+                  {listModelos.map(modelo => (
+                    <option key={modelo.id} value={modelo.id}>
+                      {modelo.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="año" className="form-label">Año:</label>
+                <input type="number" className="form-control w-75" id="año" name="año" value={vehiculo.año} onChange={handleChange} />
+              </div>
+            </div>
+            <div className='col-6'>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="consumo" className="form-label">Consumo:</label>
+                <input type="text" className="form-control" id="consumo" name="consumo" value={vehiculo.consumo} onChange={handleChange} />
+              </div>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="matricula" className="form-label">Matrícula:</label>
+                <input type="text" className="form-control" id="matricula" name="matricula" value={vehiculo.matricula} onChange={handleChange} />
+              </div>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="kilometraje" className="form-label">Kilometraje:</label>
+                <input type="text" className="form-control" id="kilometraje" name="kilometraje" value={vehiculo.kilometraje} onChange={handleChange} />
+              </div>
+            </div>
           </div>
-
-          <div className="mb-3">
-            <label htmlFor="modelo_id" className="form-label">Modelo:</label><br />
-            <select name='modelo_id' onChange={handleChangeModelo}>
-              {listModelos.map(modelo => (
-                <option key={modelo.id} value={modelo.id}>
-                  {modelo.nombre}
-                </option>
-              ))}
-            </select>
+        );
+      case 1:
+        return (
+          <div className='row'>
+            <div className='col-6'>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="tipo_combustible" className="form-label">Tipo de Combustible:</label><br />
+                <select name='tipo_combustible' onChange={handleChange}>
+                  {tipoCombustibleChoices.map((combus, index) => (
+                    <option key={index} value={combus[0]}>
+                      {combus[1]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="tipo_carroceria" className="form-label">Tipo de Carrocería:</label><br />
+                <select name='tipo_carroceria' onChange={handleChange}>
+                  {tipoCarroceriaChoices.map((carro, index) => (
+                    <option key={index} value={carro[0]}>
+                      {carro[1]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="tipo_cambio" className="form-label">Tipo de Cambio:</label><br />
+                <select name='tipo_cambio' onChange={handleChange}>
+                  {tipoCambioChoices.map((cambio, index) => (
+                    <option key={index} value={cambio[0]}>
+                      {cambio[1]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className='col-6'>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="precio_por_hora" className="form-label">Precio por Hora:</label>
+                <input type="text" className="form-control" id="precio_por_hora" name="precio_por_hora" value={vehiculo.precio_por_hora} onChange={handleChange} />
+              </div>
+              <div className="form-group mb-4 position-relative">
+                <label htmlFor="descripcion" className="form-label">Descripción:</label>
+                <textarea className="form-control" id="descripcion" name="descripcion" rows="4" value={vehiculo.descripcion} onChange={handleChange}></textarea>
+              </div>
+            </div>
           </div>
+        );
+      case 2:
+        return (
+          <div className='row'>
+            <div className='col-6'>
+              {/* Agrega los campos adicionales para la página 3 aquí */}
+              <div className="form-group mb-4 position-relative">
+                <label className="form-label">Ubicación de tu vehículo</label>
+                <PlacesAutocomplete
+                    value={address}
+                    onChange={setAddress}
+                    onSelect={handleSelect}
+                >
+                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                        <div className="form-inline d-flex">
+                            <div className="flex-grow-1 position-relative">
+                                <input className='form-control' {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
 
-          <div className="mb-3">
-            <label htmlFor="año" className="form-label">Año:</label>
-            <input type="number" className="form-control" id="año" name="año" value={vehiculo.año} onChange={handleChange} />
-          </div>
+                                <div className='suggestions-container'>
+                                    {loading && <div className="loading">Cargando...</div>}
+                                    {suggestions.map((suggestion, index) => {
+                                        const className = suggestion.active ? 'suggestion-item active' : 'suggestion-item';
+                                        return (
+                                            <div key={index} className={className} onClick={() => getSuggestionItemProps(suggestion)}>
+                                                <span>{suggestion.description}</span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
 
-          <div className="mb-3">
-            <label htmlFor="matricula" className="form-label">Matrícula:</label>
-            <input type="text" className="form-control" id="matricula" name="matricula" value={vehiculo.matricula} onChange={handleChange} />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="tipo_combustible" className="form-label">Tipo de Combustible:</label><br />
-            <select name='tipo_combustible' onChange={handleChange}>
-              {tipoCombustibleChoices.map((combus, index) => (
-                <option key={index} value={combus[0]}>
-                  {combus[1]}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="kilometraje" className="form-label">Kilometraje:</label>
-            <input type="text" className="form-control" id="kilometraje" name="kilometraje" value={vehiculo.kilometraje} onChange={handleChange} />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="precio_por_hora" className="form-label">Precio por Hora:</label>
-            <input type="text" className="form-control" id="precio_por_hora" name="precio_por_hora" value={vehiculo.precio_por_hora} onChange={handleChange} />
-          </div>
-
-        </div>
-
-        {/* Columna 2 */}
-        <div className="col-md-6">
-          <div className="mb-3">
-            <label htmlFor="descripcion" className="form-label">Descripción:</label>
-            <textarea className="form-control" id="descripcion" name="descripcion" rows="3" value={vehiculo.descripcion} onChange={handleChange}></textarea>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="tipo_carroceria" className="form-label">Tipo de Carrocería:</label><br />
-            <select name='tipo_carroceria' onChange={handleChange}>
-              {tipoCarroceriaChoices.map((carro, index) => (
-                <option key={index} value={carro[0]}>
-                  {carro[1]}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="consumo" className="form-label">Consumo:</label>
-            <input type="text" className="form-control" id="consumo" name="consumo" value={vehiculo.consumo} onChange={handleChange} />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="tipo_cambio" className="form-label">Tipo de Cambio:</label><br />
-            <select name='tipo_cambio' onChange={handleChange}>
-              {tipoCambioChoices.map((cambio, index) => (
-                <option key={index} value={cambio[0]}>
-                  {cambio[1]}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label">Ubicación de tu vehículo</label>
-            <PlacesAutocomplete
-              value={address}
-              onChange={setAddress}
-              onSelect={handleSelect}
-            >
-              {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                <div>
-                  <input {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
-                  <div>
-                    {loading && <div>Cargando...</div>}
-                    {suggestions.map(suggestion => {
-                      return (
-                        <div key={suggestion.index} {...getSuggestionItemProps(suggestion)}>
-                          <span>{suggestion.description}</span>
-                          {/* {console.log(suggestion)} */}
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
+                    )}
+                </PlacesAutocomplete>
+              </div>
+              <div className="form-group mb-4 position-relative">
+
+
+              </div>
+            </div>
+            <div className='col-6'>
+              <div className="form-group mb-4 position-relative">
+                <label className="form-label">Imagenes de su vehiculo</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImagenesChange}
+                />
+              </div>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="rent-car-body">
+
+      <div className='container'>
+        <div className="row pt-5">
+
+          <div className="col-12 col-lg-7 bg-white">
+
+            <form className="form-container needs-validation p-4" noValidate>
+
+              <div className="text-end">
+                <LogoSvg width={'100px'} height={'100px'} />
+              </div>
+              <h1 className="mb-5 pt-4 text-center fs-3 fw-bold">Gana dinero compartiendo tu coche</h1>
+
+              {renderPageContent()}
+
+            </form>
+
+
+            <div className="d-flex justify-content-between">
+              {pagination > 0 && (
+                <button className="btn btn-primary w-25 mb-3" onClick={(e) => {
+                  e.preventDefault();
+                  setPagination(pagination - 1);
+                }}>Anterior</button>
               )}
-            </PlacesAutocomplete>
+              {pagination < 2 && (
+                <button className="btn btn-primary w-25 mb-3" onClick={(e) => {
+                  e.preventDefault();
+                  setPagination(pagination + 1);
+                }}>Siguiente</button>
+              )}
+              {pagination === 2 && (
+                <button className="btn btn-primary w-25 mb-3" onClick={handleSubmit}>Publicar Vehículo</button>
+              )}
+            </div>
+
+
           </div>
 
-          <div className="mb-3">
-            <label className="form-label">Imagenes de su vehiculo</label>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImagenesChange}
-            />
-          </div>
+          <div className="col-lg-5 d-none d-lg-block rent-car-image"></div>
+
         </div>
       </div>
-
-      <div className="text-center">
-        <button type="submit" className="btn btn-primary">Publicar Vehículo</button>
-      </div>
-    </form>
+    </div>
   )
 }

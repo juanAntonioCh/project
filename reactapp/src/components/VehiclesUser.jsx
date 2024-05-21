@@ -9,7 +9,7 @@ export const VehiclesUser = ({ vehiculos }) => {
     return (
         <>
             <div className="row bg-white p-4 vehicles-user-row">
-                
+
                 {vehiculos.map((vehi) => (
                     <div key={vehi.id} className="col-md-6 col-lg-3 mb-3">
                         <div className="card">
@@ -44,8 +44,11 @@ export const VehiclesUser = ({ vehiculos }) => {
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre}</h5>
-                                <Link to={`/edit-vehicle/${vehi.id}`} className="btn btn-primary">Editar</Link>
-                                <a href="#" className="btn btn-danger m-2">Eliminar</a>
+                                <div className='mt-3'>
+                                    <Link to={`/edit-vehicle/${vehi.id}`} className="btn btn-primary vehicles-user-edit">Editar</Link>
+                                    <a href="#" className="btn vehicles-user-delete fw-bold">Eliminar</a>
+                                </div>
+
                             </div>
                         </div>
                     </div>

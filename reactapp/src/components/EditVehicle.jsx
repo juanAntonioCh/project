@@ -200,10 +200,10 @@ export const EditVehicle = () => {
   return (
     <div className="login-body">
       {vehiculo && Object.keys(vehiculo).length > 0 && ( // Comprobamos si vehiculo no está vacío
-        <h1 className='text-center pt-4 edit-vehicle-h1'>Editar {marca} {modelo}</h1>
+        <h1 className='text-center pt-2 edit-vehicle-h1'>Editar {marca} {modelo}</h1>
       )}
 
-      <form onSubmit={handleSubmit} className="container mt-4 bg-white p-4 edit-vehicle-form">
+      <form onSubmit={handleSubmit} className="container mt-2 bg-white p-4 edit-vehicle-form">
         <div className="row">
           <div className="col-md-4">
             <div className="form-group mb-3">

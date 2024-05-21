@@ -139,9 +139,9 @@ export const EditVehicleImages = () => {
   return (
     <div className="login-body" >
       <div className='container'>
-        <h1 className='text-center pt-4 edit-vehicle-h1'>Editar imágenes</h1>
+        {/* <h1 className='text-center pt-1 edit-vehicle-h1'>Editar imágenes</h1> */}
 
-        <div className='row mt-4 bg-white p-4 edit-vehicle-imgs-row'>
+        <div className='row bg-white p-4 edit-vehicle-imgs-row'>
           {imagenes.length === 0 ? (
             <div>
               <p>No hay imágenes del vehículo.</p>
@@ -163,7 +163,7 @@ export const EditVehicleImages = () => {
                       <img src={imagen.imagen} className="card-img-top" alt={`Imagen ${imagen.id}`} />
                       <div className="card-body">
                         <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, imagen.id)} />
-                        <button className="btn btn-danger" onClick={() => deleteImage(imagen.id)}>Eliminar</button>
+                        <button className="btn fw-bold edit-vehicle-imgs-delete" onClick={() => deleteImage(imagen.id)}>Eliminar</button>
                       </div>
                     </div>
                   </div>
@@ -174,7 +174,7 @@ export const EditVehicleImages = () => {
                 <div className="card">
                   <div className="card-body">
                     <input className='mb-4' type="file" accept="image/*" onChange={(e) => addImage(e)} />
-                    <button onClick={submitImage} className="btn btn-info">Añadir imagen</button>
+                    <button onClick={submitImage} className="btn fw-bold edit-vehicle-imgs-add">Añadir imagen</button>
                   </div>
                 </div>
               </div>

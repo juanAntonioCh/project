@@ -59,7 +59,7 @@ export const VehicleList = ({ vehiculosPagina, vehiculos, rentDuration , setMaxP
                             <p>Precio del alquiler: {calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration)}</p>
                             <p>{vehi.tipo_carroceria}</p>
                             <p>{vehi.tipo_cambio}</p>
-                            <Link to={`/vehicle/${vehi.id}`} className="btn btn-primary">Ver más</Link>
+                            <Link to={`/vehicle/${vehi.id}`} className="btn fw-bold vehicle-list-ver-mas">Ver más</Link>
                         </div>
                     </div>
                 </div>

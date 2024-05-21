@@ -1,15 +1,51 @@
-.vehicles-user-row{
+.vehicles-user-delete {
+    color: #858585;
+    margin-left: 18px;
+}
+
+.vehicles-user-delete:hover {
+    border: 1px solid #eeeeee;
+}
+
+
+.vehicles-user-edit {
+    width: 110px;
+    font-weight: 500;
+}
+
+
+.vehicles-user-row {
     border-radius: 35px;
 }
 
-.edit-vehicle-h1{
+.edit-vehicle-h1 {
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-.edit-vehicle-form{
+.edit-vehicle-form {
     border-radius: 50px;
 }
 
-.edit-vehicle-imgs-row{
+.edit-vehicle-imgs-row {
     border-radius: 50px;
+}
+
+.edit-vehicle-imgs-delete {
+    color: rgb(228, 90, 90);
+    border: 2px solid #eeeeee;
+}
+
+.edit-vehicle-imgs-delete:hover{
+    color: rgb(221, 29, 29);
+    border: 2px solid #eeeeee;
+}
+
+.edit-vehicle-imgs-add{
+    color: #397a9f;
+    border: 2px solid #eeeeee;
+}
+
+.edit-vehicle-imgs-add:hover{
+    color: #135d88;
+    border: 2px solid #eeeeee;
 }

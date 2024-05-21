@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState('');
+  const navigate = useNavigate();
   const [error, setError] = useState('');
+  const [logoutMessage, setLogoutMessage] = useState('')
 
   useEffect(() => {
     console.log(error)
@@ -41,9 +44,9 @@ export const AuthProvider = ({ children }) => {
             }
           })
           setUser(response.data.id);
-          console.log('EL USUARIO ES  ', response.data)
-          console.log(response.data.id)
-          console.log(response)
+          //console.log('EL USUARIO ES  ', response.data)
+          //console.log(response.data.id)
+          //console.log(response)
 
         } catch (error) {
           console.error('Error al obtener los detalles del usuario', error);
@@ -63,11 +66,13 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    setLogoutMessage('Sesión finalizada')
     setIsAuthenticated(false);
+    navigate('/', { replace: true, state: { logoutMessage } });
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, user, logoutMessage, setLogoutMessage }}>
       {children}
     </AuthContext.Provider>
   )

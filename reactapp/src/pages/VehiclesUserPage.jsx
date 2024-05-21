@@ -22,11 +22,13 @@ export const VehiclesUserPage = () => {
     }, [])
 
     return (
-        <>
-            <h1>Mis vehiculos {id}</h1>
+        <div className="login-body">
+            <div className="container pt-5">
+                {/* <h1>Mis vehiculos {id}</h1> */}
 
-            <VehiclesUser vehiculos={vehis} />
+                <VehiclesUser vehiculos={vehis} />
 
-        </>
+            </div>
+        </div>
     )
 }

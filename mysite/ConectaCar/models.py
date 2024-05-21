@@ -79,11 +79,11 @@ class Vehicle(models.Model):
         default='gasolina',
     )
     
-    #autonomia = models.IntegerField(help_text="Autonomía estimada del vehículo en kilómetros.")
     consumo = models.DecimalField(max_digits=4,null=True, blank=True, decimal_places=2, help_text="Consumo de combustible del vehículo (litros/100 km).")
-    kilometraje = models.IntegerField(null=True, blank=True, help_text="Kilómetros que ha recorrido el vehículo.")
+    autonomia = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2,help_text="Autonomía estimada del vehículo en kilómetros.")
+    kilometraje = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2, help_text="Kilómetros que ha recorrido el vehículo.")
     numero_plazas = models.PositiveIntegerField(verbose_name="Número de plazas", default=5)
-    potencia = models.IntegerField(help_text="Número de caballos de fuerza (CV)", null=True)
+    #potencia = models.IntegerField(help_text="Número de caballos de fuerza (CV)", null=True)
 
     tipo_cambio = models.CharField(
         max_length=10,

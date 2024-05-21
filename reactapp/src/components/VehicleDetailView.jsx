@@ -107,7 +107,9 @@ export const VehicleDetailView = () => {
                         <p className="card-text"><strong>Matrícula:</strong> {vehicle.matricula}</p>
                         <p className="card-text"><strong>Color:</strong> {vehicle.color}</p>
                         <p className="card-text"><strong>Kilometraje:</strong> {vehicle.kilometraje} km</p>
-                        <p className="card-text"><strong>Consumo:</strong> {vehicle.consumo} <i>l/100</i></p>
+                        <p className="card-text"><strong>Consumo:</strong> {vehicle.consumo} 
+                        {vehicle.tipo_combustible === 'electrico' ? <i> kWh/100 km</i> : <i> l/100 km</i>}
+                        </p>
                         <p className="card-text"><strong>Combustible:</strong> {vehicle.tipo_combustible}</p>
                         <p className="card-text"><strong>Cambio:</strong> {vehicle.tipo_cambio}</p>
                         <p className="card-text"><strong>Carrocería:</strong> {vehicle.tipo_carroceria}</p>

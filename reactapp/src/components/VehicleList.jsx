@@ -55,7 +55,7 @@ export const VehicleList = ({ vehiculosPagina, vehiculos, rentDuration , setMaxP
                             )}
                         </div>
                         <div className="card-body">
-                            <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre} ({vehi.año})</h5>
+                            <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre}</h5>
                             <p>Precio del alquiler: {calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration)}</p>
                             <p>{vehi.tipo_carroceria}</p>
                             <p>{vehi.tipo_cambio}</p>

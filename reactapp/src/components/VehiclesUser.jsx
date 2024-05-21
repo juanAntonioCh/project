@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import '../styles/EditVehiclesStyles.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Navbar } from './Navbar';
 
@@ -7,9 +8,10 @@ export const VehiclesUser = ({ vehiculos }) => {
     console.log(vehiculos)
     return (
         <>
-            <div className="row">
+            <div className="row bg-white p-4 vehicles-user-row">
+                
                 {vehiculos.map((vehi) => (
-                    <div key={vehi.id} className="col-md-4 mb-4">
+                    <div key={vehi.id} className="col-md-6 col-lg-3 mb-3">
                         <div className="card">
                             <div id={`carousel${vehi.id}`} className="carousel slide" data-bs-ride="carousel">
                                 <div className="carousel-inner">
@@ -41,7 +43,7 @@ export const VehiclesUser = ({ vehiculos }) => {
                                 )}
                             </div>
                             <div className="card-body">
-                                <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre} ({vehi.año})</h5>
+                                <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre}</h5>
                                 <Link to={`/edit-vehicle/${vehi.id}`} className="btn btn-primary">Editar</Link>
                                 <a href="#" className="btn btn-danger m-2">Eliminar</a>
                             </div>

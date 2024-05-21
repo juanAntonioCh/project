@@ -1,15 +1,18 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 export const EditVehicleImages = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { user } = useContext(AuthContext)
   const [vehiculoId, setVehiculoId] = useState({});
+  const [vehiculo, setVehiculo] = useState({});
   const [newImage, setNewImage] = useState('');
   const [imagenes, setImagenes] = useState([]);
-  const [userId, setUserId] = useState('')
+  //const [userId, setUserId] = useState('')
   const [imagenesBack, setImagenesBack] = useState([]);
 
   useEffect(() => {
@@ -30,7 +33,7 @@ export const EditVehicleImages = () => {
         const { data } = await axios.get(`http://127.0.0.1:8000/api/vehicles/${id}`);
         setImagenes(data.imagenes);
         setImagenesBack(data.imagenes);
-        setUserId(data.propietario)
+        //setUserId(data.propietario)
         setVehiculoId(data.id)
         console.log(data);
       } catch (error) {
@@ -84,7 +87,7 @@ export const EditVehicleImages = () => {
         console.log(formData)
       }));
       console.log("Cambios guardados exitosamente");
-      navigate(`/my-vehicles/${userId}`)
+      navigate(`/my-vehicles/${user}`)
 
     } catch (error) {
       console.error("Error al guardar los cambios", error);
@@ -134,47 +137,56 @@ export const EditVehicleImages = () => {
 
 
   return (
-    <div>
-      <h1>Editar imágenes</h1>
-      {imagenes.length === 0 ? (
-        <div>
-          <p>No hay imágenes del vehículo.</p>
-          <div className="col-md-4 mb-4">
-            <div className="card">
-              <div className="card-body">
-                <input className='mb-4' type="file" accept="image/*" onChange={(e) => addImage(e)} />
-                <button onClick={submitImage} className="btn btn-info">Añadir imagen</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <div className="row">
-            {imagenes.map(imagen => (
-              <div key={imagen.id} className="col-md-4 mb-4">
+    <div className="login-body" >
+      <div className='container'>
+        <h1 className='text-center pt-4 edit-vehicle-h1'>Editar imágenes</h1>
+
+        <div className='row mt-4 bg-white p-4 edit-vehicle-imgs-row'>
+          {imagenes.length === 0 ? (
+            <div>
+              <p>No hay imágenes del vehículo.</p>
+              <div className="col-md-4 mb-4">
                 <div className="card">
-                  <img src={imagen.imagen} className="card-img-top" alt={`Imagen ${imagen.id}`} />
                   <div className="card-body">
-                    <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, imagen.id)} />
-                    <button className="btn btn-danger" onClick={() => deleteImage(imagen.id)}>Eliminar</button>
+                    <input className='mb-4' type="file" accept="image/*" onChange={(e) => addImage(e)} />
+                    <button onClick={submitImage} className="btn btn-info">Añadir imagen</button>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-          {/* Card vacío para añadir nueva imagen */}
-          <div className="col-md-4 mb-4">
-            <div className="card">
-              <div className="card-body">
-                <input className='mb-4' type="file" accept="image/*" onChange={(e) => addImage(e)} />
-                <button onClick={submitImage} className="btn btn-info">Añadir imagen</button>
+            </div>
+          ) : (
+            <div>
+              <div className="row">
+                {imagenes.map(imagen => (
+                  <div key={imagen.id} className="col-md-6 col-lg-4 mb-4">
+                    <div className="card">
+                      <img src={imagen.imagen} className="card-img-top" alt={`Imagen ${imagen.id}`} />
+                      <div className="card-body">
+                        <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, imagen.id)} />
+                        <button className="btn btn-danger" onClick={() => deleteImage(imagen.id)}>Eliminar</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {/* Card vacío para añadir nueva imagen */}
+              <div className="col-md-4 mb-4">
+                <div className="card">
+                  <div className="card-body">
+                    <input className='mb-4' type="file" accept="image/*" onChange={(e) => addImage(e)} />
+                    <button onClick={submitImage} className="btn btn-info">Añadir imagen</button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-center d-flex justify-content-center mt-4">
+                <button className="btn btn-primary" onClick={handleSubmit}>Guardar cambios</button>
+                <Link to={`/my-vehicles/${user}`} className="btn btn-secondary mx-3">Cancelar</Link>
               </div>
             </div>
-          </div>
-          <button className="btn btn-primary" onClick={handleSubmit}>Guardar cambios</button>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

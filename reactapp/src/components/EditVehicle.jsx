@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { useNavigate } from 'react-router-dom';
 import { getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
+import { AuthContext } from '../context/AuthContext';
 
 export const EditVehicle = () => {
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext)
   const { id } = useParams();
   const [listMarcas, setListMarcas] = useState([]);
   const [listModelos, setListModelos] = useState([]);
@@ -17,8 +19,8 @@ export const EditVehicle = () => {
   const [imagenes, setImagenes] = useState([])
   const [address, setAddress] = useState('');
   const [ubicacion, setUbicacion] = useState('')
-  const [marca, setMarca] =  useState('')
-  const [modelo, setModelo] =  useState('')
+  const [marca, setMarca] = useState('')
+  const [modelo, setModelo] = useState('')
   const [vehiculo, setVehiculo] = useState({})
 
   const obtenerUbicacion = async (latitud, longitud) => {
@@ -65,12 +67,14 @@ export const EditVehicle = () => {
           precio_por_hora: data.precio_por_hora,
           latitud: data.latitud,
           longitud: data.longitud,
+          autonomia: data.autonomia,
+          numero_plazas: data.numero_plazas,
           color: data.color,
           disponible: data.disponible
         });
         setMarca(data.marca_details.nombre)
         setModelo(data.modelo_details.nombre)
-        console.log(vehiculo)
+        //console.log(vehiculo)
 
         if (data.latitud && data.longitud) {
           await obtenerUbicacion(data.latitud, data.longitud);
@@ -90,8 +94,14 @@ export const EditVehicle = () => {
       const list_marcas = await getAllMarcas()
       const list_modelos = await getAllModelos()
       const choices = await getVehicleChoices()
+      console.log('22222222213232eer3r3 r ')
+      console.log(list_marcas)
+      const sortedMarcas = sortMarcas(list_marcas.data, vehiculo.marca_id);
+      console.log(vehiculo.marca_id)
+      console.log(sortedMarcas)
+      setListMarcas(sortedMarcas);
 
-      setListMarcas(list_marcas.data)
+      //setListMarcas(list_marcas.data)
       setListModelos(list_modelos.data)
 
       setTipoCarroceriaChoices(choices.data.tipo_carroceria)
@@ -102,11 +112,37 @@ export const EditVehicle = () => {
     loadData()
   }, [])
 
+  const sortMarcas = (marcas, marcaActual) => {
+    return marcas.sort((a, b) => {
+      if (a.id === marcaActual) return -1;
+      if (b.id === marcaActual) return 1;
+      return 0;
+    });
+  };
+
 
   async function loadModelos(id_marca) {
     const list_modelos = await getModelosMarca(id_marca)
     setListModelos(list_modelos.data)
   }
+
+  useEffect(() => {
+    //console.log('*********************************')
+    //console.log(listMarcas)
+    //console.log(listModelos)
+    if (listMarcas.length > 0) {
+
+      loadModelos(listMarcas[0].id)
+      const marcaId = listMarcas[0].id;
+      console.log(listMarcas[0].id)
+      console.log(marcaId)
+
+      // setVehiculo({
+      //   ...vehiculo,
+      //   marca_id: marcaId,
+      // })
+    }
+  }, [listMarcas]);
 
   const handleChange = (e) => {
     setVehiculo({
@@ -162,15 +198,15 @@ export const EditVehicle = () => {
 
 
   return (
-    <>
+    <div className="login-body">
       {vehiculo && Object.keys(vehiculo).length > 0 && ( // Comprobamos si vehiculo no está vacío
-        <h1>Editar {marca} {modelo}</h1>
+        <h1 className='text-center pt-4 edit-vehicle-h1'>Editar {marca} {modelo}</h1>
       )}
 
-      <form onSubmit={handleSubmit} className="container mt-4">
+      <form onSubmit={handleSubmit} className="container mt-4 bg-white p-4 edit-vehicle-form">
         <div className="row">
           <div className="col-md-4">
-            <div className="mb-3">
+            <div className="form-group mb-3">
               <label htmlFor="marca" className="form-label">Marca:</label><br />
               <select name='marca' onChange={handleChangeMarca}>
                 {listMarcas.map(marca => (
@@ -181,7 +217,7 @@ export const EditVehicle = () => {
               </select>
             </div>
 
-            <div className="mb-3">
+            <div className="form-group mb-3">
               <label htmlFor="modelo" className="form-label">Modelo:</label><br />
               <select name='modelo' onChange={handleChangeModelo}>
                 {listModelos.map(modelo => (
@@ -192,17 +228,17 @@ export const EditVehicle = () => {
               </select>
             </div>
 
-            <div className="mb-3">
+            <div className="form-group mb-3">
               <label htmlFor="año" className="form-label">Año:</label>
-              <input type="number" className="form-control" id="año" name="año" defaultValue={vehiculo.año} onChange={handleChange} />
+              <input type="number" className="form-control w-50" id="año" name="año" defaultValue={vehiculo.año} onChange={handleChange} />
             </div>
 
-            <div className="mb-3">
+            <div className="form-group mb-3">
               <label htmlFor="matricula" className="form-label">Matrícula:</label>
-              <input type="text" className="form-control" id="matricula" name="matricula" defaultValue={vehiculo.matricula} onChange={handleChange} />
+              <input type="text" className="form-control w-50" id="matricula" name="matricula" defaultValue={vehiculo.matricula} onChange={handleChange} />
             </div>
 
-            <div className="mb-3">
+            <div className="form-group mb-3">
               <label htmlFor="tipo_combustible" className="form-label">Tipo de Combustible:</label><br />
               <p>ACTUAL: {vehiculo.tipo_combustible}</p>
               <select name='tipo_combustible' onChange={handleChange}>
@@ -214,25 +250,25 @@ export const EditVehicle = () => {
               </select>
             </div>
 
-            <div className="mb-3">
+            <div className="form-group mb-3">
               <label htmlFor="kilometraje" className="form-label">Kilometraje:</label>
-              <input type="text" className="form-control" id="kilometraje" name="kilometraje" defaultValue={vehiculo.kilometraje} onChange={handleChange} />
+              <input type="text" className="form-control w-50" id="kilometraje" name="kilometraje" defaultValue={vehiculo.kilometraje} onChange={handleChange} />
             </div>
           </div>
 
 
           <div className="col-md-4">
-            <div className="mb-3">
+            <div className="form-group mb-3">
               <label htmlFor="precio_por_hora" className="form-label">Precio por Hora:</label>
-              <input type="text" className="form-control" id="precio_por_hora" name="precio_por_hora" defaultValue={vehiculo.precio_por_hora} onChange={handleChange} />
+              <input type="text" className="form-control w-50" id="precio_por_hora" name="precio_por_hora" defaultValue={vehiculo.precio_por_hora} onChange={handleChange} />
             </div>
 
-            <div className="mb-3">
+            <div className="form-group mb-3">
               <label htmlFor="descripcion" className="form-label">Descripción:</label>
-              <textarea className="form-control" id="descripcion" name="descripcion" rows="3" defaultValue={vehiculo.descripcion} onChange={handleChange}></textarea>
+              <textarea className="form-control w-75" id="descripcion" name="descripcion" rows="3" defaultValue={vehiculo.descripcion} onChange={handleChange}></textarea>
             </div>
 
-            <div className="mb-3">
+            <div className="form-group mb-3">
               <label htmlFor="tipo_carroceria" className="form-label">Tipo de Carrocería:</label><br />
               <p>ACTUAL: {vehiculo.tipo_carroceria}</p>
               <select name='tipo_carroceria' onChange={handleChange}>
@@ -244,12 +280,12 @@ export const EditVehicle = () => {
               </select>
             </div>
 
-            <div className="mb-3">
+            <div className="form-group  mb-3">
               <label htmlFor="consumo" className="form-label">Consumo:</label>
-              <input type="text" className="form-control" id="consumo" name="consumo" defaultValue={vehiculo.consumo} onChange={handleChange} />
+              <input type="text" className="form-control w-50" id="consumo" name="consumo" defaultValue={vehiculo.consumo} onChange={handleChange} />
             </div>
 
-            <div className="mb-3">
+            <div className="form-group mb-3">
               <label htmlFor="tipo_cambio" className="form-label">Tipo de Cambio:</label><br />
               <p>ACTUAL: {vehiculo.tipo_cambio}</p>
               <select name='tipo_cambio' onChange={handleChange}>
@@ -263,7 +299,18 @@ export const EditVehicle = () => {
           </div>
 
           <div className="col-md-4">
-            <div className="mb-5">
+            <div className="form-group mb-4">
+              <label htmlFor="kilometraje" className="form-label">Autonomía:</label>
+              <input type="number" className="form-control w-50" id="autonomia" name="autonomia" value={vehiculo.autonomia} onChange={handleChange}
+                min={0} max={999} />
+            </div>
+
+            <div className="form-group mb-4">
+              <label htmlFor="numero_plazas" className="form-label">Número de Plazas:</label>
+              <input type="number" className="form-control w-50" id="numero_plazas" name="numero_plazas" value={vehiculo.numero_plazas} onChange={handleChange}
+                min="0" max="9" />
+            </div>
+            <div className="form-group mb-4">
               <label className="form-label">Ubicación de tu vehículo</label>
               <p>ACTUAL: {ubicacion}</p>
               <PlacesAutocomplete
@@ -290,16 +337,17 @@ export const EditVehicle = () => {
               </PlacesAutocomplete>
             </div>
 
-            <Link to={`/edit-vehicle/images/${vehiculo.id}`} className="btn btn-secondary m-5">Editar las imágenes</Link>
-
           </div>
         </div>
 
-        <div className="text-center">
-          <button type="submit" className="btn btn-primary">Guardar cambios</button>
+        <div className="text-center d-flex justify-content-center mt-4">
+          <button type="submit" className="btn btn-primary mx-3">Guardar cambios</button>
+          <Link to={`/my-vehicles/${user}`} className="btn btn-secondary mx-3">Cancelar</Link>
+          <Link to={`/edit-vehicle/images/${vehiculo.id}`} className="btn btn-secondary mx-3">Editar las imágenes</Link>
         </div>
+
       </form>
 
-    </>
+    </div>
   )
 }

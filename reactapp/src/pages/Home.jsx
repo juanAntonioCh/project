@@ -8,35 +8,37 @@ import { BuscadorVehiculos } from '../components/BuscadorVehiculos'
 
 export const Home = () => {
   const { isAuthenticated, logout, user, logoutMessage, setLogoutMessage } = useContext(AuthContext);
+  const location = useLocation()
+  const [successMessage, setSuccessMessage] = useState('')
   const [error, setError] = useState('');
 
+  const message = location.state && location.state.successMessage
+  console.log(message)
   console.log('MENSAJE DE LOGOUT: ', logoutMessage)
-
-
-  useEffect(() => {
-    console.log(error)
-  }, [error])
 
   const handleCloseAlert = () => {
     setError(null);
+    setLogoutMessage(null)
   };
 
   useEffect(() => {
     let timeout;
-    if (error || logoutMessage) {
+    if (error || logoutMessage || successMessage) {
       timeout = setTimeout(() => {
         setError(null);
         setLogoutMessage(null)
+        setSuccessMessage(null)
       }, 4000);
     }
     return () => clearTimeout(timeout);
-  }, [error, logoutMessage]);
+  }, [error, logoutMessage, successMessage]);
 
   console.log(isAuthenticated)
   console.log(user)
 
   useEffect(() => {
     localStorage.removeItem('coordenadas')
+    setSuccessMessage(message)
   }, [])
 
   return (
@@ -46,6 +48,13 @@ export const Home = () => {
           <div className="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>{error}</strong>
             <button type="button" className="btn-close login-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
+          </div>
+        </div>
+      )}
+      {successMessage && (
+        <div className="alert-container d-flex justify-content-end pt-4">
+          <div className="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{successMessage}</strong>
           </div>
         </div>
       )}

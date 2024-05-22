@@ -17,6 +17,7 @@ export const EditVehicle = () => {
   const [tipoCambioChoices, setTipoCambioChoices] = useState([])
   const [tipoCombustibleChoices, setTipoCombustibleChoices] = useState([])
   const [imagenes, setImagenes] = useState([])
+  //const [successMessage, setSuccessMessage] = useState('')
   const [address, setAddress] = useState('');
   const [ubicacion, setUbicacion] = useState('')
   const [marca, setMarca] = useState('')
@@ -96,10 +97,10 @@ export const EditVehicle = () => {
       const choices = await getVehicleChoices()
       console.log('22222222213232eer3r3 r ')
       console.log(list_marcas)
-      const sortedMarcas = sortMarcas(list_marcas.data, vehiculo.marca_id);
-      console.log(vehiculo.marca_id)
-      console.log(sortedMarcas)
-      setListMarcas(sortedMarcas);
+      // const sortedMarcas = sortMarcas(list_marcas.data, vehiculo.marca_id);
+      // console.log(vehiculo.marca_id)
+      // console.log(sortedMarcas)
+      setListMarcas(list_marcas.data);
 
       //setListMarcas(list_marcas.data)
       setListModelos(list_modelos.data)
@@ -112,13 +113,13 @@ export const EditVehicle = () => {
     loadData()
   }, [])
 
-  const sortMarcas = (marcas, marcaActual) => {
-    return marcas.sort((a, b) => {
-      if (a.id === marcaActual) return -1;
-      if (b.id === marcaActual) return 1;
-      return 0;
-    });
-  };
+  // const sortMarcas = (marcas, marcaActual) => {
+  //   return marcas.sort((a, b) => {
+  //     if (a.id === marcaActual) return -1;
+  //     if (b.id === marcaActual) return 1;
+  //     return 0;
+  //   });
+  // };
 
 
   async function loadModelos(id_marca) {
@@ -126,23 +127,15 @@ export const EditVehicle = () => {
     setListModelos(list_modelos.data)
   }
 
-  useEffect(() => {
-    //console.log('*********************************')
-    //console.log(listMarcas)
-    //console.log(listModelos)
-    if (listMarcas.length > 0) {
+  // useEffect(() => {
+  //   if (listMarcas.length > 0) {
+  //     loadModelos(listMarcas[0].id)
+  //     const marcaId = listMarcas[0].id;
+  //     console.log(listMarcas[0].id)
+  //     console.log(marcaId)
+  //   }
+  // }, [listMarcas]);
 
-      loadModelos(listMarcas[0].id)
-      const marcaId = listMarcas[0].id;
-      console.log(listMarcas[0].id)
-      console.log(marcaId)
-
-      // setVehiculo({
-      //   ...vehiculo,
-      //   marca_id: marcaId,
-      // })
-    }
-  }, [listMarcas]);
 
   const handleChange = (e) => {
     setVehiculo({
@@ -188,7 +181,8 @@ export const EditVehicle = () => {
     try {
       // Enviar los datos actualizados del vehículo al backend
       await axios.put(`http://127.0.0.1:8000/api/vehicles/${vehiculo.id}/`, vehiculo);
-      navigate(`/my-vehicles/${vehiculo.propietario_id}`)
+      const successMessage = `${marca} ${modelo} editado con éxito.`
+      navigate(`/my-vehicles/${vehiculo.propietario_id}`, { state: { successMessage } })
       // Redirigir o mostrar un mensaje de éxito
     } catch (error) {
       console.error("Error updating vehicle", error);
@@ -208,7 +202,7 @@ export const EditVehicle = () => {
           <div className="col-md-4">
             <div className="form-group mb-3">
               <label htmlFor="marca" className="form-label">Marca:</label><br />
-              <select name='marca' onChange={handleChangeMarca}>
+              <select name='marca_id' value={vehiculo.marca_id} onChange={handleChangeMarca}>
                 {listMarcas.map(marca => (
                   <option key={marca.id} value={marca.id}>
                     {marca.nombre}
@@ -219,7 +213,7 @@ export const EditVehicle = () => {
 
             <div className="form-group mb-3">
               <label htmlFor="modelo" className="form-label">Modelo:</label><br />
-              <select name='modelo' onChange={handleChangeModelo}>
+              <select name='marca_id' value={vehiculo.modelo_id} onChange={handleChange}>
                 {listModelos.map(modelo => (
                   <option key={modelo.id} value={modelo.id}>
                     {modelo.nombre}
@@ -240,8 +234,7 @@ export const EditVehicle = () => {
 
             <div className="form-group mb-3">
               <label htmlFor="tipo_combustible" className="form-label">Tipo de Combustible:</label><br />
-              <p>ACTUAL: {vehiculo.tipo_combustible}</p>
-              <select name='tipo_combustible' onChange={handleChange}>
+              <select name='tipo_combustible' value={vehiculo.tipo_combustible} onChange={handleChange}>
                 {tipoCombustibleChoices.map((combus, index) => (
                   <option key={index} value={combus[0]}>
                     {combus[1]}
@@ -250,9 +243,10 @@ export const EditVehicle = () => {
               </select>
             </div>
 
+
             <div className="form-group mb-3">
               <label htmlFor="kilometraje" className="form-label">Kilometraje:</label>
-              <input type="text" className="form-control w-50" id="kilometraje" name="kilometraje" defaultValue={vehiculo.kilometraje} onChange={handleChange} />
+              <input type="number" className="form-control w-50" id="kilometraje" name="kilometraje" defaultValue={vehiculo.kilometraje} onChange={handleChange} />
             </div>
           </div>
 
@@ -270,8 +264,7 @@ export const EditVehicle = () => {
 
             <div className="form-group mb-3">
               <label htmlFor="tipo_carroceria" className="form-label">Tipo de Carrocería:</label><br />
-              <p>ACTUAL: {vehiculo.tipo_carroceria}</p>
-              <select name='tipo_carroceria' onChange={handleChange}>
+              <select name='tipo_carroceria' value={vehiculo.tipo_carroceria} onChange={handleChange}>
                 {tipoCarroceriaChoices.map((carro, index) => (
                   <option key={index} value={carro[0]}>
                     {carro[1]}
@@ -287,8 +280,7 @@ export const EditVehicle = () => {
 
             <div className="form-group mb-3">
               <label htmlFor="tipo_cambio" className="form-label">Tipo de Cambio:</label><br />
-              <p>ACTUAL: {vehiculo.tipo_cambio}</p>
-              <select name='tipo_cambio' onChange={handleChange}>
+              <select name='tipo_cambio' value={vehiculo.tipo_cambio} onChange={handleChange}>
                 {tipoCambioChoices.map((cambio, index) => (
                   <option key={index} value={cambio[0]}>
                     {cambio[1]}
@@ -301,14 +293,14 @@ export const EditVehicle = () => {
           <div className="col-md-4">
             <div className="form-group mb-4">
               <label htmlFor="kilometraje" className="form-label">Autonomía:</label>
-              <input type="number" className="form-control w-50" id="autonomia" name="autonomia" value={vehiculo.autonomia} onChange={handleChange}
+              <input type="number" className="form-control w-50" id="autonomia" name="autonomia" defaultValue={vehiculo.autonomia} onChange={handleChange}
                 min={0} max={999} />
             </div>
 
             <div className="form-group mb-4">
               <label htmlFor="numero_plazas" className="form-label">Número de Plazas:</label>
-              <input type="number" className="form-control w-50" id="numero_plazas" name="numero_plazas" value={vehiculo.numero_plazas} onChange={handleChange}
-                min="0" max="9" />
+              <input type="number" className="form-control w-50" id="numero_plazas" name="numero_plazas" defaultValue={vehiculo.numero_plazas} onChange={handleChange}
+                min="1" max="9" />
             </div>
             <div className="form-group mb-4">
               <label className="form-label">Ubicación de tu vehículo</label>
@@ -319,19 +311,23 @@ export const EditVehicle = () => {
                 onSelect={handleSelect}
               >
                 {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                  <div>
-                    <input {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
-                    <div>
-                      {loading && <div>Cargando...</div>}
-                      {suggestions.map(suggestion => {
-                        return (
-                          <div key={suggestion.index} {...getSuggestionItemProps(suggestion)}>
-                            <span>{suggestion.description}</span>
-                            {/* {console.log(suggestion)} */}
-                          </div>
-                        );
-                      })}
+                  <div className="form-inline d-flex">
+                    <div className="flex-grow-1 position-relative">
+                      <input className='form-control' {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
+
+                      <div className='suggestions-container'>
+                        {loading && <div className="loading">Cargando...</div>}
+                        {suggestions.map((suggestion, index) => {
+                          const className = suggestion.active ? 'suggestion-item active' : 'suggestion-item';
+                          return (
+                            <div key={index} className={className} onClick={() => getSuggestionItemProps(suggestion)}>
+                              <span>{suggestion.description}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
+
                   </div>
                 )}
               </PlacesAutocomplete>

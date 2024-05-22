@@ -150,7 +150,7 @@ export const RentCar = () => {
 
   const validarVehiculo = () => {
     for (let key in vehiculo) {
-      if (vehiculo[key] === '') {
+      if (vehiculo[key] === '' && key !== 'descripcion') {
         return false;
       }
     }
@@ -187,7 +187,8 @@ export const RentCar = () => {
         }
       });
       console.log(response.data);
-      navigate('/')
+      const successMessage = `Vehículo publicado con éxito`
+      navigate('/home', { state: { successMessage } })
     } catch (error) {
       console.error('Error al enviar el formulario:', error.response);
     }
@@ -260,7 +261,7 @@ export const RentCar = () => {
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="kilometraje" className="form-label">Autonomía:</label>
                 <input type="number" className="form-control" id="autonomia" name="autonomia" value={vehiculo.autonomia} onChange={handleChange}
-                min={0} max={999} />
+                  min={0} max={999} />
                 <small className="form-text text-muted">Introduce la autonomía estimada del vehículo en kilómetros con un tanque de combustible lleno.</small>
               </div>
             </div>
@@ -318,8 +319,8 @@ export const RentCar = () => {
               </div>
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="numero_plazas" className="form-label">Número de Plazas:</label>
-                <input type="number" className="form-control" id="numero_plazas" name="numero_plazas" value={vehiculo.numero_plazas}onChange={handleChange}
-                  min="0" max="9"/>
+                <input type="number" className="form-control" id="numero_plazas" name="numero_plazas" value={vehiculo.numero_plazas} onChange={handleChange}
+                  min="1" max="9" />
                 <small className="form-text text-muted">Introduce el número de plazas disponibles en el vehículo (máximo 9).</small>
               </div>
             </div>
@@ -332,7 +333,7 @@ export const RentCar = () => {
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="descripcion" className="form-label">Descripción:</label>
                 <textarea className="form-control" id="descripcion" name="descripcion" rows="4" value={vehiculo.descripcion} onChange={handleChange}></textarea>
-                <small className="form-text text-muted">Introduce una breve descripción del vehículo.</small>
+                <small className="form-text text-muted">Introduce una breve descripción del vehículo (opcional).</small>
               </div>
             </div>
           </div>
@@ -380,6 +381,7 @@ export const RentCar = () => {
               <div className="form-group mb-4 position-relative">
                 <label className="form-label">Imagenes de su vehiculo</label>
                 <input
+                  value={imagenes}
                   type="file"
                   accept="image/*"
                   multiple

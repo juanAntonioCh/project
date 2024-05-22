@@ -25,18 +25,18 @@ export const VehicleList = ({ vehiculosPagina, vehiculos, rentDuration , setMaxP
 
             {vehiculosPagina.map((vehi) => (
                 <div key={vehi.id} className="col-6 col-sm-4 col-md-6 col-lg-4 mb-4">
-                    <div className="card h-100">
+                    <div className="card h-100 vehicle-list-card">
                         <div id={`carousel${vehi.id}`} className="carousel slide">
                             <div className="carousel-inner">
 
                                 {vehi.imagenes.length > 0 ? (
                                     vehi.imagenes.map((imagen, index) => (
-                                        <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                        <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''} vehicle-list-carousel-item`}>
                                             <img src={imagen.imagen} className="d-block w-100 card-img-top" alt={`Imagen ${index + 1} de ${vehi.marca_details.nombre} ${vehi.modelo_details.nombre}`} />
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="carousel-item active">
+                                    <div className="carousel-item active vehicle-list-carousel-item">
                                         <img src='https://gomore.imgix.net/images/default_car_picture.png?ixlib=rails-2.1.2&amp;w=560&amp;h=373' className="d-block w-100 card-img-top img-responsive h-auto br2" alt="Imagen por defecto" loading="lazy"></img>
                                     </div>
                                 )}
@@ -57,6 +57,8 @@ export const VehicleList = ({ vehiculosPagina, vehiculos, rentDuration , setMaxP
                         <div className="card-body">
                             <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre}</h5>
                             <p>Precio del alquiler: {calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration)}</p>
+                            <p>{vehi.tipo_combustible}</p>
+                            <p>{vehi.numero_plazas}</p>
                             <p>{vehi.tipo_carroceria}</p>
                             <p>{vehi.tipo_cambio}</p>
                             <Link to={`/vehicle/${vehi.id}`} className="btn fw-bold vehicle-list-ver-mas">Ver más</Link>

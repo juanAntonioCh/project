@@ -12,19 +12,19 @@ export const VehiclesUser = ({ vehiculos }) => {
 
                 {vehiculos.map((vehi) => (
                     <div key={vehi.id} className="col-md-6 col-lg-3 mb-3">
-                        <div className="card">
+                        <div className="card vehicle-list-card">
                             <div id={`carousel${vehi.id}`} className="carousel slide" data-bs-ride="carousel">
                                 <div className="carousel-inner">
 
                                     {vehi.imagenes.length > 0 ? (
                                         vehi.imagenes.map((imagen, index) => (
-                                            <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                            <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''} vehicle-list-carousel-item`}>
                                                 <img src={imagen.imagen} className="d-block w-100 card-img-top" alt={`Imagen ${index + 1} de ${vehi.marca_details.nombre} ${vehi.modelo_details.nombre}`} />
                                             </div>
                                         ))
                                     ) : (
-                                        <div className="carousel-item active">
-                                            <img src="https://gomore.imgix.net/images/default_car_picture.png?ixlib=rails-2.1.2&amp;w=560&amp;h=373" className="d-block w-100 card-img-top img-responsive w-100% h-auto br2" alt="Imagen por defecto" loading="lazy"></img>
+                                        <div className="carousel-item active  vehicle-list-carousel-item">
+                                            <img src="https://gomore.imgix.net/images/default_car_picture.png?ixlib=rails-2.1.2&amp;w=560&amp;h=373" className="d-block w-100 card-img-top" alt="Imagen por defecto" loading="lazy"></img>
                                         </div>
                                     )}
 
@@ -44,7 +44,7 @@ export const VehiclesUser = ({ vehiculos }) => {
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre}</h5>
-                                <div className='mt-3'>
+                                <div className='text-center d-flex justify-content-center mt-3'>
                                     <Link to={`/edit-vehicle/${vehi.id}`} className="btn btn-primary vehicles-user-edit">Editar</Link>
                                     <a href="#" className="btn vehicles-user-delete fw-bold">Eliminar</a>
                                 </div>

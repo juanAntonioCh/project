@@ -9,9 +9,10 @@ import { VehiclesContext } from '../context/VehiclesContext';
 
 export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
     const { showMarca, showCarroceria, listMarcas, handleCloseMarca, handleCloseCarroceria, handleShowCarroceria, handleShowMarca,
-        handleMarcaChange, aplicarFiltrosGlobal, tipoCarroceriaChoices, tipoCambioChoices, marcasSeleccionadas, setMarcasSeleccionadas, handleCambioChange,
-        marca, setMarca, handleCarroceriaChange, carroceriasSeleccionadas, carroceria, handleCloseCambio, handleShowCambio,
-        showCambio, cambiosSeleccionados, handleCloseMoreFilters, handleShowMoreFilters, showMoreFilters, } = UseFiltros()
+        handleMarcaChange, aplicarFiltrosGlobal, tipoCarroceriaChoices, tipoCombustibleChoices, tipoCambioChoices, marcasSeleccionadas, setMarcasSeleccionadas, handleCambioChange,
+        marca, setMarca, handleCarroceriaChange, carroceriasSeleccionadas, handleCloseCambio, handleShowCambio, combustiblesSeleccionados,
+        showCambio, cambiosSeleccionados, handleCloseMoreFilters, handleShowMoreFilters, showMoreFilters, handleNumPlazasChange, numPlazas,
+        handleCombustibleChange } = UseFiltros()
 
     //const { vehiculosFiltrados, vehiculosIniciales } = useContext(VehiclesContext)
 
@@ -35,7 +36,7 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
                                     type="checkbox"
                                     id={marca.id}
                                     name={marca.nombre}
-                                    value={marca.id}                                
+                                    value={marca.id}
                                     checked={marcasSeleccionadas.includes(marca.id)}
                                     onChange={handleMarcaChange}
                                 />
@@ -136,8 +137,28 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <h5>Tipo de combustible</h5>
+                    {tipoCombustibleChoices.map((combus) => (
+                        <div className='col-5' key={combus[0]}>
+                            <input
+                                type="checkbox"
+                                id={combus[0]}
+                                name={combus[0]}
+                                value={combus[0]}
+                                checked={combustiblesSeleccionados.includes(combus[0])}
+                                onChange={handleCombustibleChange}
+                            />
+                            <label htmlFor={combus[0]}>{combus[1]}</label>
+                        </div>
+                    ))}
                     <hr />
                     <h5>Numero de asientos</h5>
+                    <input
+                        type="number"
+                        onChange={handleNumPlazasChange}
+                        placeholder="Ingrese el número de asientos"
+                        min={1}
+                        max={9}
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseMoreFilters}>

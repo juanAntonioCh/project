@@ -1,34 +1,57 @@
-.card .carousel-inner img {
-    max-height: 200px; /* Establece una altura máxima para las imágenes */
-    object-fit: cover; /* Ajusta la imagen para que cubra el contenedor */
-  }
+.vehicle-list-card .carousel-inner img {
+  /* max-height: 200px; */
+  object-fit: cover;
+  /* Ajusta la imagen para que cubra el contenedor */
+}
 
-  /* .card{
+.vehicle-detail-card .carousel-inner img {
+  object-fit: cover;
+}
+
+.vehicle-detail-card .carousel-inner {
+  border-radius: 20px;
+}
+
+
+.vehicle-list-carousel-item {
+  height: 150px;
+  overflow: hidden;
+}
+
+.vehicle-detail-carousel-item {
+  height: 400px;
+  overflow: hidden;
+}
+
+.vehicle-list-carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.vehicle-detail-carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+.vehicle-list-ver-mas {
+  color: #1c7abc;
+  border: 3px solid #c7deee;
+}
+
+.vehicle-list-ver-mas:hover {
+  color: #05426d;
+  border: 3px solid #a6becf;
+}
+
+
+
+/* .card{
     transition: transform 0.3s;
   }
 
 .card:hover{
     transform: scale(1.03);
 } */
-
-
-.carousel-item {
-    height: 150px; 
-    overflow: hidden; 
-}
-
-.carousel-item img {
-    width: 100%; 
-    height: 100%; 
-    object-fit: contain; 
-}
-
-.vehicle-list-ver-mas{
-  color: #1c7abc;
-  border: 3px solid #c7deee;
-}
-
-.vehicle-list-ver-mas:hover{
-  color: #05426d;
-  border: 3px solid #a6becf;
-}

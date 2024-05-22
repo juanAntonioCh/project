@@ -57,13 +57,13 @@ export const VehicleDetailView = () => {
 
     return (
         <div className="container mt-4">
-            <div className='row'>
+            <div className='row vehicle-detail-card'>
                 <div id={`carouselVehicleImages`} className="carousel slide col-6" data-bs-ride="carousel">
                     
                     <div className="carousel-inner">
                         {vehicle.imagenes.length > 0 ? (
                             vehicle.imagenes.map((imagen, index) => (
-                                <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''} vehicle-detail-carousel-item`}>
                                     <img src={imagen.imagen} className="d-block w-100" alt={`Imagen de ${vehicle.marca_details.nombre} ${vehicle.modelo_details.nombre}`} />
                                 </div>
                             ))
@@ -107,6 +107,7 @@ export const VehicleDetailView = () => {
                         <p className="card-text"><strong>Matrícula:</strong> {vehicle.matricula}</p>
                         <p className="card-text"><strong>Color:</strong> {vehicle.color}</p>
                         <p className="card-text"><strong>Kilometraje:</strong> {vehicle.kilometraje} km</p>
+                        <p className="card-text"><strong>Autonomía:</strong> {vehicle.autonomia} km</p>
                         <p className="card-text"><strong>Consumo:</strong> {vehicle.consumo} 
                         {vehicle.tipo_combustible === 'electrico' ? <i> kWh/100 km</i> : <i> l/100 km</i>}
                         </p>

@@ -31,12 +31,12 @@ export const BuscadorVehiculos = ({setError}) => {
             return;
         }
         if (!startDate) {
-            setError('Por favor, selecciona una fecha de inicio.')
+            setError('Por favor, selecciona una fecha de recogida.')
             return;
         }
 
         if (!startHour) {
-            setError('Por favor, selecciona una hora de inicio.')
+            setError('Por favor, selecciona una hora de recogida.')
             return;
         }
 
@@ -47,16 +47,16 @@ export const BuscadorVehiculos = ({setError}) => {
 
         if (startDateAsDate < currentDate) {
             console.log('Fecha seleccionada ', startDate, ' Hora seleccionada ', startHour)
-            setError('La fecha de inicio no puede ser anterior a la fecha actual.')
+            setError('La fecha de recogida no puede ser anterior a la fecha actual.')
             return;
         }
 
         if (!endDate) {
-            setError('Por favor, selecciona una fecha de fin.')
+            setError('Por favor, selecciona una fecha de devolución.')
             return;
         }
         if (!endHour) {
-            setError('Por favor, selecciona una hora de fin.')
+            setError('Por favor, selecciona una hora de devolución.')
             return;
         }
 
@@ -66,7 +66,7 @@ export const BuscadorVehiculos = ({setError}) => {
 
         if (endDateAsDate < startDateAsDate) {
             console.log('Fecha seleccionada ', endDate, ' Hora seleccionada ', endHour)
-            setError('La fecha de fin no puede ser anterior a la fecha de inicio.')
+            setError('La fecha de devolución no puede ser anterior a la fecha de recogida.')
             return;
         }
 

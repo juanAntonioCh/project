@@ -31,21 +31,39 @@
 }
 
 .edit-vehicle-imgs-delete {
+    background-color: #fff;
     color: rgb(228, 90, 90);
     border: 2px solid #eeeeee;
 }
 
-.edit-vehicle-imgs-delete:hover{
+.edit-vehicle-imgs-delete:hover {
+    background-color: #fff;
     color: rgb(221, 29, 29);
     border: 2px solid #eeeeee;
 }
 
-.edit-vehicle-imgs-add{
+.edit-vehicle-imgs-add {
     color: #397a9f;
     border: 2px solid #eeeeee;
 }
 
-.edit-vehicle-imgs-add:hover{
+.edit-vehicle-imgs-add:hover {
     color: #135d88;
     border: 2px solid #eeeeee;
+}
+
+.edit-vehicle-imgs-card-imgs {
+    height: 280px;
+}
+
+
+.edit-vehicle-imgs-card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.edit-vehicle-imgs-card-img-top {
+    height: 160px;
+    object-fit: contain;
 }

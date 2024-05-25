@@ -21,7 +21,7 @@ export const VehiclesUserPage = () => {
         if (successMessage) {
             timeout = setTimeout(() => {
                 setSuccessMessage(null)
-            }, 4000);
+            }, 4500);
         }
         return () => clearTimeout(timeout);
     }, [successMessage]);
@@ -54,7 +54,7 @@ export const VehiclesUserPage = () => {
             <div className="container pt-5">
                 {/* <h1>Mis vehiculos {id}</h1> */}
 
-                <VehiclesUser vehiculos={vehis} />
+                <VehiclesUser vehiculos={vehis} setVehiculos={setVehis} setMensaje={setSuccessMessage}/>
 
             </div>
         </div>

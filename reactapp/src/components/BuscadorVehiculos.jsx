@@ -12,7 +12,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import '../styles/BuscadorVehiculos.css'
 import { UseBuscador } from '../hooks/UseBuscador';
 
-export const BuscadorVehiculos = ({setError}) => {
+export const BuscadorVehiculos = ({ setError }) => {
     const navigate = useNavigate();
     const { startDate, endDate,
         startHour, endHour,

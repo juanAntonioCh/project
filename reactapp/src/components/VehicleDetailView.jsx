@@ -123,7 +123,7 @@ export const VehicleDetailView = () => {
                             googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
                             <GoogleMap
                                 mapContainerStyle={mapStyles}
-                                zoom={15}
+                                zoom={16}
                                 center={{ lat: vehicle.latitud, lng: vehicle.longitud }}
                                 onLoad={handleLoad}
                             >

@@ -11,8 +11,8 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
     const { showMarca, showCarroceria, listMarcas, handleCloseMarca, handleCloseCarroceria, handleShowCarroceria, handleShowMarca,
         handleMarcaChange, aplicarFiltrosGlobal, tipoCarroceriaChoices, tipoCombustibleChoices, tipoCambioChoices, marcasSeleccionadas, setMarcasSeleccionadas, handleCambioChange,
         marca, setMarca, handleCarroceriaChange, carroceriasSeleccionadas, handleCloseCambio, handleShowCambio, combustiblesSeleccionados,
-        showCambio, cambiosSeleccionados, handleCloseMoreFilters, handleShowMoreFilters, showMoreFilters, handleNumPlazasChange, numPlazas,
-        handleCombustibleChange } = UseFiltros()
+        showCambio, cambiosSeleccionados, handleCloseMoreFilters, handleShowMoreFilters, showMoreFilters, numPlazas,
+        handleCombustibleChange, incrementarNumPlazas, decrementarNumplazas } = UseFiltros()
 
     //const { vehiculosFiltrados, vehiculosIniciales } = useContext(VehiclesContext)
 
@@ -31,7 +31,7 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
                 <Modal.Body>
                     <div className="filtros-marca-container row">
                         {listMarcas.map((marca) => (
-                            <div className='col-5' key={marca.id}>
+                            <div className='col-5 custom-checkbox-container' key={marca.id}>
                                 <input
                                     type="checkbox"
                                     id={marca.id}
@@ -39,11 +39,16 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
                                     value={marca.id}
                                     checked={marcasSeleccionadas.includes(marca.id)}
                                     onChange={handleMarcaChange}
+                                    className="custom-checkbox-input"
                                 />
-                                <label htmlFor={marca.id} className="checkbox-label">{marca.nombre}</label>
+                                <label htmlFor={marca.id} className="custom-checkbox-label">
+                                    <span className="custom-checkbox"></span>
+                                    {marca.nombre}
+                                </label>
                             </div>
                         ))}
                     </div>
+
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseMarca}>
@@ -64,7 +69,7 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
                     <Modal.Title>Tipo de carrocería</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="filtros-carro-container row">
+                    <div className="filtros-carro-container custom-checkbox-container row">
                         {tipoCarroceriaChoices.map((carro) => (
                             <div className='col-5' key={carro[0]}>
                                 <input
@@ -74,8 +79,12 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
                                     value={carro[0]}
                                     checked={carroceriasSeleccionadas.includes(carro[0])}
                                     onChange={handleCarroceriaChange}
+                                    className="custom-checkbox-input"
                                 />
-                                <label htmlFor={carro[0]}>{carro[1]}</label>
+                                <label htmlFor={carro[0]} className="custom-checkbox-label">
+                                    <span className="custom-checkbox"></span>
+                                    {carro[1]}
+                                </label>
                             </div>
                         ))}
                     </div>
@@ -99,7 +108,7 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
                     <Modal.Title>Tipo de cambio</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="filtros-cambio-container row">
+                    <div className="filtros-cambio-container custom-checkbox-container row">
                         {tipoCambioChoices.map((cambio) => (
                             <div className='col-5' key={cambio[0]}>
                                 <input
@@ -109,8 +118,12 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
                                     value={cambio[0]}
                                     checked={cambiosSeleccionados.includes(cambio[0])}
                                     onChange={handleCambioChange}
+                                    className="custom-checkbox-input"
                                 />
-                                <label htmlFor={cambio[0]}>{cambio[1]}</label>
+                                <label htmlFor={cambio[0]} className="custom-checkbox-label">
+                                    <span className="custom-checkbox"></span>
+                                    {cambio[1]}
+                                </label>
                             </div>
                         ))}
                     </div>
@@ -138,7 +151,7 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
                 <Modal.Body>
                     <h5>Tipo de combustible</h5>
                     {tipoCombustibleChoices.map((combus) => (
-                        <div className='col-5' key={combus[0]}>
+                        <div className='col-5 custom-checkbox-container' key={combus[0]}>
                             <input
                                 type="checkbox"
                                 id={combus[0]}
@@ -146,19 +159,41 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
                                 value={combus[0]}
                                 checked={combustiblesSeleccionados.includes(combus[0])}
                                 onChange={handleCombustibleChange}
+                                className="custom-checkbox-input"
                             />
-                            <label htmlFor={combus[0]}>{combus[1]}</label>
+                            <label htmlFor={combus[0]} className="custom-checkbox-label">
+                                <span className="custom-checkbox"></span>
+                                {combus[1]}
+                            </label>
                         </div>
                     ))}
                     <hr />
-                    <h5>Numero de asientos</h5>
-                    <input
-                        type="number"
-                        onChange={handleNumPlazasChange}
-                        placeholder="Ingrese el número de asientos"
-                        min={1}
-                        max={9}
-                    />
+
+                    <div className='filtros-asientos-container'>
+                        <h5>Mínimo número de asientos</h5>
+
+                        <div className="filtros-asientos-contadores-container">
+                            <button
+                                type="button"
+                                className="filtros-asientos-button"
+                                onClick={decrementarNumplazas}
+                            >
+                                <span className="filtros-asientos-span">-</span>
+                            </button>
+                            <div className="">
+                                {numPlazas}
+                                <input type="hidden" name="seats_min" value={numPlazas} />
+                            </div>
+                            <button
+                                type="button"
+                                className="filtros-asientos-button"
+                                onClick={incrementarNumPlazas}
+                            >
+                                <span className="filtros-asientos-span">+</span>
+                            </button>
+                        </div>
+                    </div>
+
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseMoreFilters}>

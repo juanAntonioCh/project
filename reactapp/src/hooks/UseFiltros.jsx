@@ -12,7 +12,7 @@ export const UseFiltros = () => {
     const [combustible, setCombustible] = useState(null)
     const [cambiosSeleccionados, setCambiosSeleccionados] = useState([]);
     const [cambio, setCambio] = useState(null)
-    const [numPlazas, setNumPlazas] = useState('')
+    const [numPlazas, setNumPlazas] = useState(1)
 
     const [showMarca, setShowMarca] = useState(false);
     const [showCarroceria, setShowCarroceria] = useState(false);
@@ -60,10 +60,19 @@ export const UseFiltros = () => {
         console.log(tipoCarroceriaChoices)
     }, [tipoCarroceriaChoices])
 
-    const handleNumPlazasChange = (e) => {
-        console.log(e.target.value)
-        setNumPlazas(e.target.value)
-    }
+
+    const incrementarNumPlazas = () => {
+        console.log(typeof (numPlazas))
+        if (numPlazas < 9) {
+            setNumPlazas(prevNumPlazas => prevNumPlazas + 1);
+        }
+    };
+
+    const decrementarNumplazas = () => {
+        if (numPlazas > 1) {
+            setNumPlazas(prevNumPlazas => prevNumPlazas - 1);
+        }
+    };
 
 
     const handleMarcaChange = (e) => {
@@ -111,7 +120,7 @@ export const UseFiltros = () => {
         let vehiculosFiltrados = vehiculosIniciales.filter(vehicle => {
             //const precioAlquiler = calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration);
             let filtroMarca = marcasSeleccionadas.length === 0 || marcasSeleccionadas.includes(vehicle.marca);
-            let filtroPlazas = numPlazas === '' || vehicle.numero_plazas <= parseInt(numPlazas);
+            let filtroPlazas = numPlazas === '' || vehicle.numero_plazas >= parseInt(numPlazas);
             //let filtroPrecio = precioAlquiler >= priceRange[0] && precioAlquiler <= priceRange[1];
             console.log(vehicle.tipo_combustible)
             let filtroCombustible = combustiblesSeleccionados.length === 0 || combustiblesSeleccionados.includes(vehicle.tipo_combustible);
@@ -130,28 +139,12 @@ export const UseFiltros = () => {
     }
 
 
-
-    // const aplicarFiltroMarca = (vehiculos) => {
-    //     const filtroMarca = () => {
-    //         const vehiculosFiltradosMarca = vehiculos.filter(vehi => {
-    //             console.log(`La marca del vehiculo es ${typeof vehi.marca} y la marca selecionada es ${typeof marca}`)
-    //             console.log(marcasSeleccionadas)
-    //             return marcasSeleccionadas.includes(vehi.marca);
-    //         });
-    //         console.log('EL RESULTADO ESSSS ', vehiculosFiltradosMarca)
-    //         setVehiculosFiltrados(vehiculosFiltradosMarca);
-    //     };
-    //     filtroMarca();
-    //     setShowMarca(false);
-    // }
-
-
     return {
         showMarca, showCarroceria, showCambio, listMarcas, handleCloseMarca, handleCloseCarroceria, handleShowCarroceria, handleShowMarca,
         handleCloseCambio, handleShowCambio, cambiosSeleccionados, handleCambioChange, handleCloseMoreFilters, handleShowMoreFilters, showMoreFilters,
         handleMarcaChange, aplicarFiltrosGlobal, tipoCarroceriaChoices, tipoCombustibleChoices, tipoCambioChoices, marcasSeleccionadas, setMarcasSeleccionadas,
-        marca, setMarca, handleCarroceriaChange, carroceriasSeleccionadas, handleNumPlazasChange, numPlazas, combustiblesSeleccionados,
-        handleCombustibleChange
+        marca, setMarca, handleCarroceriaChange, carroceriasSeleccionadas, numPlazas, combustiblesSeleccionados,
+        handleCombustibleChange, incrementarNumPlazas, decrementarNumplazas, numPlazas
     }
 
 }

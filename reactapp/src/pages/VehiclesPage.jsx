@@ -3,7 +3,6 @@ import { Navbar } from '../components/Navbar'
 import { VehicleList } from '../components/VehicleList'
 import { Link, useLocation } from 'react-router-dom';
 import { Mapa } from '../components/Mapa'
-import { FiltrosModal } from './Filtros';
 
 
 export const VehiclesPage = () => {
@@ -17,7 +16,6 @@ export const VehiclesPage = () => {
         <div>
             {/* <div className="container-fluid"> */}
             {/* <Navbar /> */}
-            {/* <FiltrosModal/> */}
             <Mapa rentDuration={rentDuration} address={address}/>
         </div>
     )

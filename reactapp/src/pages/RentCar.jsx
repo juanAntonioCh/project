@@ -162,10 +162,10 @@ export const RentCar = () => {
     e.preventDefault()
     console.log(vehiculo)
 
-    if (vehiculo.propietario_id === '') {
-      setNoLogin('Inicia sesión para publicar tu vehículo ')
-      return
-    }
+    // if (vehiculo.propietario_id === '') {
+    //   setNoLogin('Inicia sesión para publicar tu vehículo ')
+    //   return
+    // }
 
     if (!validarVehiculo()) {
       setError('Porfavor, comprueba que todos los campos del formulario estén completos')
@@ -204,6 +204,7 @@ export const RentCar = () => {
   }, [imagenes])
 
   useEffect(() => {
+    console.log('miaaaaaaaaaaaauuuuuuuuuuuuuuuuu')
     console.log(pagination)
   }, [pagination])
 
@@ -328,7 +329,7 @@ export const RentCar = () => {
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="precio_por_hora" className="form-label">Precio por hora:</label>
                 <input type="text" className="form-control" id="precio_por_hora" name="precio_por_hora" value={vehiculo.precio_por_hora} onChange={handleChange} />
-                <small className="form-text text-muted">La media de precio por hora de los coches en nuestra aplicación se ubica entre 1.5 y 3.3 euros.</small>
+                <small className="form-text text-muted">La media de precio por hora de los coches en nuestra aplicación se ubica entre 1.5 y 3.3 €.</small>
               </div>
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="descripcion" className="form-label">Descripción:</label>
@@ -401,7 +402,7 @@ export const RentCar = () => {
       {noLogin && (
         <div className="alert-container">
           <div className="alert alert-warning alert-dismissible fade show " role="alert">
-            <strong><Link to='/login'>Inicia sesión</Link> para publicar tu vehículo</strong>
+            <strong><Link to='/login'>Inicia sesión</Link> para continuar con el proceso de publicar tu vehículo.</strong>
             <button type="button" className="btn-close login-alert-button" onClick={handleCloseAlert} aria-label="Close"></button>
           </div>
         </div>
@@ -439,7 +440,18 @@ export const RentCar = () => {
                   setPagination(pagination - 1);
                 }}>Anterior</button>
               )}
-              {pagination < 2 && (
+              {pagination === 0 && (
+                <button className="btn btn-primary w-25 mb-3" onClick={(e) => {
+                  e.preventDefault();
+                  if (vehiculo.propietario_id === '') {
+                    setNoLogin('Inicia sesión para publicar tu vehículo ')
+                  } else {
+                    setPagination(pagination + 1);
+                  }
+
+                }}>Siguiente</button>
+              )}
+              {pagination === 1 && (
                 <button className="btn btn-primary w-25 mb-3" onClick={(e) => {
                   e.preventDefault();
                   setPagination(pagination + 1);

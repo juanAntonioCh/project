@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GoogleMap, LoadScriptNext, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, LoadScriptNext, Marker, useJsApiLoader, InfoWindow } from '@react-google-maps/api';
 //import { AdvancedMarkerElement } from '@googlemaps/marker';
 import { VehicleList } from './VehicleList';
 import '../styles/Vehicles.css'
@@ -22,6 +22,7 @@ export const Mapa = ({ rentDuration, address }) => {
     const [maxPrice, setMaxPrice] = useState(100);
     const [minPrice, setMinPrice] = useState(0);
     const [priceRange, setPriceRange] = useState([0, 90]);
+    const [activeMarker, setActiveMarker] = useState(null);
     const { calcularPrecioAlquiler } = useContext(VehiclesContext);
     const { marca, setMarca, marcasSeleccionadas, vehiculosFiltrados, setVehiculosFiltrados, vehiculosIniciales, setVehiculosIniciales } = useContext(VehiclesContext)
 
@@ -40,6 +41,14 @@ export const Mapa = ({ rentDuration, address }) => {
     const defaultCenter = {
         lat: coordenadas.lat, lng: coordenadas.lng
     }
+
+    const handleMarkerClick = (vehiculo) => {
+        setActiveMarker(vehiculo);
+    };
+
+    const handleCloseClick = () => {
+        setActiveMarker(null);
+    };
 
     const calcularRadio = (zoom) => {
         const radioBase = 0.013;
@@ -170,29 +179,49 @@ export const Mapa = ({ rentDuration, address }) => {
                         <MapComponent vehiculos={obtenerVehiculosPorPagina()} />
                     ) : <p>Cargando</p>
                     } */}
+                    <div id='map'>
+                        <LoadScriptNext googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
+                            <GoogleMap
+                                mapContainerStyle={mapStyles}
+                                zoom={11.5}
+                                center={defaultCenter}
+                                onLoad={handleLoad}
+                            >
+                                {
+                                    obtenerVehiculosPorPagina().map(vehiculo => (
 
-                    <LoadScriptNext googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
-                        <GoogleMap
-                            mapContainerStyle={mapStyles}
-                            zoom={11.5}
-                            center={defaultCenter}
-                            onLoad={handleLoad}
-                        >
-                            {
-                                obtenerVehiculosPorPagina().map(vehiculo => {
-                                    return (
                                         <Marker key={vehiculo.id}
                                             icon={iconMarker}
                                             position={{
                                                 lat: vehiculo.latitud,
                                                 lng: vehiculo.longitud
                                             }}
+                                            onClick={() => handleMarkerClick(vehiculo)}
                                         />
-                                    )
-                                })
-                            }
-                        </GoogleMap>
-                    </LoadScriptNext>
+
+                                    ))
+                                }
+                                {activeMarker && (
+                                    <InfoWindow
+                                        position={{
+                                            lat: activeMarker.latitud,
+                                            lng: activeMarker.longitud
+                                        }}
+                                        onCloseClick={handleCloseClick}
+                                    >
+                                        <div>
+                                            <h5>{activeMarker.marca_details.nombre} {activeMarker.modelo_details.nombre}</h5>
+                                            {activeMarker.imagenes.length > 0 ? (
+                                                <img src={activeMarker.imagenes[0].imagen} alt={`Imagen de ${activeMarker.marca_details.nombre} ${activeMarker.modelo_details.nombre}`} />
+                                            ) : (
+                                                <img src='https://gomore.imgix.net/images/default_car_picture.png?ixlib=rails-2.1.2&amp;w=560&amp;h=373' alt="Imagen por defecto" width={230} height={170}></img>
+                                            )}
+                                        </div>
+                                    </InfoWindow>
+                                )}
+                            </GoogleMap>
+                        </LoadScriptNext>
+                    </div>
 
                     <div className='mt-4'>
                         <Pagination>

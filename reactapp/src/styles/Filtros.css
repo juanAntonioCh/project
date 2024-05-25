@@ -1,32 +1,85 @@
-/* Estilos para el contenedor de los botones */
-/* .filtros-marca-container {
-    align-items: center;
-    display: inline-block;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    width: 100%;
-} */
-
-
-
-
-
-/* Estilos para los botones */
-.filtros-marca {
-    background-color: white;
-    padding:  5px 12px 5px 12px;
-    border: 1px solid lightgray;
-    border-radius: 20px;
-    margin: 0px 12px 18px 0px;
-    transition: transform 0.3s;
+/* Ocultar el checkbox real */
+.custom-checkbox-input {
+    display: none;
 }
 
-.filtros-marca.seleccionado {
-    background-color: lightblue;
-  }
+.custom-checkbox {
+    margin-right: 5px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #f0f0f0;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-.filtros-marca:hover {
-    border: 2px solid lightblue;
-    transform: scale(1.15);
+.custom-checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.custom-checkbox-label {
+    font-family: 'Lato', sans-serif;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.custom-checkbox-input:checked+.custom-checkbox-label .custom-checkbox {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.custom-checkbox-input:checked+.custom-checkbox-label .custom-checkbox::after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 5px;
+    width: 6px;
+    height: 13px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox:hover {
+    background-color: #e0e0e0;
+}
+
+.filtros-asientos-container {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+}
+
+.filtros-asientos-contadores-container {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.filtros-asientos-button {
+    background-color: #fff;
+    border: 2px solid rgb(228, 225, 225);
+    height: 30px;
+    width: 30px;
+    border-radius: 100px;
+    transition: all 0.2s ease;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filtros-asientos-button:hover {
+    border: 2px solid rgb(66, 65, 65);
+    transform: translateY(-1.5px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+.filtros-asientos-span {
+    font-weight: bold;
+    color: #1c7abc;
 }

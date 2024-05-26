@@ -256,12 +256,12 @@ export const RentCar = () => {
               </div>
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="año" className="form-label">Año:</label>
-                <input type="number" className="form-control w-75" id="año" name="año" value={vehiculo.año} onChange={handleChange} />
+                <input type="number" className="form-control w-75" id="año" name="año" max={2024} value={vehiculo.año} onChange={handleChange} />
                 <small className="form-text text-muted">Introduce el año de fabricación del vehículo.</small>
               </div>
               <div className="form-group mb-4 position-relative">
-                <label htmlFor="kilometraje" className="form-label">Autonomía:</label>
-                <input type="number" className="form-control" id="autonomia" name="autonomia" value={vehiculo.autonomia} onChange={handleChange}
+                <label htmlFor="autonomia" className="form-label">Autonomía:</label>
+                <input type="number" step="0.01" className="form-control" id="autonomia" name="autonomia" value={vehiculo.autonomia} onChange={handleChange}
                   min={0} max={999} />
                 <small className="form-text text-muted">Introduce la autonomía estimada del vehículo en kilómetros con un tanque de combustible lleno.</small>
               </div>
@@ -269,7 +269,7 @@ export const RentCar = () => {
             <div className='col-6'>
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="consumo" className="form-label">Consumo:</label>
-                <input type="text" className="form-control" id="consumo" name="consumo" value={vehiculo.consumo} onChange={handleChange} />
+                <input type="number" step="0.01" className="form-control" id="consumo" name="consumo" value={vehiculo.consumo} onChange={handleChange} />
                 <small className="form-text text-muted">Introduce el consumo del vehículo en litros o kWh (dependiendo del tipo de combustible) por cada 100 km.</small>
               </div>
               <div className="form-group mb-4 position-relative">
@@ -278,7 +278,7 @@ export const RentCar = () => {
               </div>
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="kilometraje" className="form-label">Kilometraje:</label>
-                <input type="number" className="form-control" id="kilometraje" name="kilometraje" min={0} value={vehiculo.kilometraje} onChange={handleChange} />
+                <input type="number" step="0.01" className="form-control" id="kilometraje" name="kilometraje" min={0} value={vehiculo.kilometraje} onChange={handleChange} />
                 <small className="form-text text-muted">Introduce cuantos kilómetros lleva recorridos el vehículo actualmente.</small>
               </div>
             </div>
@@ -321,14 +321,14 @@ export const RentCar = () => {
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="numero_plazas" className="form-label">Número de Plazas:</label>
                 <input type="number" className="form-control" id="numero_plazas" name="numero_plazas" value={vehiculo.numero_plazas} onChange={handleChange}
-                  min="1" max="9" />
+                  min={1} max={9} />
                 <small className="form-text text-muted">Introduce el número de plazas disponibles en el vehículo (máximo 9).</small>
               </div>
             </div>
             <div className='col-6'>
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="precio_por_hora" className="form-label">Precio por hora:</label>
-                <input type="text" className="form-control" id="precio_por_hora" name="precio_por_hora" value={vehiculo.precio_por_hora} onChange={handleChange} />
+                <input type="number" step="0.01" className="form-control" id="precio_por_hora" name="precio_por_hora" value={vehiculo.precio_por_hora} onChange={handleChange} />
                 <small className="form-text text-muted">La media de precio por hora de los coches en nuestra aplicación se ubica entre 1.5 y 3.3 €.</small>
               </div>
               <div className="form-group mb-4 position-relative">
@@ -382,7 +382,6 @@ export const RentCar = () => {
               <div className="form-group mb-4 position-relative">
                 <label className="form-label">Imagenes de su vehiculo</label>
                 <input
-                  value={imagenes}
                   type="file"
                   accept="image/*"
                   multiple

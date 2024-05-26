@@ -24,7 +24,7 @@ export const Mapa = ({ rentDuration, address }) => {
     const [priceRange, setPriceRange] = useState([0, 90]);
     const [activeMarker, setActiveMarker] = useState(null);
     const { calcularPrecioAlquiler } = useContext(VehiclesContext);
-    const { marca, setMarca, marcasSeleccionadas, vehiculosFiltrados, setVehiculosFiltrados, vehiculosIniciales, setVehiculosIniciales } = useContext(VehiclesContext)
+    const { vehiculosFiltrados, setVehiculosFiltrados, vehiculosIniciales, setVehiculosIniciales } = useContext(VehiclesContext)
 
     useEffect(() => {
         async function loadVehicles() {

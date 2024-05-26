@@ -1,10 +1,52 @@
-.date-picker {
-    max-width: 175px;
-    margin-left: 30px;
+.buscador-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border: 10px solid #ffb700;
+    /* Borde grande */
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Fondo semi-transparente para mejor contraste */
+    border-radius: 15px;
 }
 
-.time-picker {
+.autocomplete-container {
+    flex-grow: 3;
+    align-self: self-start;
+    width: 550px;
+    margin-right: 10px;
+    position: relative;
+}
+
+.autocomplete-container .form-control {
+    height: 60px;
+    border-radius: 20px;
+}
+
+.buscador-button{
+    align-self: self-start;
+    color: white;
+    border-radius: 10px;
+    border: 2px solid #068323;
+    background-color: #068323;
+    width: 150px;
+    height: 60px;
+    margin-left: 15px;
+}
+
+.buscador-button:hover{
+    background-color: #04631a;
+    border: 2px solid #04631a;
+}
+
+.custom-timepicker{
     max-width: 140px;
+}
+
+.date-time-container {
+    flex-grow: 1;
+    display: flex;
+    gap: 10px;
 }
 
 .suggestions-container {
@@ -35,7 +77,7 @@
     padding: 10px;
 }
 
-.buscador{
+/* .buscador{
     margin-bottom: 20px;
 
-}
+} */

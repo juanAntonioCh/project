@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     setLogoutMessage('Sesión finalizada')
     setIsAuthenticated(false);
-    navigate('/', { replace: true, state: { logoutMessage } });
+    //navigate('/', { replace: true, state: { logoutMessage } });
   };
 
   return (

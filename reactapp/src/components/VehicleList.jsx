@@ -20,6 +20,8 @@ export const VehicleList = ({ vehiculosPagina, vehiculos, rentDuration , setMaxP
     }, [])
     //}, [vehiculos])
 
+    console.log(rentDuration)
+
     return (
         <div className='row'>
 
@@ -56,12 +58,12 @@ export const VehicleList = ({ vehiculosPagina, vehiculos, rentDuration , setMaxP
                         </div>
                         <div className="card-body">
                             <h5 className="card-title">{vehi.marca_details.nombre} {vehi.modelo_details.nombre}</h5>
-                            <p>Precio del alquiler: {calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration)}</p>
-                            <p>{vehi.tipo_combustible}</p>
+                            <p><strong>{calcularPrecioAlquiler(vehi.precio_por_hora, rentDuration)} €</strong> por {rentDuration.hours} h/ {rentDuration.minutes} mins</p>
+                            {/* <p>{vehi.tipo_combustible}</p>
                             <p>{vehi.numero_plazas}</p>
                             <p>{vehi.tipo_carroceria}</p>
-                            <p>{vehi.tipo_cambio}</p>
-                            <Link to={`/vehicle/${vehi.id}`} className="btn fw-bold vehicle-list-ver-mas">Ver más</Link>
+                            <p>{vehi.tipo_cambio}</p> */}
+                            <Link to={`/vehicle/${vehi.id}`} target='_blank' className="btn fw-bold vehicle-list-ver-mas">Ver más</Link>
                         </div>
                     </div>
                 </div>

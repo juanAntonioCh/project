@@ -1,9 +1,9 @@
 .alert-container {
-  position: fixed; /* o position: absolute; dependiendo de tus necesidades */
-  top: 80px; /* ajusta la posición vertical según tus necesidades */
-  left: 10px; /* ajusta la posición horizontal según tus necesidades */
-  z-index: 9999; /* asegura que esté por encima de otros elementos */
-  width: 100%; /* opcional, ajusta el ancho según sea necesario */
+  position: fixed; 
+  top: 80px; 
+  left: 10px; 
+  z-index: 9999; 
+  width: 100%;
 }
 
 .home-container {
@@ -11,21 +11,27 @@
   width: 100vw;
   height: 90vh;
   background: url('../imgs/background-playa.jpg');
+  /* background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), url('../imgs/background-playa.jpg'); */
   background-size: cover;
+  /* background-blend-mode: overlay; */
 }
+
 
 
 
 .home-logo {
   text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 35px;
+  color: aliceblue;
 }
 
 
 /* BUSCADOR UBICACIONES PAGINA PRINCIPAL */
-.home-buscador-ubis-container {
+/* .home-buscador-ubis-container {
   display: flex;
-  justify-content: center; /* Centrar horizontalmente */
-  align-items: center; /* Centrar verticalmente */
+  justify-content: center; 
+  align-items: center; 
   height: 35vh; 
 }
 
@@ -33,7 +39,6 @@
   border-radius: 20px;
   width: 450px;
   height: 50px;
-  /* margin-left: 150px; */
   margin-bottom: 15px;
 }
 
@@ -43,18 +48,9 @@
   width: 200px;
   font-size: 18px;
   margin-left: 260px;
-}
+} */
 
 
-
-
-.home-auth-links {
- 
-}
-
-.home-rent{
-
-}
 
 .home-auth-link {
   text-decoration: none;

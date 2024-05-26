@@ -216,6 +216,8 @@ def create_vehicle(request):
     latitud = vehiculo_data.get('latitud')
     longitud = vehiculo_data.get('longitud')
     disponible = vehiculo_data.get('disponible')
+    autonomia = vehiculo_data.get('autonomia')
+    numero_plazas = vehiculo_data.get('numero_plazas')
     color = vehiculo_data.get('color')
     
     print(request.data)
@@ -226,7 +228,7 @@ def create_vehicle(request):
     vehiculo = Vehicle.objects.create(propietario=user, marca=marca, modelo=modelo, año=año, matricula=matricula,
                     descripcion=descripcion, tipo_carroceria=tipo_carroceria, tipo_combustible=tipo_combustible, tipo_cambio=tipo_cambio,
                     consumo=consumo, kilometraje=kilometraje, precio_por_hora=precio_por_hora, latitud=latitud, longitud=longitud,
-                    disponible=disponible, color=color)
+                    disponible=disponible, color=color, numero_plazas=numero_plazas, autonomia=autonomia)
 
     # Procesar las imágenes asociadas al vehículo
     for imagen in request.FILES.getlist('imagen'): 

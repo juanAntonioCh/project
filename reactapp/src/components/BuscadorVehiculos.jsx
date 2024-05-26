@@ -88,38 +88,32 @@ export const BuscadorVehiculos = ({ setError }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className='row buscador'>
+            <div className="buscador-container">
                 <PlacesAutocomplete
                     value={address}
                     onChange={setAddress}
                     onSelect={handleSelect}
                 >
                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                        <div className="form-inline d-flex">
-                            <div className="flex-grow-1 position-relative">
-                                <input className='form-control' {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
-
-                                <div className='suggestions-container'>
-                                    {loading && <div className="loading">Cargando...</div>}
-                                    {suggestions.map((suggestion, index) => {
-                                        const className = suggestion.active ? 'suggestion-item active' : 'suggestion-item';
-                                        return (
-                                            <div key={index} className={className} onClick={() => getSuggestionItemProps(suggestion)}>
-                                                <span>{suggestion.description}</span>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
+                        <div className="autocomplete-container">
+                            <input className="form-control" {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
+                            <div className="suggestions-container">
+                                {loading && <div className="loading">Cargando...</div>}
+                                {suggestions.map((suggestion, index) => {
+                                    const className = suggestion.active ? 'suggestion-item active' : 'suggestion-item';
+                                    return (
+                                        <div key={index} {...getSuggestionItemProps(suggestion, { className })}>
+                                            <span>{suggestion.description}</span>
+                                        </div>
+                                    );
+                                })}
                             </div>
-
                         </div>
                     )}
                 </PlacesAutocomplete>
-            </div>
 
-            <div className='d-flex'>
-                <LocalizationProvider dateAdapter={AdapterDayjs} >
-                    <div className='date-picker'>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <div className="date-time-container">
                         <DatePicker
                             label="Recogida"
                             onChange={handleStartDateChange}
@@ -129,23 +123,16 @@ export const BuscadorVehiculos = ({ setError }) => {
                                 },
                             }}
                         />
-                    </div>
-
-                    <div className='time-picker'>
-                        {/* <DemoContainer components={['TimePicker']}> */}
                         <TimePicker
                             label="Hora"
                             onChange={handleStartHourChange}
+                            className="custom-timepicker"
                             viewRenderers={{
                                 hours: renderTimeViewClock,
                                 minutes: renderTimeViewClock,
                                 seconds: renderTimeViewClock,
                             }}
                         />
-                        {/* </DemoContainer> */}
-                    </div>
-
-                    <div className='date-picker'>
                         <DatePicker
                             label="Devolución"
                             onChange={handleEndDateChange}
@@ -155,10 +142,6 @@ export const BuscadorVehiculos = ({ setError }) => {
                                 },
                             }}
                         />
-                    </div>
-
-                    {/* <DemoContainer components={['TimePicker']}> */}
-                    <div className='time-picker'>
                         <TimePicker
                             label="Hora"
                             className="custom-timepicker"
@@ -170,14 +153,11 @@ export const BuscadorVehiculos = ({ setError }) => {
                             }}
                         />
                     </div>
-                    {/* </DemoContainer> */}
-
                 </LocalizationProvider>
-            </div>
 
-            <div>
-                <button type='submit' className='btn btn-primary'>Buscar</button>
+                <button type="submit" className="bt buscador-button">Buscar</button>
             </div>
         </form>
+
     );
 }

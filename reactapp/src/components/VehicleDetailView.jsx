@@ -59,7 +59,7 @@ export const VehicleDetailView = () => {
         <div className="container mt-4">
             <div className='row vehicle-detail-card'>
                 <div id={`carouselVehicleImages`} className="carousel slide col-6" data-bs-ride="carousel">
-                    
+
                     <div className="carousel-inner">
                         {vehicle.imagenes.length > 0 ? (
                             vehicle.imagenes.map((imagen, index) => (
@@ -98,18 +98,21 @@ export const VehicleDetailView = () => {
                 </div>
 
             </div>
-            {/* <h1>{vehicle.marca_details.nombre} {vehicle.modelo_details.nombre} ({vehicle.año})</h1> */}
+            <p> <strong>{vehicle.marca_details.nombre} {vehicle.modelo_details.nombre}</strong> ({vehicle.año})</p>
 
-            <div className="card mt-3 mb-5">
-                <div className="row card-body  mt-3 mb-5">
+            <div className=" mt-3 mb-5">
+                <div className="row  mt-3 mb-5">
                     <div className='col-6'>
+                        <img src="https://gomore.imgix.net/images/icons/diesel-gray.png?w=20&h=20&fit=crop&auto=format,compress&dpr=1" alt="" />
+                        <img src="https://gomore.imgix.net/images/icons/manual-gray.png?w=20&amp;h=20&amp;fit=crop&amp;auto=format%2Ccompress&amp;dpr=1&quot" alt="" />
+                        <img src="https://gomore.imgix.net/images/icons/seat-gray.png?w=20&amp;h=20&amp;fit=crop&amp;auto=format%2Ccompress&amp;dpr=1&quot" alt="" />
                         <p className="card-text"><strong>Propietario: </strong> {vehicle.propietario_details.username}</p>
                         <p className="card-text"><strong>Matrícula:</strong> {vehicle.matricula}</p>
                         <p className="card-text"><strong>Color:</strong> {vehicle.color}</p>
                         <p className="card-text"><strong>Kilometraje:</strong> {vehicle.kilometraje} km</p>
                         <p className="card-text"><strong>Autonomía:</strong> {vehicle.autonomia} km</p>
-                        <p className="card-text"><strong>Consumo:</strong> {vehicle.consumo} 
-                        {vehicle.tipo_combustible === 'electrico' ? <i> kWh/100 km</i> : <i> l/100 km</i>}
+                        <p className="card-text"><strong>Consumo:</strong> {vehicle.consumo}
+                            {vehicle.tipo_combustible === 'electrico' ? <i> kWh/100 km</i> : <i> l/100 km</i>}
                         </p>
                         <p className="card-text"><strong>Combustible:</strong> {vehicle.tipo_combustible}</p>
                         <p className="card-text"><strong>Cambio:</strong> {vehicle.tipo_cambio}</p>
@@ -141,7 +144,7 @@ export const VehicleDetailView = () => {
                     </div>
 
                 </div>
-                <AlquilerCard />
+                {/* <AlquilerCard /> */}
             </div>
         </div >
 

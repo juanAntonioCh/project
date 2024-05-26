@@ -67,10 +67,10 @@ export const Home = () => {
         </div>
       )}
       <div className="home-logo">
-        <LogoSvg width={'260px'} height={'260px'} />
+        <LogoSvg width={'270px'} height={'270px'} />
       </div>
-      <h2 className="home-logo">¿Dónde necesitas tu coche?</h2>
-      <div className="home-buscador-ubis-container">
+      <h2 className="home-logo mb-4">Tu coche, cuando y donde lo necesites</h2>
+      <div className="container">
         <BuscadorVehiculos setError={setError} />
       </div>
     </div>

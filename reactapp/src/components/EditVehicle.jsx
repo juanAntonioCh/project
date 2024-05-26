@@ -246,7 +246,7 @@ export const EditVehicle = () => {
 
             <div className="form-group mb-3">
               <label htmlFor="kilometraje" className="form-label">Kilometraje:</label>
-              <input type="number" className="form-control w-50" id="kilometraje" name="kilometraje" defaultValue={vehiculo.kilometraje} onChange={handleChange} />
+              <input type="number" step="0.01" className="form-control w-50" id="kilometraje" name="kilometraje" defaultValue={vehiculo.kilometraje} onChange={handleChange} />
             </div>
           </div>
 
@@ -292,8 +292,8 @@ export const EditVehicle = () => {
 
           <div className="col-md-4">
             <div className="form-group mb-4">
-              <label htmlFor="kilometraje" className="form-label">Autonomía:</label>
-              <input type="number" className="form-control w-50" id="autonomia" name="autonomia" defaultValue={vehiculo.autonomia} onChange={handleChange}
+              <label htmlFor="autonomia" className="form-label">Autonomía:</label>
+              <input type="number" step="0.01" className="form-control w-50" id="autonomia" name="autonomia" defaultValue={vehiculo.autonomia} onChange={handleChange}
                 min={0} max={999} />
             </div>
 

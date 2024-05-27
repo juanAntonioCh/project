@@ -170,7 +170,7 @@ export const Mapa = ({ rentDuration, address }) => {
                     <div className='col-md-6'>
                         <p>Resultados de: <strong>{address}</strong>: {vehiculosFiltrados.length} vehículos encontrados</p>
                         <VehicleList vehiculosPagina={obtenerVehiculosPorPagina()} vehiculos={vehiculosFiltrados} setMaxPrice={setMaxPrice} setMinPrice={setMinPrice}
-                            setPriceRange={setPriceRange} rentDuration={rentDuration} />
+                            setPriceRange={setPriceRange} rentDuration={rentDuration}/>
                     </div>
                 )}
 

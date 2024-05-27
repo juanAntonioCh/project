@@ -7,24 +7,8 @@ import { AuthContext } from "./AuthContext";
 export const VehiclesProvider = ({ children }) => {
     const [vehiculosFiltrados, setVehiculosFiltrados] = useState([])
     const [vehiculosIniciales, setVehiculosIniciales] = useState([])
-
-    // const handleMarcasSeleccionadasChange = (marca) => {
-    //     const index = marcasSeleccionadas.indexOf(marca);
-    //     if (index === -1) {
-    //         // Si la marca no está seleccionada, añadirla a la lista
-    //         setMarcasSeleccionadas([...marcasSeleccionadas, marca]);
-    //     } else {
-    //         // Si la marca ya está seleccionada, quitarla de la lista
-    //         const nuevasMarcas = [...marcasSeleccionadas];
-    //         nuevasMarcas.splice(index, 1);
-    //         setMarcasSeleccionadas(nuevasMarcas);
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     handleMarcasSeleccionadasChange(Number(marca))
-    // }, [marca])
-
+    const [fromatStartDate, setFormatStartDate] = useState(null);
+    const [formatEndDate, setFormatEndDate] = useState(null);
 
     const calcularPrecioAlquiler = (precioPorHora, rentDuration) => {
         const { hours, minutes } = rentDuration;
@@ -34,7 +18,7 @@ export const VehiclesProvider = ({ children }) => {
     };
 
     return (
-        <VehiclesContext.Provider value={{ calcularPrecioAlquiler, 
+        <VehiclesContext.Provider value={{ calcularPrecioAlquiler, fromatStartDate, setFormatStartDate, formatEndDate, setFormatEndDate,
         vehiculosFiltrados, setVehiculosFiltrados, vehiculosIniciales, setVehiculosIniciales }}>
             {children}
         </VehiclesContext.Provider>

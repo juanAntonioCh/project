@@ -3,9 +3,13 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Navbar } from './Navbar';
 import { VehiclesContext } from '../context/VehiclesContext';
+import { UseBuscador } from '../hooks/UseBuscador';
 
 export const VehicleList = ({ vehiculosPagina, vehiculos, rentDuration , setMaxPrice, setMinPrice, setPriceRange}) => {
     const { calcularPrecioAlquiler } = useContext(VehiclesContext);
+    const { fromatStartDate, formatEndDate } = useContext(VehiclesContext)
+    console.log(fromatStartDate)
+    console.log(formatEndDate)
 
     //Ajustar los rangos de Precios en el filtro
     useEffect(() => {

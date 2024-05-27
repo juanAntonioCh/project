@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
@@ -11,9 +11,11 @@ import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import '../styles/BuscadorVehiculos.css'
 import { UseBuscador } from '../hooks/UseBuscador';
+import { VehiclesContext } from '../context/VehiclesContext';
 
 export const BuscadorVehiculos = ({ setError }) => {
     const navigate = useNavigate();
+    const { setFormatStartDate, setFormatEndDate} = useContext(VehiclesContext)
     const { startDate, endDate,
         startHour, endHour,
         address, setAddress,
@@ -70,6 +72,10 @@ export const BuscadorVehiculos = ({ setError }) => {
             return;
         }
 
+        console.log('============================')
+        console.log(typeof(endDateAsDate))
+        console.log(startDateAsDate)
+
         const differenceInMilliseconds = endDateAsDate - startDateAsDate;
         const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
 
@@ -80,8 +86,22 @@ export const BuscadorVehiculos = ({ setError }) => {
             return;
         }
 
+        const formatStartDate = startDate + ', ' + startHour
+        setFormatStartDate(formatStartDate)
+        //console.log(formatStartDate)
+
+        const formatEndDate = endDate + ', ' + endHour
+        setFormatEndDate(formatEndDate)
+        //console.log(formatEndDate)
+
+        localStorage.setItem('startDate', JSON.stringify(formatStartDate));
+        localStorage.setItem('endDate', JSON.stringify(formatEndDate));
+
+
         setError('');
         const rentDuration = calculateHourDifference(startDate, startHour, endDate, endHour)
+        localStorage.setItem('rentDuration', JSON.stringify(rentDuration));
+        
         console.log('Horas de alquiler:', rentDuration);
         navigate('/vehicle', { state: { rentDuration, address } })
     }

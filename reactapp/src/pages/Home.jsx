@@ -38,6 +38,8 @@ export const Home = () => {
 
   useEffect(() => {
     localStorage.removeItem('coordenadas')
+    localStorage.removeItem('startDate')
+    localStorage.removeItem('endDate')
     setSuccessMessage(message)
   }, [])
 
@@ -69,7 +71,7 @@ export const Home = () => {
       <div className="home-logo">
         <LogoSvg width={'270px'} height={'270px'} />
       </div>
-      <h2 className="home-logo mb-4">Tu coche, cuando y donde lo necesites</h2>
+      <h2 className="home-logo mb-4">Tu coche cuando y donde lo necesites</h2>
       <div className="container">
         <BuscadorVehiculos setError={setError} />
       </div>

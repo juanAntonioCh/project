@@ -1,16 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { GoogleMap, LoadScriptNext, Marker } from '@react-google-maps/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AlquilerCard } from './AlquilerCard';
+import { UseBuscador } from '../hooks/UseBuscador';
+import { VehiclesContext } from '../context/VehiclesContext';
 
 export const VehicleDetailView = () => {
     const { id } = useParams();
     const [map, setMap] = useState(null);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [rentDuration, setRentDuration] = useState(null)
     const [vehicle, setVehicle] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { calcularPrecioAlquiler } = useContext(VehiclesContext);
     const [coords, setCoords] = useState({ lat: '', lng: '' })
+
+    useEffect(() => {
+        const storedStartDate = JSON.parse(localStorage.getItem('startDate'));
+        const storedEndDate = JSON.parse(localStorage.getItem('endDate'));
+        const storedRentDuration = JSON.parse(localStorage.getItem('rentDuration'));
+        if (storedStartDate && storedEndDate && storedRentDuration) {
+            setStartDate(storedStartDate);
+            setEndDate(storedEndDate);
+            setRentDuration(storedRentDuration)
+        }
+    }, []);
+
+    useEffect(() => {
+        console.log(rentDuration)
+    }, [rentDuration])
+
+    useEffect(() => {
+        console.log(startDate)
+    }, [startDate])
+
 
     useEffect(() => {
         const fetchVehicle = async () => {
@@ -47,6 +73,14 @@ export const VehicleDetailView = () => {
         anchor: new google.maps.Point(0, 20),
     }
 
+    const style = {
+        maskImage: 'url("https://gomore.imgix.net/images/icons/hybrid-gray.png?w=20&h=20&fit=crop&auto=format,compress&dpr=2")',
+        maskSize: '100%',
+        width: '20px',
+        height: '20px',
+        backgroundColor: 'black' // bg-gray-100 equivalent in Tailwind CSS
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -57,9 +91,8 @@ export const VehicleDetailView = () => {
 
     return (
         <div className="container mt-4">
-            <div className='row vehicle-detail-card'>
-                <div id={`carouselVehicleImages`} className="carousel slide col-6" data-bs-ride="carousel">
-
+            <div className="row vehicle-detail-card">
+                <div id={`carouselVehicleImages`} className="carousel slide col-md-6" data-bs-ride="carousel">
                     <div className="carousel-inner">
                         {vehicle.imagenes.length > 0 ? (
                             vehicle.imagenes.map((imagen, index) => (
@@ -87,25 +120,65 @@ export const VehicleDetailView = () => {
                     )}
                 </div>
 
-                <div className='col-6 card'>
-                    <div className='card-body'>
+                <div className='col-1'></div>
 
-                        <p className="card-text">{vehicle.precio_por_hora} $</p>
-                        <p className="card-text">Por hora</p>
+                <div className="col-md-4 d-flex align-items-start">
+                    <div className="card w-100 shadow vehicle-detail-info-card">
+                        <div className="card-body">
+                            <div className='d-flex flex-column mb-4'>
+                                <p className="card-text mb-0 fs-4"><strong>{vehicle.precio_por_hora} €</strong></p>
+                                <p className="card-text mb-0"><i>Por hora</i></p>
+                            </div>
+                            <div className="row mb-3">
+                                <div className="col-sm vehicle-detail-info-card-dates">
+                                    <p>Recogida </p>
+                                    <p>{startDate}</p>
+                                </div>
+                                <div className="col-sm vehicle-detail-info-card-dates">
+                                    <p>Devolución </p>
+                                    <p>{endDate}</p>
+                                </div>
+                            </div>
+
+                            {rentDuration && (
+                                <div className='d-flex justify-content-between'>
+                                    <p>{rentDuration.hours} horas y {rentDuration.minutes} minutos</p>
+                                    <p><strong>{calcularPrecioAlquiler(vehicle.precio_por_hora, rentDuration)} €</strong></p>
+                                </div>
+                            )}
+
+                            <button className="btn vehicle-detail-rent-btn w-100">Alquilar</button>
+                            {/* <p class="block transition-color mb0 title-s" style="white-space: pre-wrap;">43,15€</p> */}
+
+                        </div>
                     </div>
-
-
                 </div>
-
             </div>
-            <p> <strong>{vehicle.marca_details.nombre} {vehicle.modelo_details.nombre}</strong> ({vehicle.año})</p>
+
+            <p> <strong className='vehicle-detail-title'>{vehicle.marca_details.nombre} {vehicle.modelo_details.nombre}</strong> ({vehicle.año})</p>
 
             <div className=" mt-3 mb-5">
                 <div className="row  mt-3 mb-5">
                     <div className='col-6'>
-                        <img src="https://gomore.imgix.net/images/icons/diesel-gray.png?w=20&h=20&fit=crop&auto=format,compress&dpr=1" alt="" />
-                        <img src="https://gomore.imgix.net/images/icons/manual-gray.png?w=20&amp;h=20&amp;fit=crop&amp;auto=format%2Ccompress&amp;dpr=1&quot" alt="" />
-                        <img src="https://gomore.imgix.net/images/icons/seat-gray.png?w=20&amp;h=20&amp;fit=crop&amp;auto=format%2Ccompress&amp;dpr=1&quot" alt="" />
+                        <div className='d-flex vehicle-detail-symbol-container'>
+                            <div className='d-flex justify-content-between'>
+                                <div className='vehicle-detail-symbol-combus'></div>
+                                <p>{vehicle.tipo_combustible}</p>
+                            </div>
+
+                            <div className='d-flex'>
+                                <div className='vehicle-detail-symbol-cambio'></div>
+                                <p>{vehicle.tipo_cambio}</p>
+                            </div>
+
+
+                            <div className='d-flex'>
+                                <div className='vehicle-detail-symbol-asientos'></div>
+                                <p>{vehicle.numero_plazas} plazas</p>
+                            </div>
+                        </div>
+
+
                         <p className="card-text"><strong>Propietario: </strong> {vehicle.propietario_details.username}</p>
                         <p className="card-text"><strong>Matrícula:</strong> {vehicle.matricula}</p>
                         <p className="card-text"><strong>Color:</strong> {vehicle.color}</p>
@@ -114,11 +187,7 @@ export const VehicleDetailView = () => {
                         <p className="card-text"><strong>Consumo:</strong> {vehicle.consumo}
                             {vehicle.tipo_combustible === 'electrico' ? <i> kWh/100 km</i> : <i> l/100 km</i>}
                         </p>
-                        <p className="card-text"><strong>Combustible:</strong> {vehicle.tipo_combustible}</p>
-                        <p className="card-text"><strong>Cambio:</strong> {vehicle.tipo_cambio}</p>
                         <p className="card-text"><strong>Carrocería:</strong> {vehicle.tipo_carroceria}</p>
-                        <p className="card-text"><strong>Número de plazas:</strong> {vehicle.numero_plazas}</p>
-                        <p className="card-text"><strong>Precio por Hora:</strong> {vehicle.precio_por_hora}</p>
                     </div>
 
                     <div className='col-6'>
@@ -142,13 +211,9 @@ export const VehicleDetailView = () => {
                             </GoogleMap>
                         </LoadScriptNext>
                     </div>
-
                 </div>
                 {/* <AlquilerCard /> */}
             </div>
         </div >
-
-
-
     );
 }

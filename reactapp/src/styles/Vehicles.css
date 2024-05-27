@@ -1,3 +1,7 @@
+.vehicle-detail-card{
+  margin-bottom: 20px;
+}
+
 .vehicle-list-card .carousel-inner img {
   /* max-height: 200px; */
   object-fit: cover;
@@ -10,6 +14,64 @@
 
 .vehicle-detail-card .carousel-inner {
   border-radius: 20px;
+}
+
+.vehicle-detail-info-card{
+  border-radius: 25px;
+}
+
+.vehicle-detail-info-card-dates{
+  border: 1px solid lightgrey;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.vehicle-detail-symbol-container{
+  gap: 22px;
+}
+
+.vehicle-detail-title{
+  font-size: 30px;
+}
+
+.vehicle-detail-symbol-combus{
+  mask-image: url("https://gomore.imgix.net/images/icons/hybrid-gray.png?w=20&h=20&fit=crop&auto=format,compress&dpr=2");
+  mask-size: 100%;
+  margin-right: 5px;
+  width: 25px;
+  height: 25px;
+  background-color: black;
+}
+.vehicle-detail-symbol-cambio{
+  mask-image: url("https://gomore.imgix.net/images/icons/manual-gray.png?w=20&amp;h=20&amp;fit=crop&amp;auto=format%2Ccompress&amp;dpr=1&quot");
+  mask-size: 100%;
+  margin-right: 8px;
+  width: 25px;
+  height: 25px;
+  background-color: black;
+}
+.vehicle-detail-symbol-asientos{
+  mask-image: url("https://gomore.imgix.net/images/icons/seat-gray.png?w=20&amp;h=20&amp;fit=crop&amp;auto=format%2Ccompress&amp;dpr=1&quot");
+  mask-size: 100%;
+  margin-right: 10px;
+  width: 25px;
+  height: 25px;
+  background-color: black;
+}
+
+.vehicle-detail-rent-btn{
+  color: white;
+  background-color: #00a6db;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.vehicle-detail-rent-btn:hover{
+  color: white;
+  background-color: #0386b2;
+  padding: 10px;
+  font-size: 18px;
 }
 
 

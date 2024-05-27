@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 COPY requirements.txt .
 
 RUN apt-get update && \
-    apt install -y python3-dev default-libmysqlclient-dev && \
+    apt install -y python3-dev default-libmysqlclient-dev pkg-config && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* 
     

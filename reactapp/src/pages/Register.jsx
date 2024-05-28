@@ -47,14 +47,14 @@ export const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8000/api/register/', {
+      const res = await axios.post('/choreo-apis/django-rest-api/mysite/v1', {
         username,
         email,
         password,
       });
 
       if (res.data == 'Usuario registrado correctamente') {
-        const response = await axios.post('http://localhost:8000/auth/login/', { username, password });
+        const response = await axios.post('/choreo-apis/django-rest-api/mysite/v1', { username, password });
         localStorage.setItem('token', response.data.key); // Guardar el token 
         login()
         navigate('/', { replace: true });

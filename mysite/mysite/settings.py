@@ -20,9 +20,13 @@ environ.Env.read_env()
 SECRET_KEY = 'django-insecure-ue8lur3)yb#qm8l9hsl2irii%5fy^)$6=*jm&u0&e*fl!)b61k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
+
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
@@ -85,11 +89,11 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-         'NAME': os.getenv('DB_NAME'),
-         'USER': os.getenv('DB_USER'),
-         'PASSWORD': os.getenv('DB_PWD'),
-         'HOST': os.getenv('DB_HOST'),
-         'PORT': os.getenv('DB_PORT'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PWD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT')
          
         #  'ENGINE': 'django.db.backends.sqlite3',
         #  'NAME': BASE_DIR / 'db.sqlite3',

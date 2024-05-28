@@ -144,7 +144,7 @@ export const UseFiltros = () => {
         handleCloseCambio, handleShowCambio, cambiosSeleccionados, handleCambioChange, handleCloseMoreFilters, handleShowMoreFilters, showMoreFilters,
         handleMarcaChange, aplicarFiltrosGlobal, tipoCarroceriaChoices, tipoCombustibleChoices, tipoCambioChoices, marcasSeleccionadas, setMarcasSeleccionadas,
         marca, setMarca, handleCarroceriaChange, carroceriasSeleccionadas, numPlazas, combustiblesSeleccionados,
-        handleCombustibleChange, incrementarNumPlazas, decrementarNumplazas, numPlazas
+        handleCombustibleChange, incrementarNumPlazas, decrementarNumplazas
     }
 
 }

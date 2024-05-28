@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
+import { api } from "../api/vehicle.api";
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
       const fetchUserDetails = async () => {
         try {
-          const response = await axios.get('http://127.0.0.1:8000/api/user-details', {
+          const response = await api.get('/api/user-details', {
             headers: {
               'Authorization': `Token ${token}`
             }

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { useNavigate } from 'react-router-dom';
-import { getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
+import { api, getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
@@ -50,7 +50,7 @@ export const EditVehicle = () => {
   useEffect(() => {
     const fetchVehicle = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:8000/api/vehicles/${id}`);
+        const { data } = await api.get(`/api/vehicles/${id}`);
         //console.log(data)
         setVehiculo({
           id: data.id,

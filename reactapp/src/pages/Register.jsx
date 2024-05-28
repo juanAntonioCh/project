@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import '../styles/Register.css'
 import axios from 'axios';
 import { LogoSvg } from '../components/LogoSvg';
+import { api } from '../api/vehicle.api';
 
 export const Register = () => {
   const [username, setUsername] = useState('');
@@ -47,14 +48,14 @@ export const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/choreo-apis/django-rest-api/mysite/v1', {
+      const res = await api.post('/api/register/', {
         username,
         email,
         password,
       });
 
       if (res.data == 'Usuario registrado correctamente') {
-        const response = await axios.post('/choreo-apis/django-rest-api/mysite/v1', { username, password });
+        const response = await api.post('/auth/login/', { username, password });
         localStorage.setItem('token', response.data.key); // Guardar el token 
         login()
         navigate('/', { replace: true });

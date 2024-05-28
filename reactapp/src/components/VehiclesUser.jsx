@@ -6,6 +6,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Navbar } from './Navbar';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import { api } from '../api/vehicle.api';
 
 export const VehiclesUser = ({ vehiculos, setVehiculos, setMensaje }) => {
     const [showModal, setShowModal] = useState(false);
@@ -23,7 +24,7 @@ export const VehiclesUser = ({ vehiculos, setVehiculos, setMensaje }) => {
 
     const handleDeleteVehicle = () => {
         try{
-            const res = axios.delete(`http://127.0.0.1:8000/api/vehicles/${vehicleToDelete}/`)
+            const res = api.delete(`/api/vehicles/${vehicleToDelete}/`)
             setVehiculos(prevVehiculos => prevVehiculos.filter(vehi => vehi.id !== vehicleToDelete));
             setMensaje('Vehículo eliminado con éxito')
         } catch (error){

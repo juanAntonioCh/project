@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 // import '../styles/rent-car.css'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { useNavigate, Link } from 'react-router-dom';
-import { getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
+import { api, getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
 import axios from 'axios'
 import '../styles/CrearVehiculoPage.css'
 import { useContext } from "react"
@@ -181,7 +181,7 @@ export const RentCar = () => {
     console.log(formData)
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/create-vehicle/', formData, {
+      const response = await api.post('/api/create-vehicle/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

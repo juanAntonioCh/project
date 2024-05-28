@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../styles/Login.css'
 import { AuthContext } from '../context/AuthContext';
 import { LogoSvg } from '../components/LogoSvg';
+import { api } from '../api/vehicle.api';
 
 export const Login = () => {
   const [username, setUsername] = useState('');
@@ -48,7 +49,7 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/choreo-apis/django-rest-api/mysite/v1', { username, password });
+      const response = await api.post('/auth/login/', { username, password });
       localStorage.setItem('token', response.data.key); // Guardar el token 
       login()
       console.log('Inicio de sesión exitoso');

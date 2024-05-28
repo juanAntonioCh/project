@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { AlquilerCard } from './AlquilerCard';
 import { UseBuscador } from '../hooks/UseBuscador';
 import { VehiclesContext } from '../context/VehiclesContext';
+import { api } from '../api/vehicle.api';
 
 export const VehicleDetailView = () => {
     const { id } = useParams();
@@ -41,7 +42,7 @@ export const VehicleDetailView = () => {
     useEffect(() => {
         const fetchVehicle = async () => {
             try {
-                const { data } = await axios.get(`http://localhost:8000/api/vehicles/${id}`);
+                const { data } = await api.get(`/api/vehicles/${id}`);
                 setVehicle(data);
                 setLoading(false);
             } catch (error) {

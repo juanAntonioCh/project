@@ -1,34 +1,35 @@
 import axios from 'axios'
 
-const conectaCarApi = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/vehicles/'
-    //baseURL: 'http://127.0.0.1:8000/api/vehicles/'
+const apiURL = '/choreo-apis/django-rest-api/mysite/v1'
+
+export const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL : apiURL
 })
 
 export const getAllVehicles = () => {
-    return conectaCarApi.get('/')
+    return api.get('/api/vehicles/')
 }
 
 export const getAllMarcas = () => {
-    return axios.get('http://127.0.0.1:8000/api/marca')
+    return api.get('/api/marca')
 }
 
 export const getAllModelos = () => {
-    return axios.get('http://127.0.0.1:8000/api/modelo')
+    return api.get('/api/modelo')
 }
 
 export const getModelosMarca = (marcaId) => {
-    return axios.get(`http://127.0.0.1:8000/api/modelos/${marcaId}/`);
+    return api.get(`/api/modelos/${marcaId}/`);
 }
 
 export const getVehicleChoices = () => {
-    return axios.get('http://127.0.0.1:8000/api/vehicle-choices');
+    return api.get('/api/vehicle-choices');
 }
 
 export const UserDetails = () => {
-    return axios.get('http://127.0.0.1:8000/api/user-details');
+    return api.get('/api/user-details');
 }
 
 export const getUserVehicles = (userId) => {
-    return axios.get(`http://127.0.0.1:8000/api/vehicles/user/${userId}/`);
+    return api.get(`/api/vehicles/user/${userId}/`);
 }

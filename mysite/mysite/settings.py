@@ -20,13 +20,12 @@ environ.Env.read_env()
 SECRET_KEY = 'django-insecure-ue8lur3)yb#qm8l9hsl2irii%5fy^)$6=*jm&u0&e*fl!)b61k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 #DEBUG = True
 DEBUG = False
 
+#ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["*"]
-
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
@@ -95,8 +94,8 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT')
          
-        #  'ENGINE': 'django.db.backends.sqlite3',
-        #  'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
 
         # 'ENGINE': 'django.db.backends.mysql',
         # 'NAME': config('MYSQL_DATABASE'),
@@ -160,8 +159,9 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWS_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # CORS_ALLOWED_ORIGINS = [
 #     'http://127.0.0.1:5173',

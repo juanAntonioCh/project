@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { Button, Modal } from 'react-bootstrap';
+import { api } from '../api/vehicle.api';
 
 export const EditVehicleImages = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export const EditVehicleImages = () => {
   useEffect(() => {
     const fetchVehicle = async () => {
       try {
-        const { data } = await axios.get(`http://127.0.0.1:8000/api/vehicles/${id}`);
+        const { data } = await api.get(`/api/vehicles/${id}`);
         setImagenes(data.imagenes);
         setImagenesBack(data.imagenes);
         setVehiculoId(data.id);
@@ -58,7 +59,7 @@ export const EditVehicleImages = () => {
         const formData = new FormData();
         formData.append('imagen', file.imagen);
 
-        await axios.put(`http://127.0.0.1:8000/api/vehicle/image/update/${file.id}/`, formData, {
+        await api.put(`/api/vehicle/image/update/${file.id}/`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -67,7 +68,7 @@ export const EditVehicleImages = () => {
 
       // Elimina las imágenes que se han marcado para eliminación
       await Promise.all(imagenesAEliminar.map(async (imgId) => {
-        await axios.delete(`http://127.0.0.1:8000/api/imagenes/${imgId}/`);
+        await api.delete(`/api/imagenes/${imgId}/`);
       }));
 
       console.log("Cambios guardados exitosamente");
@@ -95,7 +96,7 @@ export const EditVehicleImages = () => {
       formData.append('imagen', newImage);
 
       try {
-        const { data } = await axios.post(`http://127.0.0.1:8000/api/imagenes/`, formData, {
+        const { data } = await api.post(`/api/imagenes/`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

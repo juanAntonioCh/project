@@ -5,6 +5,7 @@ import '../styles/Login.css'
 import { AuthContext } from '../context/AuthContext';
 import { LogoSvg } from '../components/LogoSvg';
 import { api } from '../api/vehicle.api';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 export const Login = () => {
   const [username, setUsername] = useState('');
@@ -12,6 +13,7 @@ export const Login = () => {
   const [usernameError, setUserNameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -48,6 +50,7 @@ export const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await api.post('/auth/login/', { username, password });
       localStorage.setItem('token', response.data.key); // Guardar el token 
@@ -62,6 +65,8 @@ export const Login = () => {
       setUserNameError(true)
       setPasswordError(true)
       console.log(e.target)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -87,7 +92,7 @@ export const Login = () => {
               <div className="text-end">
                 <LogoSvg width={'100px'} height={'100px'} />
               </div>
-              <h1 className="mb-5 pt-4 text-center fs-3 fw-bold">Bienvenido</h1>
+              <h1 className="mb-5 pt-3 text-center fs-3 fw-bold">Bienvenido</h1>
 
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="exampleFormControlInput1" className="form-label">Nombre de usuario</label>
@@ -123,6 +128,12 @@ export const Login = () => {
                   Este campo es obligatorio
                 </div>
               </div>
+
+              {loading && (
+                <div className="d-flex justify-content-center mb-3">
+                  <LoadingIndicator />
+                </div>
+              )}
 
               <div className="form-action">
                 <button className="btn btn-primary w-100 mb-3" type="submit">Iniciar Sesión</button>

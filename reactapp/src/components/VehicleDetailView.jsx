@@ -193,7 +193,7 @@ export const VehicleDetailView = () => {
 
                     <div className='col-6'>
                         <LoadScriptNext
-                            googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
+                            googleMapsApiKey={import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY}>
                             <GoogleMap
                                 mapContainerStyle={mapStyles}
                                 zoom={16}

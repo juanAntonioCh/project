@@ -180,7 +180,7 @@ export const Mapa = ({ rentDuration, address }) => {
                     ) : <p>Cargando</p>
                     } */}
                     <div id='map'>
-                        <LoadScriptNext googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
+                        <LoadScriptNext googleMapsApiKey={import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY}>
                             <GoogleMap
                                 mapContainerStyle={mapStyles}
                                 zoom={11.5}

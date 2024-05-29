@@ -5,12 +5,14 @@ import '../styles/Register.css'
 import axios from 'axios';
 import { LogoSvg } from '../components/LogoSvg';
 import { api } from '../api/vehicle.api';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 export const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -47,6 +49,7 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await api.post('/api/register/', {
         username,
@@ -68,6 +71,8 @@ export const Register = () => {
     } catch (error) {
       console.error(error);
 
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -93,7 +98,7 @@ export const Register = () => {
           </div>
         )}
         <div className='container'>
-          <div className="row pt-5">
+          <div className="row pt-4">
             <div className="col-lg-6 d-none d-lg-block register-image">
             </div>
 
@@ -101,9 +106,9 @@ export const Register = () => {
 
               <form className="form-container needs-validation p-4" noValidate onSubmit={handleSubmit}>
                 <div className="text-end">
-                  <LogoSvg width={'100px'} height={'100px'} />
+                  <LogoSvg width={'95px'} height={'95px'} />
                 </div>
-                <h1 className="mb-5 pt-4 text-center fs-3 fw-bold">¡Pon tu coche a trabajar!</h1>
+                <h1 className="mb-5 pt-3 text-center fs-3 fw-bold">¡Pon tu coche a trabajar!</h1>
 
                 <div className="form-group mb-4 position-relative">
                   <label htmlFor="username" className="form-label">Nombre de usuario</label>
@@ -156,6 +161,12 @@ export const Register = () => {
                     Este campo es obligatorio
                   </div>
                 </div>
+
+                {loading && (
+                  <div className="d-flex justify-content-center mb-3">
+                    <LoadingIndicator />
+                  </div>
+                )}
 
                 <div className="form-action">
                   <button className="btn btn-primary w-100 mb-3" type="submit">Registarse</button>

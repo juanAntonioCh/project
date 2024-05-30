@@ -115,7 +115,7 @@ def forgot_password(request):
     protocol = 'https' if request.is_secure() else 'http'
     
     # Construct the password reset URL
-    reset_url = f"http://localhost:5173/reset-password-confirm/{uid}/{token}"
+    reset_url = f"https://6c4143d1-64a1-4e95-98b6-c1f27c54e5c1.e1-eu-north-azure.choreoapps.dev/reset-password-confirm/{uid}/{token}"
 
     # Render the email template with context
     email_subject = 'Solicitud de cambio de contraseña'

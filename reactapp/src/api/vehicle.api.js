@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const apiURL = '/choreo-apis/django-rest-api/mysite/v1'
+//const apiURL = '/choreo-apis/django-rest-api/mysite/v1'
+const apiURL = 'https://juanan.pythonanywhere.com/'
 
 export const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL : apiURL

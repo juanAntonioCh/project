@@ -88,15 +88,15 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PWD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT')
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': os.getenv('DB_NAME'),
+        # 'USER': os.getenv('DB_USER'),
+        # 'PASSWORD': os.getenv('DB_PWD'),
+        # 'HOST': os.getenv('DB_HOST'),
+        # 'PORT': os.getenv('DB_PORT')
          
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
 
         # 'ENGINE': 'django.db.backends.mysql',
         # 'NAME': config('MYSQL_DATABASE'),
@@ -168,6 +168,7 @@ CORS_ALLOWS_CREDENTIALS = True
 
 
 # CORS_ALLOWED_ORIGINS = [
+#     'https://6c4143d1-64a1-4e95-98b6-c1f27c54e5c1.e1-eu-north-azure.choreoapps.dev',
 #     'http://127.0.0.1:5173',
 #     'http://localhost:5173'
 # ]

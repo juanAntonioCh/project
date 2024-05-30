@@ -10,7 +10,7 @@ class MarcaSerializer(serializers.ModelSerializer):
 class ModeloSerializer(serializers.ModelSerializer):
     class Meta:
         model = Modelo
-        fields = ['id', 'nombre']
+        fields = ['id', 'marca', 'nombre']
 
 class ImagenVehiculoSerializer(serializers.ModelSerializer):
     class Meta:

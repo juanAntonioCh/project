@@ -45,8 +45,8 @@ export const AuthProvider = ({ children }) => {
             }
           })
           setUser(response.data.id);
-          //console.log('EL USUARIO ES  ', response.data)
-          //console.log(response.data.id)
+          console.log('EL USUARIO ES  ', response.data)
+          console.log(response.data.id)
           //console.log(response)
 
         } catch (error) {

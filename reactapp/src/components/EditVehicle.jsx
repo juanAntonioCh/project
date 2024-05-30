@@ -51,7 +51,7 @@ export const EditVehicle = () => {
     const fetchVehicle = async () => {
       try {
         const { data } = await api.get(`/api/vehicles/${id}`);
-        //console.log(data)
+        console.log(data)
         setVehiculo({
           id: data.id,
           propietario_id: data.propietario,

@@ -17,10 +17,16 @@ import { Navbar } from './components/Navbar';
 import { VehiclesProvider } from './context/VehiclesProvider';
 import { PasswordReset } from './pages/PasswordReset';
 import { PasswordResetConfirm } from './pages/PasswordResetConfirm';
+import { LoadScript } from '@react-google-maps/api';
+import { BuzonMensajes } from './pages/BuzonMensajes';
 
 
 function App() {
   return (
+    <LoadScript
+      googleMapsApiKey="AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ"
+      libraries={['places']}
+    >
     <BrowserRouter>
       <AuthProvider>
         <VehiclesProvider>
@@ -28,13 +34,14 @@ function App() {
         </VehiclesProvider>
       </AuthProvider>
     </BrowserRouter>
+    </LoadScript>
   );
 }
 
 function AppRoutes() {
   const location = useLocation();
 
-  // Define las opciones de navegación específicas de cada página
+  // Definir las opciones de navegación específicas de cada página
   const getNavbarOptions = () => {
     if (location.pathname === '/home') {
       return 'HOME';
@@ -64,6 +71,7 @@ function AppRoutes() {
         <Route path='/edit-vehicle/images/:id' element={<EditVehicleImages />} />
         <Route path='/password/reset' element={<PasswordReset />} />
         <Route path="/reset-password-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
+        <Route path='/mensajes' element={<BuzonMensajes/>}></Route>
       </Routes>
     </>
   );

@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
               'Authorization': `Token ${token}`
             }
           })
-          setUser(response.data.id);
+          setUser(response.data);
           console.log('EL USUARIO ES  ', response.data)
           console.log(response.data.id)
           //console.log(response)
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     setLogoutMessage('Sesión finalizada')
     setIsAuthenticated(false);
-    //navigate('/', { replace: true, state: { logoutMessage } });
+    navigate('/', { replace: true, state: { logoutMessage } });
   };
 
   return (

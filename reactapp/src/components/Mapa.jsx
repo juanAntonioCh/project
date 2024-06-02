@@ -141,7 +141,7 @@ export const Mapa = ({ rentDuration, address }) => {
     }, [priceRange]);
 
     console.log(obtenerVehiculosPorPagina())
-    console.log('Google Maps API Key:', import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY);
+    console.log('Google Maps API Key:', import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
 
 
     function handleChanges(e, newValue) {
@@ -171,7 +171,7 @@ export const Mapa = ({ rentDuration, address }) => {
                     <div className='col-md-6'>
                         <p>Resultados de: <strong>{address}</strong>: {vehiculosFiltrados.length} vehículos encontrados</p>
                         <VehicleList vehiculosPagina={obtenerVehiculosPorPagina()} vehiculos={vehiculosFiltrados} setMaxPrice={setMaxPrice} setMinPrice={setMinPrice}
-                            setPriceRange={setPriceRange} rentDuration={rentDuration}/>
+                            setPriceRange={setPriceRange} rentDuration={rentDuration} />
                     </div>
                 )}
 
@@ -180,50 +180,44 @@ export const Mapa = ({ rentDuration, address }) => {
                         <MapComponent vehiculos={obtenerVehiculosPorPagina()} />
                     ) : <p>Cargando</p>
                     } */}
-                    <div id='map'>
-                        {/* <LoadScriptNext googleMapsApiKey={import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY}> */}
-                        <LoadScriptNext googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
-                            <GoogleMap
-                                mapContainerStyle={mapStyles}
-                                zoom={11.5}
-                                center={defaultCenter}
-                                onLoad={handleLoad}
+                    <GoogleMap
+                        mapContainerStyle={mapStyles}
+                        zoom={11.5}
+                        center={defaultCenter}
+                        onLoad={handleLoad}
+                    >
+                        {
+                            obtenerVehiculosPorPagina().map(vehiculo => (
+
+                                <Marker key={vehiculo.id}
+                                    icon={iconMarker}
+                                    position={{
+                                        lat: vehiculo.latitud,
+                                        lng: vehiculo.longitud
+                                    }}
+                                    onClick={() => handleMarkerClick(vehiculo)}
+                                />
+                            ))
+                        }
+                        {activeMarker && (
+                            <InfoWindow
+                                position={{
+                                    lat: activeMarker.latitud,
+                                    lng: activeMarker.longitud
+                                }}
+                                onCloseClick={handleCloseClick}
                             >
-                                {
-                                    obtenerVehiculosPorPagina().map(vehiculo => (
-
-                                        <Marker key={vehiculo.id}
-                                            icon={iconMarker}
-                                            position={{
-                                                lat: vehiculo.latitud,
-                                                lng: vehiculo.longitud
-                                            }}
-                                            onClick={() => handleMarkerClick(vehiculo)}
-                                        />
-
-                                    ))
-                                }
-                                {activeMarker && (
-                                    <InfoWindow
-                                        position={{
-                                            lat: activeMarker.latitud,
-                                            lng: activeMarker.longitud
-                                        }}
-                                        onCloseClick={handleCloseClick}
-                                    >
-                                        <div>
-                                            <h5>{activeMarker.marca_details.nombre} {activeMarker.modelo_details.nombre}</h5>
-                                            {activeMarker.imagenes.length > 0 ? (
-                                                <img src={activeMarker.imagenes[0].imagen} alt={`Imagen de ${activeMarker.marca_details.nombre} ${activeMarker.modelo_details.nombre}`} />
-                                            ) : (
-                                                <img src='https://gomore.imgix.net/images/default_car_picture.png?ixlib=rails-2.1.2&amp;w=560&amp;h=373' alt="Imagen por defecto" width={230} height={170}></img>
-                                            )}
-                                        </div>
-                                    </InfoWindow>
-                                )}
-                            </GoogleMap>
-                        </LoadScriptNext>
-                    </div>
+                                <div>
+                                    <h5>{activeMarker.marca_details.nombre} {activeMarker.modelo_details.nombre}</h5>
+                                    {activeMarker.imagenes.length > 0 ? (
+                                        <img src={activeMarker.imagenes[0].imagen} alt={`Imagen de ${activeMarker.marca_details.nombre} ${activeMarker.modelo_details.nombre}`} />
+                                    ) : (
+                                        <img src='https://gomore.imgix.net/images/default_car_picture.png?ixlib=rails-2.1.2&amp;w=560&amp;h=373' alt="Imagen por defecto" width={230} height={170}></img>
+                                    )}
+                                </div>
+                            </InfoWindow>
+                        )}
+                    </GoogleMap>
 
                     <div className='mt-4'>
                         <Pagination>

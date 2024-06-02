@@ -51,7 +51,7 @@ export const VehiclesUserPage = () => {
                 </div>
             )}
 
-            <div className="container pt-5">
+            <div className="container pt-4">
                 {/* <h1>Mis vehiculos {id}</h1> */}
 
                 <VehiclesUser vehiculos={vehis} setVehiculos={setVehis} setMensaje={setSuccessMessage}/>

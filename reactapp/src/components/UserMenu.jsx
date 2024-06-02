@@ -15,8 +15,10 @@ export const UserMenu = ({ handleLogout }) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-                <Dropdown.Item href={`/my-vehicles/${user}`}>Mis vehiculos publicados</Dropdown.Item>
+                <p className='mx-3'>¡Bienvenido! <strong className='mx-2 fs-5'> <i>{user.username}</i></strong></p>
+                <Dropdown.Item href={`/my-vehicles/${user.id}`}>Mis vehiculos publicados</Dropdown.Item>
                 <Dropdown.Item href="#/action-2">Mis alquileres</Dropdown.Item>
+                <Dropdown.Item href={'/mensajes/'}>Mensajes</Dropdown.Item>
                 <hr />
                 <Dropdown.Item onClick={handleLogout}>Cerrar Sesión</Dropdown.Item>
             </Dropdown.Menu>

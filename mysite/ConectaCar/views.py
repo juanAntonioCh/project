@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework import status
 import json
 from django.core.files.base import ContentFile
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -17,10 +18,12 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.forms import SetPasswordForm
+from rest_framework.generics import ListAPIView
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -39,7 +42,6 @@ class MarcaView(viewsets.ModelViewSet):
     serializer_class = MarcaSerializer
     queryset = Marca.objects.all()
 
-
 class ModeloView(viewsets.ModelViewSet):
     serializer_class = ModeloSerializer
     queryset = Modelo.objects.all()
@@ -49,9 +51,58 @@ class ImagenVehiculoView(viewsets.ModelViewSet):
     serializer_class = ImagenVehiculoSerializer
     queryset = ImagenVehiculo.objects.all()
 
+
+class ReservaViewSet(viewsets.ModelViewSet):
+    queryset = Reserva.objects.all()
+    serializer_class = ReservaSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        solicitante = request.user
+        vehiculo_id = request.data.get('vehiculo')
+
+        # Comprobar si ya existe una reserva pendiente o confirmada para este vehículo y solicitante
+        if Reserva.objects.filter(solicitante=solicitante, vehiculo_id=vehiculo_id, estado__in=['pendiente', 'confirmada']).exists():
+            return Response(
+                {'detail': 'Ya tienes una reserva pendiente o confirmada para este vehículo.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return super().create(request, *args, **kwargs)
+
+    @action(detail=True, methods=['post'])
+    def confirmar(self, request, pk=None):
+        reserva = self.get_object()
+        if reserva.propietario != request.user:
+            return Response({'error': 'No tienes permiso para confirmar esta reserva.'}, status=403)
+        reserva.estado = 'confirmada'
+        reserva.fecha_confirmacion = timezone.now()
+        reserva.save()
+        return Response({'status': 'reserva confirmada'})
+
+    @action(detail=True, methods=['post'])
+    def rechazar(self, request, pk=None):
+        reserva = self.get_object()
+        if reserva.propietario != request.user:
+            return Response({'error': 'No tienes permiso para rechazar esta reserva.'}, status=403)
+        reserva.estado = 'rechazada'
+        reserva.save()
+        return Response({'status': 'reserva rechazada'})
+    
+
+class ReservasPropietario(ListAPIView):
+    serializer_class = ReservaSerializer
+
+    def get_queryset(self):
+        propietario = self.request.user
+        vehiculos_propios = propietario.vehiculos.all()
+        return Reserva.objects.filter(vehiculo__in=vehiculos_propios)
+
+
 class AlquilerView(viewsets.ModelViewSet):
     serializer_class = AlquilerSerializer
     queryset = Alquiler.objects.all()
+
 
 
 class ModeloFilter(generics.ListAPIView):

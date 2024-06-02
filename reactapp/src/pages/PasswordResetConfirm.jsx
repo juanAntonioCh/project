@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { api } from '../api/vehicle.api';
 
 export const PasswordResetConfirm = () => {
     const { uidb64, token } = useParams();
@@ -45,7 +46,7 @@ export const PasswordResetConfirm = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:8000/api/reset-password-confirm/', {
+            const response = await api.post('/api/reset-password-confirm/', {
                 uidb64,
                 token,
                 password

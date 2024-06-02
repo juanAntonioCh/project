@@ -95,7 +95,7 @@ export const EditVehicle = () => {
       const list_marcas = await getAllMarcas()
       const list_modelos = await getAllModelos()
       const choices = await getVehicleChoices()
-      console.log('22222222213232eer3r3 r ')
+      console.log('Lista de las marcas')
       console.log(list_marcas)
       // const sortedMarcas = sortMarcas(list_marcas.data, vehiculo.marca_id);
       // console.log(vehiculo.marca_id)

@@ -39,7 +39,7 @@ export const RentCar = () => {
   useEffect(() => {
     setVehiculo({
       ...vehiculo,
-      propietario_id: user
+      propietario_id: user.id
     })
   }, [user])
 

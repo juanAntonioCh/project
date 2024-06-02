@@ -15,15 +15,10 @@ import { VehiclesContext } from '../context/VehiclesContext';
 
 export const BuscadorVehiculos = ({ setError }) => {
     const navigate = useNavigate();
-    const { setFormatStartDate, setFormatEndDate} = useContext(VehiclesContext)
-    const { startDate, endDate,
-        startHour, endHour,
-        address, setAddress,
-        handleStartDateChange,
-        handleEndDateChange,
-        handleStartHourChange,
-        handleEndHourChange,
-        calculateHourDifference, handleSelect } = UseBuscador()
+    const { setFormatStartDate, setFormatEndDate } = useContext(VehiclesContext)
+    const { startDate, endDate, startHour, endHour, address, setAddress, handleStartDateChange,
+        handleEndDateChange, handleStartHourChange, handleEndHourChange, calculateHourDifference,
+        handleSelect } = UseBuscador()
 
 
     const handleSubmit = (e) => {
@@ -73,7 +68,7 @@ export const BuscadorVehiculos = ({ setError }) => {
         }
 
         console.log('============================')
-        console.log(typeof(endDateAsDate))
+        console.log(typeof (endDateAsDate))
         console.log(startDateAsDate)
 
         const differenceInMilliseconds = endDateAsDate - startDateAsDate;
@@ -97,11 +92,10 @@ export const BuscadorVehiculos = ({ setError }) => {
         localStorage.setItem('startDate', JSON.stringify(formatStartDate));
         localStorage.setItem('endDate', JSON.stringify(formatEndDate));
 
-
         setError('');
         const rentDuration = calculateHourDifference(startDate, startHour, endDate, endHour)
         localStorage.setItem('rentDuration', JSON.stringify(rentDuration));
-        
+
         console.log('Horas de alquiler:', rentDuration);
         navigate('/vehicle', { state: { rentDuration, address } })
     }

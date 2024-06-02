@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { GoogleMap, LoadScriptNext, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScriptNext, Marker, useJsApiLoader } from '@react-google-maps/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AlquilerCard } from './AlquilerCard';
 import { UseBuscador } from '../hooks/UseBuscador';
+import { Button, Modal } from 'react-bootstrap';
 import { VehiclesContext } from '../context/VehiclesContext';
 import { api } from '../api/vehicle.api';
+import { AlertMessage } from './AlertMessage';
 
 export const VehicleDetailView = () => {
     const { id } = useParams();
@@ -17,7 +19,19 @@ export const VehicleDetailView = () => {
     const [vehicle, setVehicle] = useState(null);
     const [loading, setLoading] = useState(true);
     const { calcularPrecioAlquiler } = useContext(VehiclesContext);
+    const [successMessage, setSuccessMessage] = useState('')
+    const [warningMessage, setWarningMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
     const [coords, setCoords] = useState({ lat: '', lng: '' })
+
+    //funcion para pasar de string a un objeto Date la fecha de inicio y fin del alquiler obtenidas
+    //del local storage
+    const parseDateString = (dateString) => {
+        const [datePart, timePart] = dateString.split(', ');
+        const [year, month, day] = datePart.split('-').map(Number);
+        const [hours, minutes] = timePart.split(':').map(Number);
+        return new Date(year, month - 1, day, hours, minutes); // Mes es cero indexado en JS
+    };
 
     useEffect(() => {
         const storedStartDate = JSON.parse(localStorage.getItem('startDate'));
@@ -29,6 +43,12 @@ export const VehicleDetailView = () => {
             setRentDuration(storedRentDuration)
         }
     }, []);
+
+    const handleCloseAlert = () => {
+        setSuccessMessage('');
+        setWarningMessage('')
+        setErrorMessage('')
+    };
 
     useEffect(() => {
         console.log(rentDuration)
@@ -53,6 +73,7 @@ export const VehicleDetailView = () => {
         fetchVehicle();
     }, [id]);
 
+    console.log(vehicle)
 
     const mapStyles = {
         height: "100%",
@@ -92,6 +113,15 @@ export const VehicleDetailView = () => {
 
     return (
         <div className="container mt-4">
+            {successMessage && (
+                <AlertMessage type="success" message={successMessage} handleCloseAlert={handleCloseAlert} />
+            )}
+            {errorMessage && (
+                <AlertMessage type="danger" message={errorMessage} handleCloseAlert={handleCloseAlert} />
+            )}
+            {warningMessage && (
+                <AlertMessage type="warning" message={warningMessage} handleCloseAlert={handleCloseAlert} />
+            )}
             <div className="row vehicle-detail-card">
                 <div id={`carouselVehicleImages`} className="carousel slide col-md-6" data-bs-ride="carousel">
                     <div className="carousel-inner">
@@ -148,9 +178,10 @@ export const VehicleDetailView = () => {
                                 </div>
                             )}
 
-                            <button className="btn vehicle-detail-rent-btn w-100">Alquilar</button>
-                            {/* <p class="block transition-color mb0 title-s" style="white-space: pre-wrap;">43,15€</p> */}
-
+                            {/* <button className="btn vehicle-detail-rent-btn w-100">Solicitar reserva</button> */}
+                            <AlquilerCard setSuccessMessage={setSuccessMessage} setWarningMessage={setWarningMessage}
+                                setErrorMessage={setErrorMessage} fechaInicio={parseDateString(startDate)}
+                                fechaFin={parseDateString(endDate)} propietario={vehicle.propietario_details.id} vehi={vehicle.id} />
                         </div>
                     </div>
                 </div>
@@ -172,13 +203,11 @@ export const VehicleDetailView = () => {
                                 <p>{vehicle.tipo_cambio}</p>
                             </div>
 
-
                             <div className='d-flex'>
                                 <div className='vehicle-detail-symbol-asientos'></div>
                                 <p>{vehicle.numero_plazas} plazas</p>
                             </div>
                         </div>
-
 
                         <p className="card-text"><strong>Propietario: </strong> {vehicle.propietario_details.username}</p>
                         <p className="card-text"><strong>Matrícula:</strong> {vehicle.matricula}</p>
@@ -192,25 +221,20 @@ export const VehicleDetailView = () => {
                     </div>
 
                     <div className='col-6'>
-                        {/* <LoadScriptNext googleMapsApiKey={import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY}> */}
-                        <LoadScriptNext googleMapsApiKey='AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'>
-                            <GoogleMap
-                                mapContainerStyle={mapStyles}
-                                zoom={16}
-                                center={{ lat: vehicle.latitud, lng: vehicle.longitud }}
-                                onLoad={handleLoad}
-                            >
-
-                                <Marker key={vehicle.id}
-                                    icon={iconMarker}
-                                    position={{
-                                        lat: vehicle.latitud,
-                                        lng: vehicle.longitud
-                                    }}
-                                />
-
-                            </GoogleMap>
-                        </LoadScriptNext>
+                        <GoogleMap
+                            mapContainerStyle={mapStyles}
+                            zoom={16}
+                            center={{ lat: vehicle.latitud, lng: vehicle.longitud }}
+                            onLoad={handleLoad}
+                        >
+                            <Marker key={vehicle.id}
+                                icon={iconMarker}
+                                position={{
+                                    lat: vehicle.latitud,
+                                    lng: vehicle.longitud
+                                }}
+                            />
+                        </GoogleMap>
                     </div>
                 </div>
                 {/* <AlquilerCard /> */}

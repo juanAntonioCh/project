@@ -110,16 +110,31 @@ class ImagenVehiculo(models.Model):
 
 
 
+class Reserva(models.Model):
+    vehiculo = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+    solicitante = models.ForeignKey(User, related_name='reservas', on_delete=models.CASCADE)
+    propietario = models.ForeignKey(User, related_name='propiedades', on_delete=models.CASCADE)
+    fecha_inicio = models.DateTimeField()
+    fecha_fin = models.DateTimeField()
+    estado = models.CharField(max_length=20, choices=[('pendiente', 'Pendiente'), ('confirmada', 'Confirmada'), ('rechazada', 'Rechazada')], default='pendiente')
+    fecha_solicitud = models.DateTimeField(auto_now_add=True)
+    fecha_confirmacion = models.DateTimeField(null=True, blank=True)
+    mensaje = models.TextField(blank=True)  # Campo opcional para el mensaje del solicitante al propietario
+
+    def __str__(self):
+        return f'Reserva de {self.vehiculo} por {self.solicitante}'
+    
+
 class Alquiler(models.Model):
+    reserva = models.OneToOneField(Reserva, null=True, on_delete=models.CASCADE)
     cliente = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reservas_cliente')
     vehiculo = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, null=True, related_name='reservas')
     fecha_inicio = models.DateTimeField()
     fecha_fin = models.DateTimeField()
     precio_total = models.DecimalField(max_digits=8, decimal_places=2)
-    fecha_reserva = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f'Reserva de {self.vehiculo} por {self.cliente}'
+        return f'Alquiler de {self.vehiculo} por {self.cliente}'
         
 
 class Valoracion(models.Model):

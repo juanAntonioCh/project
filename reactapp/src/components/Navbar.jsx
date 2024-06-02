@@ -64,8 +64,9 @@ export const Navbar = ({ option }) => {
                             </>
                         ) : (
                             <>
-                                <Link to={`/my-vehicles/${user}`} className="w-50 m-2">Mis vehículos</Link>
+                                <Link to={`/my-vehicles/${user.id}`} className="w-50 m-2">Mis vehículos</Link>
                                 <Link to="#" className="w-50 m-2">Mis alquileres</Link>
+                                <Link to="#" className="w-50 m-2">Mensajes</Link>
                                 <hr />
                                 <button onClick={logout} className="btn btn-danger m-2">Cerrar sesión</button>
                             </>
@@ -80,6 +81,7 @@ export const Navbar = ({ option }) => {
                         {location.pathname !== '/rent-car' ? (
                             <Link to="/rent-car" className="home-rent-link flex-fill mx-4">Alquila tu coche</Link>)
                             : null}
+                        {/* MENU DEL PERFIL DE USUARIO */}
                         <UserMenu handleLogout={logout} />
                     </div>
 

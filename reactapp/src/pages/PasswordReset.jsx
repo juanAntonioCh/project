@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
+import { api } from '../api/vehicle.api';
 
 
 export const PasswordReset = () => {
@@ -55,7 +56,7 @@ export const PasswordReset = () => {
         e.preventDefault()
         try {
             console.log(email)
-            const response = await axios.post('http://localhost:8000/api/forgot-password/', { email });
+            const response = await api.post('/api/forgot-password/', { email });
 
             setSuccess('Se ha enviado un correo electrónico a la dirección proporcionada. Por favor, revise su bandeja de entrada y siga las instrucciones para restablecer su contraseña.')
 

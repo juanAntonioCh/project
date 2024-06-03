@@ -181,7 +181,8 @@ export const VehicleDetailView = () => {
                             {/* <button className="btn vehicle-detail-rent-btn w-100">Solicitar reserva</button> */}
                             <AlquilerCard setSuccessMessage={setSuccessMessage} setWarningMessage={setWarningMessage}
                                 setErrorMessage={setErrorMessage} fechaInicio={parseDateString(startDate)}
-                                fechaFin={parseDateString(endDate)} propietario={vehicle.propietario_details.id} vehi={vehicle.id} />
+                                fechaFin={parseDateString(endDate)} propietario={vehicle.propietario_details.id} 
+                                vehi={vehicle.id} precio={calcularPrecioAlquiler(vehicle.precio_por_hora, rentDuration)}/>
                         </div>
                     </div>
                 </div>

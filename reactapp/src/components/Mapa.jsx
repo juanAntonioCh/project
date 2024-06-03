@@ -78,7 +78,7 @@ export const Mapa = ({ rentDuration, address }) => {
 
         return vehiculos.filter(vehiculo => {
             const distancia = distanciaEntreDosPuntos(defaultCenter.lat, defaultCenter.lng, vehiculo.latitud, vehiculo.longitud);
-            return distancia <= radioVisible && vehiculo.propietario != user && vehiculo.disponible;
+            return distancia <= radioVisible && vehiculo.propietario != user.id && vehiculo.disponible;
         })
     }
 

@@ -33,6 +33,10 @@ from django.core.mail import EmailMultiAlternatives
 from .models import *
 
 # Create your views here.
+class UserView(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
 class VehicleView(viewsets.ModelViewSet):
     serializer_class = VehicleSerializer
     queryset = Vehicle.objects.all()
@@ -78,6 +82,10 @@ class ReservaViewSet(viewsets.ModelViewSet):
         reserva.estado = 'confirmada'
         reserva.fecha_confirmacion = timezone.now()
         reserva.save()
+
+        #Cuando se confirme la reserva creamos el alquiler asociado a esa reserva
+        #alquiler = Alquiler.objects.create(reserva=reserva)
+
         return Response({'status': 'reserva confirmada'})
 
     @action(detail=True, methods=['post'])

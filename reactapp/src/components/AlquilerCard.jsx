@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { api } from '../api/vehicle.api';
 import { Link } from 'react-router-dom';
 
-export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMessage, propietario, vehi, fechaInicio, fechaFin }) => {
+export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMessage, propietario, vehi, fechaInicio, fechaFin, precio }) => {
   const [show, setShow] = useState(false);
   const { user } = useContext(AuthContext)
 
@@ -22,6 +22,7 @@ export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMes
     fecha_inicio: formatLocalDateTime(fechaInicio),
     fecha_fin: formatLocalDateTime(fechaFin),
     fecha_confirmacion: null,
+    precio_total: precio,
     mensaje: '',
   })
 
@@ -43,7 +44,7 @@ export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMes
     };
 
     try {
-      const response = await api.post('/api/reservas/', reserva, { headers })
+      const response = await api.post('/api/reserva/', reserva, { headers })
       console.log(response)
       setSuccessMessage('Solicitud enviada con éxito. Cuando el propietario confirme la reserva, se te informará mediante un mensaje en el apartado de Mensajes de tu panel de usuario.')
 

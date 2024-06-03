@@ -56,9 +56,9 @@ class ImagenVehiculoView(viewsets.ModelViewSet):
     queryset = ImagenVehiculo.objects.all()
 
 
-class ReservaViewSet(viewsets.ModelViewSet):
-    queryset = Reserva.objects.all()
-    serializer_class = ReservaSerializer
+class AlquilerViewSet(viewsets.ModelViewSet):
+    queryset = Alquiler.objects.all()
+    serializer_class = AlquilerSerializer
     permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
@@ -66,7 +66,7 @@ class ReservaViewSet(viewsets.ModelViewSet):
         vehiculo_id = request.data.get('vehiculo')
 
         # Comprobar si ya existe una reserva pendiente o confirmada para este vehículo y solicitante
-        if Reserva.objects.filter(solicitante=solicitante, vehiculo_id=vehiculo_id, estado__in=['pendiente', 'confirmada']).exists():
+        if Alquiler.objects.filter(solicitante=solicitante, vehiculo_id=vehiculo_id, estado__in=['pendiente', 'confirmado']).exists():
             return Response(
                 {'detail': 'Ya tienes una reserva pendiente o confirmada para este vehículo.'},
                 status=status.HTTP_400_BAD_REQUEST
@@ -76,40 +76,41 @@ class ReservaViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def confirmar(self, request, pk=None):
-        reserva = self.get_object()
-        if reserva.propietario != request.user:
+        alquiler = self.get_object()
+        if alquiler.propietario != request.user:
             return Response({'error': 'No tienes permiso para confirmar esta reserva.'}, status=403)
-        reserva.estado = 'confirmada'
-        reserva.fecha_confirmacion = timezone.now()
-        reserva.save()
-
-        #Cuando se confirme la reserva creamos el alquiler asociado a esa reserva
-        #alquiler = Alquiler.objects.create(reserva=reserva)
+        alquiler.estado = 'confirmado'
+        #alquiler.fecha_confirmacion = timezone.now()
+        alquiler.save()
 
         return Response({'status': 'reserva confirmada'})
 
     @action(detail=True, methods=['post'])
     def rechazar(self, request, pk=None):
-        reserva = self.get_object()
-        if reserva.propietario != request.user:
+        alquiler = self.get_object()
+        if alquiler.propietario != request.user:
             return Response({'error': 'No tienes permiso para rechazar esta reserva.'}, status=403)
-        reserva.estado = 'rechazada'
-        reserva.save()
+        alquiler.estado = 'rechazado'
+        alquiler.save()
         return Response({'status': 'reserva rechazada'})
     
 
-class ReservasPropietario(ListAPIView):
-    serializer_class = ReservaSerializer
+class AlquileresPropietario(ListAPIView):
+    serializer_class = AlquilerSerializer
 
     def get_queryset(self):
         propietario = self.request.user
         vehiculos_propios = propietario.vehiculos.all()
-        return Reserva.objects.filter(vehiculo__in=vehiculos_propios)
+        return Alquiler.objects.filter(vehiculo__in=vehiculos_propios)
+    
 
-
-class AlquilerView(viewsets.ModelViewSet):
+class AlquileresSolicitante(ListAPIView):
     serializer_class = AlquilerSerializer
-    queryset = Alquiler.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        solicitante = self.request.user
+        return Alquiler.objects.filter(solicitante=solicitante)
 
 
 

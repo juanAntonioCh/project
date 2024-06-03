@@ -2,7 +2,7 @@
     margin: auto;
 } */
 
-.navbar{
+.navbar {
     padding: 0;
     height: 10vh;
     background-color: white;
@@ -33,13 +33,27 @@
     border-radius: 15px;
     margin-right: 100px;
     transition: transform 0.5s;
+}
 
+.navbar-responsive-link {
+    color: white;
+    background-color: #00a6dd;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-responsive-link:hover {
+    background-color: #0056b3;
 }
 
 .nav-rent-link:hover {
     transform: scale(1.1);
 }
 
-.nav-svg{
+.nav-svg {
     margin-right: 40px;
 }

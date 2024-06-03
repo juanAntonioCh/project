@@ -72,7 +72,7 @@ export const EditVehicleImages = () => {
       }));
 
       console.log("Cambios guardados exitosamente");
-      navigate(`/my-vehicles/${user}`);
+      navigate(`/my-vehicles/${user.id}`);
     } catch (error) {
       console.error("Error al guardar los cambios", error);
     }
@@ -158,7 +158,7 @@ export const EditVehicleImages = () => {
           )}
           <div className="text-center d-flex justify-content-center mt-4">
             <button className="btn btn-primary" onClick={handleSubmit}>Guardar cambios</button>
-            <Link to={`/my-vehicles/${user}`} className="btn btn-secondary mx-3">Cancelar</Link>
+            <Link to={`/my-vehicles/${user.id}`} className="btn btn-secondary mx-3">Cancelar</Link>
           </div>
         </div>
       </div>

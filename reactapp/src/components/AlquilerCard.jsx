@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { AuthContext } from '../context/AuthContext';
 import { api } from '../api/vehicle.api';
@@ -16,7 +16,7 @@ export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMes
   };
 
   const [reserva, setReserva] = useState({
-    solicitante: user.id,
+    solicitante: null,
     propietario: propietario,
     vehiculo: vehi,
     fecha_inicio: formatLocalDateTime(fechaInicio),
@@ -25,6 +25,13 @@ export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMes
     precio_total: precio,
     mensaje: '',
   })
+
+  useEffect(()=>{
+    setReserva({
+      ...reserva,
+      solicitante: user.id
+    })
+  }, [user])
 
   console.log(user)
   console.log(reserva)
@@ -44,7 +51,7 @@ export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMes
     };
 
     try {
-      const response = await api.post('/api/reserva/', reserva, { headers })
+      const response = await api.post('/api/alquiler/', reserva, { headers })
       console.log(response)
       setSuccessMessage('Solicitud enviada con éxito. Cuando el propietario confirme la reserva, se te informará mediante un mensaje en el apartado de Mensajes de tu panel de usuario.')
 

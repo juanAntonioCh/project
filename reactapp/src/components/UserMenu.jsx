@@ -17,9 +17,8 @@ export const UserMenu = ({ handleLogout }) => {
             <Dropdown.Menu>
                 <p className='mx-3'>¡Bienvenido! <strong className='mx-2 fs-5'> <i>{user.username}</i></strong></p>
                 <Dropdown.Item href={`/my-vehicles/${user.id}`}>Mis vehiculos publicados</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Mis alquileres</Dropdown.Item>
-                <Dropdown.Item href={'/mensajes/'}>Solicitudes de reserva recibidas</Dropdown.Item>
-                <Dropdown.Item href={'/mensajes/'}>Solicitudes de reserva enviadas</Dropdown.Item>
+                <Dropdown.Item href="/alquileres">Mis alquileres</Dropdown.Item>
+                <Dropdown.Item href='/reservas/recibidas/'>Solicitudes de alquiler recibidas</Dropdown.Item>
                 <hr />
                 <Dropdown.Item onClick={handleLogout}>Cerrar Sesión</Dropdown.Item>
             </Dropdown.Menu>

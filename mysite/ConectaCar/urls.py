@@ -7,8 +7,7 @@ router.register(r'vehicles', views.VehicleView, 'vehicles')
 router.register(r'marca', views.MarcaView, 'marca')
 router.register(r'modelo', views.ModeloView, 'modelo')
 router.register(r'imagenes', views.ImagenVehiculoView, 'imagenes')
-router.register(r'alquiler', views.AlquilerView, 'alquiler')
-router.register(r'reserva', views.ReservaViewSet, 'reserva')
+router.register(r'alquiler', views.AlquilerViewSet, 'alquiler')
 router.register(r'usuario', views.UserView, 'usuario')
 #router.register(r'', views.VehicleView, 'vehicles')
 
@@ -24,5 +23,6 @@ urlpatterns = [
     path('create-vehicle/', views.create_vehicle, name='create-vehicle'),
     path('vehicles/user/<int:id>/', views.get_user_vehicles, name='vehicles-user'),
     path('vehicle/image/update/<int:id>/', views.update_vehicle_image, name='image-update'),
-    path('reservas/propietario/', views.ReservasPropietario.as_view(), name='reservas-propietario'),
+    path('alquileres/propietario/', views.AlquileresPropietario.as_view(), name='alquileres-propietario'),
+    path('alquileres/solicitante/', views.AlquileresSolicitante.as_view(), name='alquileres-solicitante'),
 ]

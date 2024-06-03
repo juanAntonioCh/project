@@ -19,6 +19,7 @@ import { PasswordReset } from './pages/PasswordReset';
 import { PasswordResetConfirm } from './pages/PasswordResetConfirm';
 import { LoadScript } from '@react-google-maps/api';
 import { BuzonMensajes } from './pages/BuzonMensajes';
+import { AlquileresUser } from './pages/AlquileresUser';
 
 
 function App() {
@@ -71,7 +72,8 @@ function AppRoutes() {
         <Route path='/edit-vehicle/images/:id' element={<EditVehicleImages />} />
         <Route path='/password/reset' element={<PasswordReset />} />
         <Route path="/reset-password-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
-        <Route path='/mensajes' element={<BuzonMensajes/>}></Route>
+        <Route path='/reservas/recibidas' element={<BuzonMensajes/>}></Route>
+        <Route path='/alquileres' element={<AlquileresUser/>}></Route>
       </Routes>
     </>
   );

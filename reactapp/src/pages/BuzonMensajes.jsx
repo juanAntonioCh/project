@@ -12,7 +12,7 @@ export const BuzonMensajes = () => {
         'Authorization': `Token ${token}`
       };
       try {
-        const response = await api.get('/api/reservas/propietario/', { headers })
+        const response = await api.get('/api/alquileres/propietario/', { headers })
         setReservas(response.data);
       } catch (error) {
         console.error('Error al obtener las reservas del propietario:', error);
@@ -30,7 +30,7 @@ export const BuzonMensajes = () => {
       }
 
       try {
-        const response = await api.post(`/api/reserva/${reservaId}/confirmar/`, null, { headers });
+        const response = await api.post(`/api/alquiler/${reservaId}/confirmar/`, null, { headers });
         console.log(response.data);
         const nuevasReservas = reservas.filter(reserva => reserva.id !== reservaId);
         setReservas(nuevasReservas);
@@ -52,7 +52,7 @@ export const BuzonMensajes = () => {
         const response = await api.post(`/api/reserva/${reservaId}/rechazar/`, null, { headers });
         console.log(response.data);
         const nuevasReservas = reservas.filter(reserva => reserva.id !== reservaId)
-        setReservas(nuevasReservas)
+        //setReservas(nuevasReservas)
       } catch (error) {
         console.error('Error al rechazar la reserva:', error);
       }
@@ -67,11 +67,9 @@ export const BuzonMensajes = () => {
   return (
     <div className="login-body d-flex justify-content-center">
 
-      <div className="container pt-4 ">
+      <div className="container pt-4 pb-4">
 
         <div className="bg-white p-4 buzon-mensajes-row">
-          <h2 className="text-center">Solicitudes de reservas</h2>
-
           {reservas.map(reserva => (
             <div key={reserva.id} className="row my-3">
               <div className="col-md-3">
@@ -113,35 +111,34 @@ export const BuzonMensajes = () => {
                       <strong>Solicitante:</strong> {reserva.solicitante_details.username} <br />
                       <strong>Fecha de Inicio:</strong> {new Date(reserva.fecha_inicio).toLocaleString()}<br />
                       <strong>Fecha de Fin:</strong> {new Date(reserva.fecha_fin).toLocaleString()}<br />
-                      <strong>Fecha de la solicitud:</strong> {new Date(reserva.fecha_solicitud).toLocaleString()}<br />
+                      <strong>Fecha de la solicitud:</strong> {new Date(reserva.fecha_reserva).toLocaleString()}<br />
                       <strong>Precio final:</strong> {reserva.precio_total} €<br />
                     </p>
-                    <div className="form-group col-4">
-                      <label htmlFor="mensaje"><strong>Mensaje del comprador:</strong></label>
+                    <div className="form-group col-5">
+                      {/* <label htmlFor="mensaje"><strong>Mensaje del comprador:</strong></label> */}
                       <textarea
-                        className="form-control w-75"
+                        className="form-control"
                         id="mensaje"
-                        rows="3"
+                        rows="4"
                         value={reserva.mensaje}
                         readOnly
                       />
                     </div>
+
+                    <div className="col-2 d-flex flex-column justify-content-evenly">
                     {reserva.estado === 'pendiente' && (
-                      <div className="col-3 d-flex flex-column justify-content-evenly">
+                      <>
                         <button className="btn btn-success" onClick={() => handleAceptarReserva(reserva.id)}>Aceptar</button>
                         <button className="btn btn-danger " onClick={() => handleRechazarReserva(reserva.id)}>Rechazar</button>
-                      </div>
+                      </>
                     )}
-                    {reserva.estado === 'confirmada' && (
-                      <div className="col-3 d-flex flex-column justify-content-evenly">
-                        <h2>ACEPTADA</h2>
-                      </div>
+                    {reserva.estado === 'confirmado' && (
+                        <h2>ACEPTADO</h2>
                     )}
-                    {reserva.estado === 'rechazada' && (
-                      <div className="col-3 d-flex flex-column justify-content-evenly">
-                        <h2>RECHAZADA</h2>
-                      </div>
+                    {reserva.estado === 'rechazado' && (
+                        <h2>RECHAZADO</h2>                 
                     )}
+                    </div>
                   </div>
                 </div>
               </div>

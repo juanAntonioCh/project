@@ -46,9 +46,9 @@ class VehicleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ReservaSerializer(serializers.ModelSerializer):
+class AlquilerSerializer(serializers.ModelSerializer):
     vehiculo_details = VehicleSerializer(source='vehiculo', read_only=True)
     solicitante_details = UserSerializer(source='solicitante', read_only=True)
     class Meta:
-        model = Reserva
+        model = Alquiler
         fields = '__all__'

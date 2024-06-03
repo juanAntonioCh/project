@@ -338,7 +338,7 @@ export const EditVehicle = () => {
 
         <div className="text-center d-flex justify-content-center mt-4">
           <button type="submit" className="btn btn-primary mx-3">Guardar cambios</button>
-          <Link to={`/my-vehicles/${user}`} className="btn btn-secondary mx-3">Cancelar</Link>
+          <Link to={`/my-vehicles/${user.id}`} className="btn btn-secondary mx-3">Cancelar</Link>
           <Link to={`/edit-vehicle/images/${vehiculo.id}`} className="btn btn-secondary mx-3">Editar las imágenes</Link>
         </div>
 

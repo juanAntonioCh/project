@@ -442,7 +442,7 @@ export const RentCar = () => {
               {pagination === 0 && (
                 <button className="btn btn-primary w-25 mb-3" onClick={(e) => {
                   e.preventDefault();
-                  if (vehiculo.propietario_id === '') {
+                  if (!vehiculo.propietario_id) {
                     setNoLogin('Inicia sesión para publicar tu vehículo ')
                   } else {
                     setPagination(pagination + 1);

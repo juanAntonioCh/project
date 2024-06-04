@@ -79,11 +79,35 @@ class AlquilerViewSet(viewsets.ModelViewSet):
         alquiler = self.get_object()
         if alquiler.propietario != request.user:
             return Response({'error': 'No tienes permiso para confirmar esta reserva.'}, status=403)
+
+        #Comprobar que la fecha de inicio del alquiler no haya pasado, en ese caso la solicitud se rechazaria
+        if alquiler.fecha_inicio <= timezone.now():
+            alquiler.estado = 'rechazado'
+            alquiler.save()
+            return Response({'error': 'No puedes confirmar una reserva cuya fecha de inicio ya ha pasado.'}, status=status.HTTP_400_BAD_REQUEST)
+
         alquiler.estado = 'confirmado'
         #alquiler.fecha_confirmacion = timezone.now()
         alquiler.save()
 
-        return Response({'status': 'reserva confirmada'})
+        # Rechazar otras reservas que se solapan en fechas con esta
+        alquileres_incompatibles = Alquiler.objects.filter(
+            vehiculo=alquiler.vehiculo,
+            estado='pendiente',
+            fecha_inicio__lt=alquiler.fecha_fin,
+            fecha_fin__gt=alquiler.fecha_inicio
+        ).exclude(id=alquiler.id)
+
+        for alquiler in alquileres_incompatibles:
+            alquiler.estado = 'rechazado'
+            alquiler.save()
+
+        #Despues de confirmar el aluiler y rechazar otros alquileres que coincidan en fechas si existen, devolvemos los alquileres
+        #que siguen pendientes para actualizar la lista en el frontend :)
+        alquileres_pendientes = Alquiler.objects.filter(propietario=request.user, estado='pendiente')
+        serializer = self.get_serializer(alquileres_pendientes, many=True)
+        return Response(serializer.data)
+        #return Response({'status': 'reserva confirmada'})
 
     @action(detail=True, methods=['post'])
     def rechazar(self, request, pk=None):
@@ -100,8 +124,14 @@ class AlquileresPropietario(ListAPIView):
 
     def get_queryset(self):
         propietario = self.request.user
+        estado = self.request.query_params.get('estado', None)
         vehiculos_propios = propietario.vehiculos.all()
-        return Alquiler.objects.filter(vehiculo__in=vehiculos_propios)
+        queryset = Alquiler.objects.filter(vehiculo__in=vehiculos_propios)
+
+        if estado:
+            queryset = queryset.filter(estado=estado)
+        
+        return queryset
     
 
 class AlquileresSolicitante(ListAPIView):
@@ -110,7 +140,13 @@ class AlquileresSolicitante(ListAPIView):
 
     def get_queryset(self):
         solicitante = self.request.user
-        return Alquiler.objects.filter(solicitante=solicitante)
+        estado = self.request.query_params.get('estado', None)
+        queryset = Alquiler.objects.filter(solicitante=solicitante)
+
+        if estado:
+            queryset = queryset.filter(estado=estado)
+        
+        return queryset
 
 
 

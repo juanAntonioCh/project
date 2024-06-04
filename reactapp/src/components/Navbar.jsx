@@ -56,17 +56,17 @@ export const Navbar = ({ option }) => {
                 </div>
                 <div className="offcanvas-body">
                     <div className='d-flex flex-column'>
-                        <Link to="/rent-car" className="navbar-responsive-link m-2">Alquila tu coche</Link>
+                        <Link to="/rent-car" className="navbar-responsive-link text-center m-2">Alquila tu coche</Link>
                         {!isAuthenticated ? (
                             <>
-                                <Link to="/register" className="w-50 m-2">Regístrate aquí</Link>
-                                <Link to="/login" className="w-50 m-2">Iniciar sesión</Link>
+                                <Link to="/register" className="btn btn-primary m-2">Regístrate aquí</Link>
+                                <Link to="/login" className="btn btn-primary m-2">Iniciar sesión</Link>
                             </>
                         ) : (
                             <>
-                                <Link to={`/my-vehicles/${user.id}`} className="navbar-responsive-link m-2">Mis vehículos publicados</Link>
-                                <Link to="/alquileres" className="navbar-responsive-link m-2">Mis alquileres</Link>
-                                <Link to='/reservas/recibidas/' className="navbar-responsive-link m-2">Solicitudes de alquiler recibidas</Link>
+                                <Link to={`/my-vehicles/${user.id}`} className="navbar-responsive-link text-center m-2">Mis vehículos publicados</Link>
+                                <Link to="/alquileres" className="navbar-responsive-link text-center m-2">Mis alquileres</Link>
+                                <Link to='/reservas/recibidas/' className="navbar-responsive-link text-center m-2">Solicitudes de alquiler recibidas</Link>
                                 <hr />
                                 <button onClick={logout} className="btn btn-danger m-2">Cerrar sesión</button>
                             </>

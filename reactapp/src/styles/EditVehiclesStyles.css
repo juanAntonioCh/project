@@ -37,8 +37,8 @@
 }
 
 .edit-vehicle-imgs-delete:hover {
-    background-color: #fff;
-    color: rgb(221, 29, 29);
+    background-color: #f8f8f8;
+    color: rgb(206, 20, 20);
     border: 2px solid #eeeeee;
 }
 
@@ -48,7 +48,8 @@
 }
 
 .edit-vehicle-imgs-add:hover {
-    color: #135d88;
+    background-color: #f8f8f8;
+    color: #0e537a;
     border: 2px solid #eeeeee;
 }
 

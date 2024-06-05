@@ -180,7 +180,7 @@ export const EditVehicle = () => {
     e.preventDefault();
     try {
       // Enviar los datos actualizados del vehículo al backend
-      await axios.put(`http://127.0.0.1:8000/api/vehicles/${vehiculo.id}/`, vehiculo);
+      await api.put(`/api/vehicles/${vehiculo.id}/`, vehiculo);
       const successMessage = `${marca} ${modelo} editado con éxito.`
       navigate(`/my-vehicles/${vehiculo.propietario_id}`, { state: { successMessage } })
       // Redirigir o mostrar un mensaje de éxito

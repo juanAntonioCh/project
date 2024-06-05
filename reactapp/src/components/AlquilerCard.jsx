@@ -62,7 +62,7 @@ export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMes
       } else if (error.response && error.response.status === 401) {
         setWarningMessage(
           <>
-            Debes <Link to='/login'>iniciar sesión</Link> para realizar una reserva.
+            Debes <Link to='/login'>iniciar sesión</Link> para solicitar una reserva.
           </>
         ); // Mostrar mensaje de error de autenticación
       } else {

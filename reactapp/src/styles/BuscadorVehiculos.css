@@ -13,7 +13,7 @@
 .autocomplete-container {
     flex-grow: 3;
     align-self: self-start;
-    width: 550px;
+    width: 480px;
     margin-right: 10px;
     position: relative;
 }

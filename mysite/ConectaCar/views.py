@@ -102,7 +102,7 @@ class AlquilerViewSet(viewsets.ModelViewSet):
             alquiler.estado = 'rechazado'
             alquiler.save()
 
-        #Despues de confirmar el aluiler y rechazar otros alquileres que coincidan en fechas si existen, devolvemos los alquileres
+        #Despues de confirmar el alquiler y rechazar otros alquileres que coincidan en fechas si existen, devolvemos los alquileres
         #que siguen pendientes para actualizar la lista en el frontend :)
         alquileres_pendientes = Alquiler.objects.filter(propietario=request.user, estado='pendiente')
         serializer = self.get_serializer(alquileres_pendientes, many=True)

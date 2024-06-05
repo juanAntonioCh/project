@@ -115,7 +115,7 @@ export const EditVehicleImages = () => {
 
   return (
     <div className="login-body">
-      <div className="container pt-5">
+      <div className="container pt-5 pb-5">
         <div className="row bg-white p-4 edit-vehicle-imgs-row">
           {imagenes.length === 0 ? (
             <div>
@@ -138,9 +138,9 @@ export const EditVehicleImages = () => {
                       <img src={imagen.imagen} className="card-img-top edit-vehicle-imgs-card-img-top" alt={`Imagen ${imagen.id}`} />
                       <div className="card p-3 mt-2">
                         <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, imagen.id)} />
-                        <Button className="btn fw-bold edit-vehicle-imgs-delete mt-2" onClick={() => markImageForDeletion(imagen.id)}>
+                        <button className="btn fw-bold edit-vehicle-imgs-delete mt-2" onClick={() => markImageForDeletion(imagen.id)}>
                           Eliminar
-                        </Button>
+                        </button>
                       </div>
                     </div>
                   </div>

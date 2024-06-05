@@ -103,10 +103,6 @@ export const Navbar = ({ option }) => {
                     </div>
                 )}
             </div>
-
-
-
-
         </nav>
     );
 };

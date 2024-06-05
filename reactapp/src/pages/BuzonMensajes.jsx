@@ -60,6 +60,20 @@ export const BuzonMensajes = () => {
     }
   }
 
+  function formatDate(dateString) {
+    const dateParts = dateString.split('T')[0].split('-');
+    const timeParts = dateString.split('T')[1].split('.')[0].split(':');
+
+    const day = dateParts[2];
+    const month = dateParts[1];
+    const year = dateParts[0];
+
+    const hours = timeParts[0];
+    const minutes = timeParts[1];
+
+    return `${day}/${month}/${year}, ${hours}:${minutes}`;
+  }
+
   useEffect(() => {
     console.log(reservas)
   }, [reservas])
@@ -111,9 +125,10 @@ export const BuzonMensajes = () => {
                       <h5 className="card-title">{reserva.vehiculo_details.marca_details.nombre} {reserva.vehiculo_details.modelo_details.nombre}</h5>
                       <p className="card-text col-5">
                         <strong>Solicitante:</strong> {reserva.solicitante_details.username} <br />
-                        <strong>Fecha de Inicio:</strong> {new Date(reserva.fecha_inicio).toLocaleString()}<br />
-                        <strong>Fecha de Fin:</strong> {new Date(reserva.fecha_fin).toLocaleString()}<br />
-                        <strong>Fecha de la solicitud:</strong> {new Date(reserva.fecha_reserva).toLocaleString()}<br />
+                        <strong>Fecha de Inicio:</strong> {formatDate(reserva.fecha_inicio)}<br />
+                        <strong>Fecha de Fin:</strong> {formatDate(reserva.fecha_fin)}<br />
+                        <strong>Fecha de la solicitud:</strong> {formatDate(reserva.fecha_reserva)}<br />
+                        {/* <strong>Fecha de la solicitud:</strong> {new Date(reserva.fecha_reserva).toLocaleString()}<br /> */}
                         <strong>Precio final:</strong> {reserva.precio_total} €<br />
                       </p>
                       <div className="form-group col-5">

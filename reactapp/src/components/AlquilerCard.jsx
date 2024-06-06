@@ -53,7 +53,7 @@ export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMes
     try {
       const response = await api.post('/api/alquiler/', reserva, { headers })
       console.log(response)
-      setSuccessMessage('Solicitud enviada con éxito. Cuando el propietario confirme la reserva, se te informará mediante un mensaje en el apartado de Mensajes de tu panel de usuario.')
+      setSuccessMessage(`Solicitud enviada con éxito. Puedes consultar el estado de la solicitud en el apartado 'Mis alquileres' de tu panel de usuario.`)
 
     } catch (error) {
       console.error(error)

@@ -131,10 +131,10 @@ export const BuzonMensajes = () => {
                         {/* <strong>Fecha de la solicitud:</strong> {new Date(reserva.fecha_reserva).toLocaleString()}<br /> */}
                         <strong>Precio final:</strong> {reserva.precio_total} €<br />
                       </p>
-                      <div className="form-group col-5">
+                      <div className="form-group col-4">
                         {/* <label htmlFor="mensaje"><strong>Mensaje del comprador:</strong></label> */}
                         <textarea
-                          className="form-control"
+                          className="form-control "
                           id="mensaje"
                           rows="4"
                           value={reserva.mensaje}
@@ -142,18 +142,18 @@ export const BuzonMensajes = () => {
                         />
                       </div>
 
-                      <div className="col-2 d-flex flex-column justify-content-evenly">
+                      <div className="col-3 d-flex flex-column justify-content-evenly">
                         {reserva.estado === 'pendiente' && (
                           <>
-                            <button className="btn btn-success" onClick={() => handleAceptarReserva(reserva.id)}>Aceptar</button>
-                            <button className="btn btn-danger " onClick={() => handleRechazarReserva(reserva.id)}>Rechazar</button>
+                            <button className="solicitudes-alquiler-btn-aceptar" onClick={() => handleAceptarReserva(reserva.id)}>Aceptar</button>
+                            <button className="solicitudes-alquiler-btn-rechazar" onClick={() => handleRechazarReserva(reserva.id)}>Rechazar</button>
                           </>
                         )}
                         {reserva.estado === 'confirmado' && (
                           <h2>ACEPTADO</h2>
                         )}
                         {reserva.estado === 'rechazado' && (
-                          <h2>RECHAZADO</h2>
+                          <h4>Has rechazado esta reserva</h4>
                         )}
                       </div>
                     </div>
@@ -174,7 +174,7 @@ export const BuzonMensajes = () => {
         )}
 
         <div className="bg-white p-4 mt-4 buzon-mensajes-row w-75 d-flex mb-4">
-          <button className='btn btn-secondary' onClick={() => setEstado('pendiente')}>Pendientes</button>
+          <button className='btn btn-secondary mx-2' onClick={() => setEstado('pendiente')}>Pendientes</button>
           <button className='btn btn-success mx-2' onClick={() => setEstado('confirmado')}>Aceptadas</button>
           <button className='btn btn-primary mx-2' onClick={() => setEstado('activo')}>Activas</button>
           <button className='btn btn-danger mx-2' onClick={() => setEstado('rechazado')}>Rechazadas</button>

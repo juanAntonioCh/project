@@ -76,7 +76,7 @@ export const VehicleDetailView = () => {
     console.log(vehicle)
 
     const mapStyles = {
-        height: "100%",
+        height: "450px",
         width: "100%",
         borderRadius: '20px',
     };
@@ -123,7 +123,7 @@ export const VehicleDetailView = () => {
                 <AlertMessage type="warning" message={warningMessage} handleCloseAlert={handleCloseAlert} />
             )}
             <div className="row vehicle-detail-card">
-                <div id={`carouselVehicleImages`} className="carousel slide col-md-6" data-bs-ride="carousel">
+                <div id={`carouselVehicleImages`} className="carousel slide col-lg-6" data-bs-ride="carousel">
                     <div className="carousel-inner">
                         {vehicle.imagenes.length > 0 ? (
                             vehicle.imagenes.map((imagen, index) => (
@@ -153,7 +153,7 @@ export const VehicleDetailView = () => {
 
                 <div className='col-1'></div>
 
-                <div className="col-md-4 d-flex align-items-start">
+                <div className="col-lg-4 d-flex align-items-start mt-4">
                     <div className="card w-100 shadow vehicle-detail-info-card">
                         <div className="card-body">
                             <div className='d-flex flex-column mb-4'>
@@ -174,7 +174,7 @@ export const VehicleDetailView = () => {
                             {rentDuration && (
                                 <div className='d-flex justify-content-between'>
                                     <p>{rentDuration.hours} horas y {rentDuration.minutes} minutos</p>
-                                    <p><strong>{calcularPrecioAlquiler(vehicle.precio_por_hora, rentDuration)} €</strong></p>
+                                    <p className='fs-5'><strong>{calcularPrecioAlquiler(vehicle.precio_por_hora, rentDuration)} €</strong></p>
                                 </div>
                             )}
 
@@ -191,8 +191,8 @@ export const VehicleDetailView = () => {
             <p> <strong className='vehicle-detail-title'>{vehicle.marca_details.nombre} {vehicle.modelo_details.nombre}</strong> ({vehicle.año})</p>
 
             <div className=" mt-3 mb-5">
-                <div className="row  mt-3 mb-5">
-                    <div className='col-6'>
+                <div className="row mt-3 mb-5">
+                    <div className='col-lg-6'>
                         <div className='d-flex vehicle-detail-symbol-container'>
                             <div className='d-flex justify-content-between'>
                                 <div className='vehicle-detail-symbol-combus'></div>
@@ -210,18 +210,40 @@ export const VehicleDetailView = () => {
                             </div>
                         </div>
 
-                        <p className="card-text"><strong>Propietario: </strong> {vehicle.propietario_details.username}</p>
-                        <p className="card-text"><strong>Matrícula:</strong> {vehicle.matricula}</p>
-                        <p className="card-text"><strong>Color:</strong> {vehicle.color}</p>
-                        <p className="card-text"><strong>Kilometraje:</strong> {vehicle.kilometraje} km</p>
-                        <p className="card-text"><strong>Autonomía:</strong> {vehicle.autonomia} km</p>
-                        <p className="card-text"><strong>Consumo:</strong> {vehicle.consumo}
-                            {vehicle.tipo_combustible === 'electrico' ? <i> kWh/100 km</i> : <i> l/100 km</i>}
-                        </p>
-                        <p className="card-text"><strong>Carrocería:</strong> {vehicle.tipo_carroceria}</p>
+                        <div className="mb-5 mt-4">
+                            <h3>Información del Vehículo</h3>
+                            <table className="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Propietario</th>
+                                        <td>{vehicle.propietario_details.username}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Kilometraje</th>
+                                        <td>{vehicle.kilometraje} km</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Autonomía</th>
+                                        <td>{vehicle.autonomia} km</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Consumo</th>
+                                        <td>
+                                            {vehicle.consumo}
+                                            {vehicle.tipo_combustible === 'electrico' ? <i> kWh/100 km</i> : <i> l/100 km</i>}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Carrocería</th>
+                                        <td>{vehicle.tipo_carroceria}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                            
                     </div>
 
-                    <div className='col-6'>
+                    <div className='col-lg-6'>
                         <GoogleMap
                             mapContainerStyle={mapStyles}
                             zoom={16}
@@ -238,7 +260,6 @@ export const VehicleDetailView = () => {
                         </GoogleMap>
                     </div>
                 </div>
-                {/* <AlquilerCard /> */}
             </div>
         </div >
     );

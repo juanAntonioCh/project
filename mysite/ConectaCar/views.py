@@ -30,6 +30,9 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMultiAlternatives
+from django.utils import timezone
+from datetime import datetime
+from datetime import timedelta
 from .models import *
 
 # Create your views here.
@@ -54,6 +57,36 @@ class ModeloView(viewsets.ModelViewSet):
 class ImagenVehiculoView(viewsets.ModelViewSet):
     serializer_class = ImagenVehiculoSerializer
     queryset = ImagenVehiculo.objects.all()
+
+
+def update_alquiler():
+    current_dateTime = datetime.now()
+
+    print(current_dateTime)
+    now = timezone.now()
+    now_adjusted = timezone.now() + timedelta(hours=2)
+    print('\nFecha actual', now_adjusted)
+
+    # Actualizar alquileres confirmados a activos
+    confirmados_a_activos = Alquiler.objects.filter(estado='confirmado', fecha_inicio__lte=now_adjusted)
+    print('\nAlquileres confirmados cuya fecha de inicio ha llegado', confirmados_a_activos)
+    for alquiler in confirmados_a_activos:
+        print('Fecha de inicio',alquiler.fecha_inicio)
+        alquiler.estado = 'activo'
+        alquiler.save()
+        #self.stdout.write(self.style.SUCCESS(f'Alquiler {alquiler.id} actualizado a activo'))
+        print(f'Alquiler {alquiler.id} actualizado a activo')
+
+    # Actualizar alquileres activos a finalizados
+    activos_a_finalizados = Alquiler.objects.filter(estado='activo', fecha_fin__lte=now_adjusted)
+    print('Alquileres activos cuya fecha de fin ha llegado', activos_a_finalizados)
+    for alquiler in activos_a_finalizados:
+        print('Fecha de fin', alquiler.fecha_fin)
+        alquiler.estado = 'finalizado'
+        alquiler.save()
+        #self.stdout.write(self.style.SUCCESS(f'Alquiler {alquiler.id} actualizado a finalizado'))
+        print(f'Alquiler {alquiler.id} actualizado a finalizado')
+
 
 
 class AlquilerViewSet(viewsets.ModelViewSet):
@@ -123,6 +156,7 @@ class AlquileresPropietario(ListAPIView):
     serializer_class = AlquilerSerializer
 
     def get_queryset(self):
+        update_alquiler()
         propietario = self.request.user
         estado = self.request.query_params.get('estado', None)
         vehiculos_propios = propietario.vehiculos.all()
@@ -139,6 +173,7 @@ class AlquileresSolicitante(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        update_alquiler()
         solicitante = self.request.user
         estado = self.request.query_params.get('estado', None)
         queryset = Alquiler.objects.filter(solicitante=solicitante)

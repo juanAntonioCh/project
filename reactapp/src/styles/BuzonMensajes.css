@@ -1,3 +1,32 @@
 .buzon-mensajes-row {
     border-radius: 35px;
 }
+
+.solicitudes-alquiler-btn-rechazar{
+    background-color: #fff;
+    color: rgb(228, 90, 90);
+    border-radius: 25px;
+    height: 50px;
+    border: 3px solid #eeeeee;
+    font-weight: 700;
+    transition: transform 0.3s ease;
+}
+
+.solicitudes-alquiler-btn-rechazar:hover{
+    transform: scale(1.08);
+}
+
+.solicitudes-alquiler-btn-aceptar{
+    background-color: #fff;
+    color: #068323;
+    border-radius: 25px;
+    font-weight: 700;
+    height: 50px;
+    border: 3px solid #eeeeee;
+    transition: transform 0.3s ease;
+}
+
+.solicitudes-alquiler-btn-aceptar:hover{
+    transform: scale(1.08);
+    color: #05691c;
+}

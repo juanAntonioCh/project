@@ -67,6 +67,16 @@ def update_alquiler():
     now_adjusted = timezone.now() + timedelta(hours=2)
     print('\nFecha actual', now_adjusted)
 
+    # Actualizar alquileres pendientes cuya fecha de inicio haya pasado y todavía no se hayan aceptado o rechazado.
+    pendientes_a_rechazados = Alquiler.objects.filter(estado='pendiente', fecha_inicio__lte=now_adjusted)
+    print('\nAlquileres pendientes cuya fecha de inicio ha llegado y todavía no se han aceptado ni rechazado', pendientes_a_rechazados)
+    for alquiler in pendientes_a_rechazados:
+        print('Fecha de inicio',alquiler.fecha_inicio)
+        alquiler.estado = 'rechazado'
+        alquiler.save()
+        #self.stdout.write(self.style.SUCCESS(f'Alquiler {alquiler.id} actualizado a activo'))
+        print(f'Alquiler {alquiler.id} actualizado a rechazado')
+
     # Actualizar alquileres confirmados a activos
     confirmados_a_activos = Alquiler.objects.filter(estado='confirmado', fecha_inicio__lte=now_adjusted)
     print('\nAlquileres confirmados cuya fecha de inicio ha llegado', confirmados_a_activos)
@@ -97,14 +107,28 @@ class AlquilerViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         solicitante = request.user
         vehiculo_id = request.data.get('vehiculo')
+        fecha_inicio = request.data.get('fecha_inicio')
+        fecha_fin = request.data.get('fecha_fin')
 
         # Comprobar si ya existe una reserva pendiente o confirmada para este vehículo y solicitante
-        if Alquiler.objects.filter(solicitante=solicitante, vehiculo_id=vehiculo_id, estado__in=['pendiente', 'confirmado']).exists():
+        if Alquiler.objects.filter(solicitante=solicitante, vehiculo_id=vehiculo_id, estado__in=['pendiente', 'confirmado', 'activo']).exists():
             return Response(
-                {'detail': 'Ya tienes una reserva pendiente o confirmada para este vehículo.'},
+                {'detail': 'Ya tienes una reserva pendiente, confirmada o activa para este vehículo.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
+        
+         # Comprobar si existe algún alquiler confirmado o activo que se superponga con las fechas solicitadas
+        if Alquiler.objects.filter(
+            vehiculo_id=vehiculo_id,
+            estado__in=['confirmado', 'activo'],
+            fecha_inicio__lt=fecha_fin,
+            fecha_fin__gt=fecha_inicio
+        ).exists():
+            return Response(
+                {'detail': 'El vehículo ya está reservado o alquilado para las fechas seleccionadas.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
         return super().create(request, *args, **kwargs)
 
     @action(detail=True, methods=['post'])
@@ -119,9 +143,9 @@ class AlquilerViewSet(viewsets.ModelViewSet):
             alquiler.save()
             return Response({'error': 'No puedes confirmar una reserva cuya fecha de inicio ya ha pasado.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        alquiler.estado = 'confirmado'
-        #alquiler.fecha_confirmacion = timezone.now()
+        alquiler.estado = 'confirmado'       
         alquiler.save()
+        #alquiler.fecha_confirmacion = timezone.now()
 
         # Rechazar otras reservas que se solapan en fechas con esta
         alquileres_incompatibles = Alquiler.objects.filter(

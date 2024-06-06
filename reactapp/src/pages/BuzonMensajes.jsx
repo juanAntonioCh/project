@@ -82,13 +82,21 @@ export const BuzonMensajes = () => {
   return (
     <div className="login-body d-flex justify-content-center">
 
-      <div className="container pt-4 pb-4">
+      <div className="container pt-3 pb-4">
+
+        <div className="bg-white solicitudes-botones-container p-4 d-flex mb-3 w-75 justify-content-center">
+          <button className='btn btn-secondary mx-3' onClick={() => setEstado('pendiente')}>Pendientes</button>
+          <button className='btn btn-success mx-3' onClick={() => setEstado('confirmado')}>Aceptadas</button>
+          <button className='btn btn-primary mx-3' onClick={() => setEstado('activo')}>Activas</button>
+          <button className='btn btn-danger mx-3' onClick={() => setEstado('rechazado')}>Rechazadas</button>
+          <button className='btn btn-secondary mx-3' onClick={() => setEstado('finalizado')}>Finalizadas</button>
+        </div>
 
         {reservas.length > 0 ? (
           <div className="bg-white p-4 buzon-mensajes-row">
             {reservas.map(reserva => (
               <div key={reserva.id} className="row my-3">
-                <div className="col-md-3">
+                <div className="col-md-2">
                   <div id={`carousel${reserva.id}`} className="carousel slide">
                     <div className="carousel-inner">
 
@@ -119,14 +127,14 @@ export const BuzonMensajes = () => {
                   </div>
 
                 </div>
-                <div className="col-md-9">
+                <div className="col-md-10">
                   <div className="card">
                     <div className="card-body row">
                       <h5 className="card-title">{reserva.vehiculo_details.marca_details.nombre} {reserva.vehiculo_details.modelo_details.nombre}</h5>
-                      <p className="card-text col-5">
+                      <p className="card-text col-4">
                         <strong>Solicitante:</strong> {reserva.solicitante_details.username} <br />
-                        <strong>Fecha de Inicio:</strong> {formatDate(reserva.fecha_inicio)}<br />
-                        <strong>Fecha de Fin:</strong> {formatDate(reserva.fecha_fin)}<br />
+                        <strong>Fecha de inicio:</strong> {formatDate(reserva.fecha_inicio)}<br />
+                        <strong>Fecha de fin:</strong> {formatDate(reserva.fecha_fin)}<br />
                         <strong>Fecha de la solicitud:</strong> {formatDate(reserva.fecha_reserva)}<br />
                         {/* <strong>Fecha de la solicitud:</strong> {new Date(reserva.fecha_reserva).toLocaleString()}<br /> */}
                         <strong>Precio final:</strong> {reserva.precio_total} €<br />
@@ -142,18 +150,24 @@ export const BuzonMensajes = () => {
                         />
                       </div>
 
-                      <div className="col-3 d-flex flex-column justify-content-evenly">
+                      <div className="col-4 d-flex flex-column justify-content-evenly">
                         {reserva.estado === 'pendiente' && (
                           <>
-                            <button className="solicitudes-alquiler-btn-aceptar" onClick={() => handleAceptarReserva(reserva.id)}>Aceptar</button>
-                            <button className="solicitudes-alquiler-btn-rechazar" onClick={() => handleRechazarReserva(reserva.id)}>Rechazar</button>
+                            <button className="btn btn-success w-75 align-self-center" onClick={() => handleAceptarReserva(reserva.id)}>Aceptar</button>
+                            <button className="btn btn-danger w-75 align-self-center" onClick={() => handleRechazarReserva(reserva.id)}>Rechazar</button>
                           </>
                         )}
                         {reserva.estado === 'confirmado' && (
                           <h2>ACEPTADO</h2>
                         )}
+                        {reserva.estado === 'activo' && (
+                          <h2>Alquiler en curso ...</h2>
+                        )}
                         {reserva.estado === 'rechazado' && (
                           <h4>Has rechazado esta reserva</h4>
+                        )}
+                        {reserva.estado === 'finalizado' && (
+                          <h4>Alquiler finalizado</h4>
                         )}
                       </div>
                     </div>
@@ -170,15 +184,9 @@ export const BuzonMensajes = () => {
             {estado == 'confirmado' && (<h3 className='text-center' >No tienes ninguna solicitud de alquiler aceptada</h3>)}
             {estado == 'activo' && (<h3 className='text-center'>No tienes ningún vehículo alquilado actualmente</h3>)}
             {estado == 'rechazado' && (<h3 className='text-center'>No tienes ninguna solicitud de alquiler rechazada</h3>)}
+            {estado == 'finalizado' && (<h3 className='text-center'>No tienes ninguna solicitud de alquiler finalizada</h3>)}
           </div>
         )}
-
-        <div className="bg-white p-4 mt-4 buzon-mensajes-row w-75 d-flex mb-4">
-          <button className='btn btn-secondary mx-2' onClick={() => setEstado('pendiente')}>Pendientes</button>
-          <button className='btn btn-success mx-2' onClick={() => setEstado('confirmado')}>Aceptadas</button>
-          <button className='btn btn-primary mx-2' onClick={() => setEstado('activo')}>Activas</button>
-          <button className='btn btn-danger mx-2' onClick={() => setEstado('rechazado')}>Rechazadas</button>
-        </div>
       </div>
     </div>
   )

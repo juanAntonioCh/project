@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '../api/vehicle.api';
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import 'dayjs/locale/es'; // Importa el idioma español
 
 export const AlquileresUser = () => {
     const [reservas, setReservas] = useState([]);
     const [estado, setEstado] = useState('pendiente');
+    dayjs.locale('es');
 
     useEffect(() => {
         const fetchReservas = async () => {
@@ -22,6 +25,23 @@ export const AlquileresUser = () => {
         }
         fetchReservas();
     }, [estado]);
+
+    const formatCustomDate = (dateString) => {
+        const date = dayjs(dateString);
+        const day = date.format('D');
+        const month = date.format('MMMM');
+        const year = date.format('YYYY');
+        const hour24 = date.format('H');
+        const minute = date.format('mm');
+        
+        const hour = date.hour();
+        const period = hour < 12 ? 'de la mañana' : 'de la tarde';
+        const formattedHour = hour % 12 || 12;
+        const formattedTime = minute === '00' ? `${formattedHour} ${period}` : `${formattedHour}:${minute} ${period}`;
+    
+        return `el día ${day} de ${month} de ${year} a las ${hour}:${minute}`;
+    };
+
 
     function formatDate(dateString) {
         const dateParts = dateString.split('T')[0].split('-');
@@ -82,20 +102,20 @@ export const AlquileresUser = () => {
                                 <div className="col-md-9">
                                     <div className="card">
                                         <div className="card-body row">
-                                            <h5 className="card-title">{reserva.vehiculo_details.marca_details.nombre} {reserva.vehiculo_details.modelo_details.nombre}</h5>
-                                            <p className="card-text col-6">
+                                            <h4 className="card-title">{reserva.vehiculo_details.marca_details.nombre} {reserva.vehiculo_details.modelo_details.nombre}</h4>
+                                            <p className="card-text col-5">
                                                 <strong>Propietario:</strong> {reserva.vehiculo_details.propietario_details.username}<br />
                                                 <strong>Fecha de inicio:</strong> {formatDate(reserva.fecha_inicio)}<br />
                                                 <strong>Fecha de fin:</strong> {formatDate(reserva.fecha_fin)}<br />
                                                 <strong>Fecha de la solicitud:</strong> {new Date(reserva.fecha_reserva).toLocaleString()}<br />
                                                 <strong>Precio final:</strong> {reserva.precio_total} €<br />
                                             </p>
-                                            <div className="col-6 d-flex flex-column justify-content-evenly">
+                                            <div className="col-7 d-flex flex-column justify-content-evenly">
                                                 {reserva.estado === 'pendiente' && (
-                                                    <h4>En espera de que {reserva.vehiculo_details.propietario_details.username} acepte la reserva ...</h4>
+                                                    <h4>En espera de que {reserva.vehiculo_details.propietario_details.username} acepte la solicitud ...</h4>
                                                 )}
                                                 {reserva.estado === 'confirmado' && (
-                                                    <h3>ACEPTADO</h3>
+                                                    <h4><i>Solicitud de alquiler aceptada, {formatCustomDate(reserva.fecha_inicio)} iniciará el alquiler de este vehículo</i> </h4>
                                                 )}
                                                 {reserva.estado === 'rechazado' && (
                                                     <h4>{reserva.vehiculo_details.propietario_details.username} ha rechazado tu solicitud </h4>
@@ -104,7 +124,7 @@ export const AlquileresUser = () => {
                                                     <h3>ACTIVO</h3>
                                                 )}
                                                 {reserva.estado === 'finalizado' && (
-                                                    <h3>FINALIZADO</h3>
+                                                    <h4><i>Este alquiler finalizó {formatCustomDate(reserva.fecha_fin)}</i></h4>
                                                 )}
                                             </div>
                                         </div>

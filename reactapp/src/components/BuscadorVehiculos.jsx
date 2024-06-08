@@ -81,6 +81,11 @@ export const BuscadorVehiculos = ({ setError }) => {
             return;
         }
 
+        if (differenceInHours >= 720) {
+            setError('No es posible alquilar un vehículo más de 30 días')
+            return;
+        }
+
         const formatStartDate = startDate + ', ' + startHour
         setFormatStartDate(formatStartDate)
         //console.log(formatStartDate)

@@ -59,12 +59,21 @@ class ImagenVehiculoView(viewsets.ModelViewSet):
     queryset = ImagenVehiculo.objects.all()
 
 
+@api_view(['GET'])
+def ejecutar_actualizacion(request):
+    update_alquiler()
+    return JsonResponse({'status': 'success'})
+
+
+#funcion para actualizar el estado de los alquileres en funcion de las fechas de inicio y fin de forma automatica,
+#sin que el propietario del vehiculo tenga que realizar ninguna accion.
 def update_alquiler():
     current_dateTime = datetime.now()
 
     print(current_dateTime)
     now = timezone.now()
     now_adjusted = timezone.now() + timedelta(hours=2)
+    print('*****************')
     print('\nFecha actual', now_adjusted)
 
     # Actualizar alquileres pendientes cuya fecha de inicio haya pasado y todavía no se hayan aceptado o rechazado.
@@ -74,6 +83,12 @@ def update_alquiler():
         print('Fecha de inicio',alquiler.fecha_inicio)
         alquiler.estado = 'rechazado'
         alquiler.save()
+
+        vehiculo = alquiler.vehiculo
+        Notificacion.objects.create(
+            usuario=alquiler.solicitante,
+            mensaje=f'Tu solicitud de alquiler de {vehiculo.marca} {vehiculo.modelo} ha sido rechazada debido a que ha expirado la fecha de inicio y el propietario no ha confirmado la solicitud'
+        )
         #self.stdout.write(self.style.SUCCESS(f'Alquiler {alquiler.id} actualizado a activo'))
         print(f'Alquiler {alquiler.id} actualizado a rechazado')
 
@@ -81,9 +96,16 @@ def update_alquiler():
     confirmados_a_activos = Alquiler.objects.filter(estado='confirmado', fecha_inicio__lte=now_adjusted)
     print('\nAlquileres confirmados cuya fecha de inicio ha llegado', confirmados_a_activos)
     for alquiler in confirmados_a_activos:
-        print('Fecha de inicio',alquiler.fecha_inicio)
+        print('Fecha de inicio (UTC):', alquiler.fecha_inicio)
+        print('Fecha de inicio (local):', alquiler.fecha_inicio.astimezone(timezone.get_current_timezone()))
         alquiler.estado = 'activo'
         alquiler.save()
+
+        vehiculo = alquiler.vehiculo
+        Notificacion.objects.create(
+            usuario=alquiler.solicitante,
+            mensaje=f'Tu alquiler de {vehiculo.marca} {vehiculo.modelo} está activo.'
+        )
         #self.stdout.write(self.style.SUCCESS(f'Alquiler {alquiler.id} actualizado a activo'))
         print(f'Alquiler {alquiler.id} actualizado a activo')
 
@@ -94,6 +116,12 @@ def update_alquiler():
         print('Fecha de fin', alquiler.fecha_fin)
         alquiler.estado = 'finalizado'
         alquiler.save()
+
+        vehiculo = alquiler.vehiculo
+        Notificacion.objects.create(
+            usuario=alquiler.solicitante,
+            mensaje=f'Tu alquiler de {vehiculo.marca} {vehiculo.modelo} ha finalizado.'
+        )
         #self.stdout.write(self.style.SUCCESS(f'Alquiler {alquiler.id} actualizado a finalizado'))
         print(f'Alquiler {alquiler.id} actualizado a finalizado')
 
@@ -129,7 +157,17 @@ class AlquilerViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        return super().create(request, *args, **kwargs)
+        response = super().create(request, *args, **kwargs)
+
+        # Crear la notificación del alquiler para el propietario.
+        vehiculo = Vehicle.objects.get(id=vehiculo_id)
+        propietario = vehiculo.propietario
+        Notificacion.objects.create(
+            usuario=propietario,
+            mensaje=f'Se ha solicitado un alquiler para tu vehículo {vehiculo.marca} {vehiculo.modelo}.'
+        )
+
+        return response
 
     @action(detail=True, methods=['post'])
     def confirmar(self, request, pk=None):
@@ -159,6 +197,13 @@ class AlquilerViewSet(viewsets.ModelViewSet):
             alquiler.estado = 'rechazado'
             alquiler.save()
 
+        #creamos una notificacion para el solicitante cuando su solicitud de alquiler sea aceptada por el propietario. 
+        vehiculo = alquiler.vehiculo
+        Notificacion.objects.create(
+            usuario=alquiler.solicitante,
+            mensaje=f'Tu solicitud de alquiler de {vehiculo.marca} {vehiculo.modelo} ha sido aceptada'
+        )
+
         #Despues de confirmar el alquiler y rechazar otros alquileres que coincidan en fechas si existen, devolvemos los alquileres
         #que siguen pendientes para actualizar la lista en el frontend :)
         alquileres_pendientes = Alquiler.objects.filter(propietario=request.user, estado='pendiente')
@@ -173,6 +218,14 @@ class AlquilerViewSet(viewsets.ModelViewSet):
             return Response({'error': 'No tienes permiso para rechazar esta reserva.'}, status=403)
         alquiler.estado = 'rechazado'
         alquiler.save()
+
+        #creamos una notificacion para el solicitante cuando su solicitud de alquiler sea rechazada por el propietario. 
+        vehiculo = alquiler.vehiculo
+        Notificacion.objects.create(
+            usuario=alquiler.solicitante,
+            mensaje=f'Tu solicitud de alquiler de {vehiculo.marca} {vehiculo.modelo} ha sido rechazada'
+        )
+
         return Response({'status': 'reserva rechazada'})
     
 
@@ -207,6 +260,25 @@ class AlquileresSolicitante(ListAPIView):
         
         return queryset
 
+
+class NotificacionList(generics.ListAPIView):
+    serializer_class = NotificacionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Notificacion.objects.filter(usuario=self.request.user, leido=False)
+    
+
+class MarcarNotificacionLeida(generics.UpdateAPIView):
+    serializer_class = NotificacionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Notificacion.objects.filter(usuario=self.request.user, leido=False)
+
+    def perform_update(self, serializer):
+        serializer.instance.leido = True
+        serializer.save()
 
 
 class ModeloFilter(generics.ListAPIView):
@@ -292,7 +364,6 @@ def forgot_password(request):
     email.attach_alternative(email_body, "text/html")
     email.send()
 
-
     return Response('Email sent', status=200)
     #return Response('Bien')
 
@@ -315,42 +386,7 @@ def reset_password_confirm(request):
     else:
         return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
-
-""" class PasswordResetConfirmView(View):
-    template_name = 'password_reset_confirm.html'
-
-    def get(self, request, uidb64=None, token=None):
-        try:
-            uid = force_str(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
-
-        if user is not None and default_token_generator.check_token(user, token):
-            form = SetPasswordForm(user)
-            return render(request, self.template_name, {'form': form, 'validlink': True})
-        else:
-            return render(request, self.template_name, {'validlink': False})
-
-    def post(self, request, uidb64=None, token=None):
-        try:
-            uid = force_str(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
-
-        if user is not None and default_token_generator.check_token(user, token):
-            form = SetPasswordForm(user, request.POST)
-            if form.is_valid():
-                form.save()
-                login(request, user)
-                return redirect(reverse_lazy('password_reset_complete'))
-            else:
-                return render(request, self.template_name, {'form': form, 'validlink': True})
-        else:
-            return render(request, self.template_name, {'validlink': False}) """
     
-
 
 @api_view(['POST'])
 def create_vehicle(request):
@@ -433,12 +469,6 @@ def update_vehicle_image(request, id):
         # Si no se proporcionó una imagen en la solicitud, retornar un error 400
         #return Response({'error': 'La imagen del vehículo no fue proporcionada'}, status=400)
         return Response('Imagen no proporcionada')
-
-
-@api_view(['GET'])
-def filtrar_vehiculos(request):
-    vehiculos = Vehicle.objects.all()
-    return Response('filtrando')
 
 
 

@@ -129,6 +129,16 @@ class Alquiler(models.Model):
         return f'Alquiler de {self.vehiculo} por {self.solicitante}'
         
 
+class Notificacion(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    mensaje = models.TextField()
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    leido = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notification para {self.usuario.username}: {self.mensaje}"
+
+
 class Valoracion(models.Model):
     vehiculo = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='valoraciones')
     autor = models.ForeignKey(User, on_delete=models.CASCADE)

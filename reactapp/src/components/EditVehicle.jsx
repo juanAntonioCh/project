@@ -224,7 +224,7 @@ export const EditVehicle = () => {
 
             <div className="form-group mb-3">
               <label htmlFor="año" className="form-label">Año:</label>
-              <input type="number" className="form-control w-50" id="año" name="año" defaultValue={vehiculo.año} onChange={handleChange} />
+              <input type="number" className="form-control w-50" id="año" name="año" min={1950} max={2024} defaultValue={vehiculo.año} onChange={handleChange} />
             </div>
 
             <div className="form-group mb-3">

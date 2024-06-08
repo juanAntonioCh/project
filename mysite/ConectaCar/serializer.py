@@ -52,3 +52,8 @@ class AlquilerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alquiler
         fields = '__all__'
+
+class NotificacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notificacion
+        fields = '__all__'

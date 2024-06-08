@@ -181,8 +181,8 @@ export const VehicleDetailView = () => {
                             {/* <button className="btn vehicle-detail-rent-btn w-100">Solicitar reserva</button> */}
                             <AlquilerCard setSuccessMessage={setSuccessMessage} setWarningMessage={setWarningMessage}
                                 setErrorMessage={setErrorMessage} fechaInicio={parseDateString(startDate)}
-                                fechaFin={parseDateString(endDate)} propietario={vehicle.propietario_details.id} 
-                                vehi={vehicle.id} precio={calcularPrecioAlquiler(vehicle.precio_por_hora, rentDuration)}/>
+                                fechaFin={parseDateString(endDate)} propietario={vehicle.propietario_details.id}
+                                vehi={vehicle.id} precio={calcularPrecioAlquiler(vehicle.precio_por_hora, rentDuration)} />
                         </div>
                     </div>
                 </div>
@@ -194,7 +194,7 @@ export const VehicleDetailView = () => {
                 <div className="row mt-3 mb-5">
                     <div className='col-lg-6'>
                         <div className='d-flex vehicle-detail-symbol-container'>
-                            <div className='d-flex justify-content-between'>
+                            <div className='d-flex'>
                                 <div className='vehicle-detail-symbol-combus'></div>
                                 <p>{vehicle.tipo_combustible}</p>
                             </div>
@@ -210,40 +210,56 @@ export const VehicleDetailView = () => {
                             </div>
                         </div>
 
-                        <div className="mb-5 mt-4">
-                            <h3>Información del Vehículo</h3>
-                            <table className="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">Propietario</th>
-                                        <td>{vehicle.propietario_details.username}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Kilometraje</th>
-                                        <td>{vehicle.kilometraje} km</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Autonomía</th>
-                                        <td>{vehicle.autonomia} km</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Consumo</th>
-                                        <td>
-                                            {vehicle.consumo}
-                                            {vehicle.tipo_combustible === 'electrico' ? <i> kWh/100 km</i> : <i> l/100 km</i>}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Carrocería</th>
-                                        <td>{vehicle.tipo_carroceria}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div className="vehicle-info-container container mt-5 mb-5">
+                            <div className="card shadow-sm">
+                                <div className="card-header bg-secondary text-white">
+                                    <h4 className="mb-0"><i>Información del vehículo</i></h4>
+                                </div>
+                                <div className="card-body">
+                                    <table className="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"><i className="fas fa-user"></i> Propietario</th>
+                                                <td>{vehicle.propietario_details.username}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><i className="fas fa-tachometer-alt"></i> Kilometraje</th>
+                                                <td>{vehicle.kilometraje} km</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><i className="fas fa-battery-full"></i> Autonomía</th>
+                                                <td>{vehicle.autonomia} km</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><i className="fas fa-gas-pump"></i> Consumo</th>
+                                                <td>
+                                                    {vehicle.consumo}
+                                                    {vehicle.tipo_combustible === 'electrico' ? <i> kWh/100 km</i> : <i> l/100 km</i>}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><i className="fas fa-car"></i> Carrocería</th>
+                                                <td>{vehicle.tipo_carroceria}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div className="card shadow-sm mt-4">
+                                <div className="card-header bg-secondary text-white">
+                                    <h4 className="mb-0"><i>Descripción del vehículo</i></h4>
+                                </div>
+                                <div className="card-body">
+                                    <p>{vehicle.descripcion}</p>
+                                </div>
+                            </div>
                         </div>
-                            
+
+
                     </div>
 
-                    <div className='col-lg-6'>
+                    <div className='col-lg-6 mt-3'>
                         <GoogleMap
                             mapContainerStyle={mapStyles}
                             zoom={16}

@@ -16,7 +16,33 @@
   background-blend-mode: overlay;
 }
 
+.notification-container {
+  position: fixed;
+  top: 88px; /* Ajusta esta propiedad según donde quieras que aparezcan las notificaciones */
+  left: 10px;
+  z-index: 1050; /* Asegúrate de que el z-index sea alto para que se superpongan */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
 
+.notification {
+  margin-bottom: 10px; /* Espacio entre notificaciones */
+  width: 400px; /* Ancho de las notificaciones */
+  transition: opacity 0.3s;
+}
+
+@media (max-width: 576px) {
+  .notification-container {
+      right: 0;
+      left: 0;
+      align-items: center;
+  }
+
+  .notification {
+      width: 90%; /* Ajusta el ancho para dispositivos móviles */
+  }
+}
 
 
 .home-logo {

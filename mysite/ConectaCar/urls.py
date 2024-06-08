@@ -25,4 +25,7 @@ urlpatterns = [
     path('vehicle/image/update/<int:id>/', views.update_vehicle_image, name='image-update'),
     path('alquileres/propietario/', views.AlquileresPropietario.as_view(), name='alquileres-propietario'),
     path('alquileres/solicitante/', views.AlquileresSolicitante.as_view(), name='alquileres-solicitante'),
+    path('actualizar-alquileres/', views.ejecutar_actualizacion, name='actualizar-alquileres'),
+    path('notificaciones/', views.NotificacionList.as_view(), name='notificacion-list'),
+    path('notificaciones/marcar-leido/<int:pk>/', views.MarcarNotificacionLeida.as_view(), name='notification-leida'),
 ]

@@ -21,6 +21,8 @@ export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMes
     vehiculo: vehi,
     fecha_inicio: formatLocalDateTime(fechaInicio),
     fecha_fin: formatLocalDateTime(fechaFin),
+    //fecha_inicio: fechaInicio,
+    //fecha_fin: fechaFin,
     fecha_confirmacion: null,
     precio_total: precio,
     mensaje: '',

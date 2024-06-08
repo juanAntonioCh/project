@@ -28,17 +28,13 @@ export const AlquileresUser = () => {
 
     const formatCustomDate = (dateString) => {
         const date = dayjs(dateString);
-        const day = date.format('D');
-        const month = date.format('MMMM');
-        const year = date.format('YYYY');
-        const hour24 = date.format('H');
-        const minute = date.format('mm');
-        
-        const hour = date.hour();
-        const period = hour < 12 ? 'de la mañana' : 'de la tarde';
-        const formattedHour = hour % 12 || 12;
-        const formattedTime = minute === '00' ? `${formattedHour} ${period}` : `${formattedHour}:${minute} ${period}`;
-    
+        const dateAdjusted = date.subtract(2, 'hour');
+        const day = dateAdjusted.format('D');
+        const month = dateAdjusted.format('MMMM');
+        const year = dateAdjusted.format('YYYY');
+        const hour = dateAdjusted.format('H');
+        const minute = dateAdjusted.format('mm');
+
         return `el día ${day} de ${month} de ${year} a las ${hour}:${minute}`;
     };
 
@@ -50,7 +46,6 @@ export const AlquileresUser = () => {
         const day = dateParts[2];
         const month = dateParts[1];
         const year = dateParts[0];
-
         const hours = timeParts[0];
         const minutes = timeParts[1];
 
@@ -63,7 +58,16 @@ export const AlquileresUser = () => {
 
     return (
         <div className="login-body d-flex justify-content-center">
-            <div className="container pt-4 ">
+
+            <div className="container pt-3 pb-5">
+                <div className="bg-white p-4 buzon-mensajes-row d-flex mb-3 w-75 justify-content-center">
+                    <button className='btn btn-secondary mx-3' onClick={() => setEstado('pendiente')}>Pendientes</button>
+                    <button className='btn btn-success mx-3' onClick={() => setEstado('confirmado')}>Aceptados</button>
+                    <button className='btn btn-primary mx-3' onClick={() => setEstado('activo')}>Activos</button>
+                    <button className='btn btn-danger mx-3' onClick={() => setEstado('rechazado')}>Rechazados</button>
+                    <button className='btn btn-secondary mx-3' onClick={() => setEstado('finalizado')}>Finalizados</button>
+                </div>
+                
                 {reservas.length > 0 ? (
                     <div className="bg-white p-4 buzon-mensajes-row">
                         {reservas.map(reserva => (
@@ -121,7 +125,7 @@ export const AlquileresUser = () => {
                                                     <h4>{reserva.vehiculo_details.propietario_details.username} ha rechazado tu solicitud </h4>
                                                 )}
                                                 {reserva.estado === 'activo' && (
-                                                    <h3>ACTIVO</h3>
+                                                    <h4>Alquiler en curso ...</h4>
                                                 )}
                                                 {reserva.estado === 'finalizado' && (
                                                     <h4><i>Este alquiler finalizó {formatCustomDate(reserva.fecha_fin)}</i></h4>
@@ -142,14 +146,6 @@ export const AlquileresUser = () => {
                         <p className='text-center'><Link to='/home'>Busca un vehículo</Link></p>
                     </div>
                 )}
-
-                <div className="bg-white p-4 mt-4 buzon-mensajes-row w-75 d-flex mb-4">
-                    <button className='btn btn-secondary mx-2' onClick={() => setEstado('pendiente')}>Pendientes</button>
-                    <button className='btn btn-success mx-2' onClick={() => setEstado('confirmado')}>Aceptados</button>
-                    <button className='btn btn-primary mx-2' onClick={() => setEstado('activo')}>Activos</button>
-                    <button className='btn btn-danger mx-2' onClick={() => setEstado('rechazado')}>Rechazados</button>
-                    <button className='btn btn-secondary mx-2' onClick={() => setEstado('finalizado')}>Finalizados</button>
-                </div>
             </div>
         </div>
     )

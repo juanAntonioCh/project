@@ -256,7 +256,7 @@ export const RentCar = () => {
               </div>
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="año" className="form-label">Año:</label>
-                <input type="number" className="form-control w-75" id="año" name="año" max={2024} value={vehiculo.año} onChange={handleChange} />
+                <input type="number" className="form-control w-75" id="año" name="año" min={1950} max={2024} value={vehiculo.año} onChange={handleChange} />
                 <small className="form-text text-muted">Introduce el año de fabricación del vehículo.</small>
               </div>
               <div className="form-group mb-4 position-relative">

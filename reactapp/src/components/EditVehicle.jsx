@@ -97,12 +97,7 @@ export const EditVehicle = () => {
       const choices = await getVehicleChoices()
       console.log('Lista de las marcas')
       console.log(list_marcas)
-      // const sortedMarcas = sortMarcas(list_marcas.data, vehiculo.marca_id);
-      // console.log(vehiculo.marca_id)
-      // console.log(sortedMarcas)
       setListMarcas(list_marcas.data);
-
-      //setListMarcas(list_marcas.data)
       setListModelos(list_modelos.data)
 
       setTipoCarroceriaChoices(choices.data.tipo_carroceria)
@@ -112,14 +107,6 @@ export const EditVehicle = () => {
     }
     loadData()
   }, [])
-
-  // const sortMarcas = (marcas, marcaActual) => {
-  //   return marcas.sort((a, b) => {
-  //     if (a.id === marcaActual) return -1;
-  //     if (b.id === marcaActual) return 1;
-  //     return 0;
-  //   });
-  // };
 
 
   async function loadModelos(id_marca) {
@@ -150,9 +137,10 @@ export const EditVehicle = () => {
     setVehiculo({
       ...vehiculo,
       [e.target.name]: Number(e.target.value),
-      modelo: listModelos[0].id
+      modelo_id: listModelos[0].id
     })
   }
+
 
   const handleChangeModelo = (e) => {
     setVehiculo({
@@ -213,7 +201,7 @@ export const EditVehicle = () => {
 
             <div className="form-group mb-3">
               <label htmlFor="modelo" className="form-label">Modelo:</label><br />
-              <select name='marca_id' value={vehiculo.modelo_id} onChange={handleChange}>
+              <select name='modelo_id' value={vehiculo.modelo_id} onChange={handleChangeModelo}>
                 {listModelos.map(modelo => (
                   <option key={modelo.id} value={modelo.id}>
                     {modelo.nombre}

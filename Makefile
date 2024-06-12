@@ -7,5 +7,6 @@ bajar:
 	docker compose down
   
 migrarbd:
-	sudo docker exec -it backend python3 manage.py makemigrations
-	sudo docker exec -it backend python3 manage.py migrate
+	docker exec -it backend rm -r ConectaCar/migrations
+	docker exec -it backend python3 manage.py makemigrations ConectaCar
+	docker exec -it backend python3 manage.py migrate

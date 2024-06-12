@@ -15,7 +15,7 @@ services:
         condition: service_healthy  
     restart: always
     ports: 
-      - 80:8000
+      - 8000:8000
     networks:
       - proyecto
 

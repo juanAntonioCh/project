@@ -210,7 +210,7 @@ export const VehicleDetailView = () => {
                             </div>
                         </div>
 
-                        <div className="vehicle-info-container container mt-5 mb-5">
+                        <div className="vehicle-info-container container mt-4 mb-3">
                             <div className="card shadow-sm">
                                 <div className="card-header bg-secondary text-white">
                                     <h4 className="mb-0"><i>Información del vehículo</i></h4>

@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import '../styles/BuzonMensajes.css'
 import { api } from "../api/vehicle.api";
+import dayjs from "dayjs";
 
 export const BuzonMensajes = () => {
   const [reservas, setReservas] = useState([]);
   const [estado, setEstado] = useState('pendiente');
+  //para que el mes aparezca en español
+  dayjs.locale('es');
 
   useEffect(() => {
     const fetchReservas = async () => {
@@ -60,6 +63,18 @@ export const BuzonMensajes = () => {
     }
   }
 
+  const formatCustomDate = (dateString) => {
+    const date = dayjs(dateString);
+    const dateAdjusted = date.subtract(2, 'hour');
+    const day = dateAdjusted.format('D');
+    const month = dateAdjusted.format('MMMM');
+    const year = dateAdjusted.format('YYYY');
+    const hour = dateAdjusted.format('H');
+    const minute = dateAdjusted.format('mm');
+
+    return `El día ${day} de ${month} de ${year} a las ${hour}:${minute}`;
+  };
+
   function formatDate(dateString) {
     const dateParts = dateString.split('T')[0].split('-');
     const timeParts = dateString.split('T')[1].split('.')[0].split(':');
@@ -84,19 +99,23 @@ export const BuzonMensajes = () => {
 
       <div className="container pt-3 pb-4">
 
-        <div className="bg-white solicitudes-botones-container p-4 d-flex mb-3 w-75 justify-content-center">
-          <button className='btn btn-secondary mx-3' onClick={() => setEstado('pendiente')}>Pendientes</button>
-          <button className='btn btn-success mx-3' onClick={() => setEstado('confirmado')}>Aceptadas</button>
-          <button className='btn btn-primary mx-3' onClick={() => setEstado('activo')}>Activas</button>
-          <button className='btn btn-danger mx-3' onClick={() => setEstado('rechazado')}>Rechazadas</button>
-          <button className='btn btn-secondary mx-3' onClick={() => setEstado('finalizado')}>Finalizadas</button>
+        <div className="justify-content-center mb-3">
+          <div className="col-12 col-lg-10 p-3 bg-white rounded">
+            <div className="row justify-content-center">
+              <button className='btn btn-secondary col-4 col-md-2 mb-2 mb-md-0 mx-1' onClick={() => setEstado('pendiente')}>Pendientes</button>
+              <button className='btn btn-success col-4 col-md-2 mb-2 mb-md-0 mx-1' onClick={() => setEstado('confirmado')}>Aceptadas</button>
+              <button className='btn btn-primary col-4 col-md-2 mb-3 mb-md-0 mx-1' onClick={() => setEstado('activo')}>Activas</button>
+              <button className='btn btn-danger col-4 col-md-2 mb-2 mb-md-0 mx-1' onClick={() => setEstado('rechazado')}>Rechazadas</button>
+              <button className='btn btn-secondary col-4 col-md-2 mb-2 mb-md-0 mx-1' onClick={() => setEstado('finalizado')}>Finalizadas</button>
+            </div>
+          </div>
         </div>
 
         {reservas.length > 0 ? (
           <div className="bg-white p-4 buzon-mensajes-row">
             {reservas.map(reserva => (
-              <div key={reserva.id} className="row my-3">
-                <div className="col-md-2">
+              <div key={reserva.id} className="row my-4">
+                <div className="col-12 col-lg-2">
                   <div id={`carousel${reserva.id}`} className="carousel slide">
                     <div className="carousel-inner">
 
@@ -125,13 +144,13 @@ export const BuzonMensajes = () => {
                       </>
                     )}
                   </div>
-
                 </div>
-                <div className="col-md-10">
+
+                <div className="col-12 col-lg-10">
                   <div className="card">
                     <div className="card-body row">
                       <h5 className="card-title">{reserva.vehiculo_details.marca_details.nombre} {reserva.vehiculo_details.modelo_details.nombre}</h5>
-                      <p className="card-text col-4">
+                      <p className="card-text col-lg-4">
                         <strong>Solicitante:</strong> {reserva.solicitante_details.username} <br />
                         <strong>Fecha de inicio:</strong> {formatDate(reserva.fecha_inicio)}<br />
                         <strong>Fecha de fin:</strong> {formatDate(reserva.fecha_fin)}<br />
@@ -139,16 +158,21 @@ export const BuzonMensajes = () => {
                         {/* <strong>Fecha de la solicitud:</strong> {new Date(reserva.fecha_reserva).toLocaleString()}<br /> */}
                         <strong>Precio final:</strong> {reserva.precio_total} €<br />
                       </p>
-                      <div className="form-group col-4">
-                        {/* <label htmlFor="mensaje"><strong>Mensaje del comprador:</strong></label> */}
-                        <textarea
-                          className="form-control "
-                          id="mensaje"
-                          rows="4"
-                          value={reserva.mensaje}
-                          readOnly
-                        />
-                      </div>
+                      {reserva.mensaje.length > 0 ? (
+                        <div className="form-group col-lg-4">
+                          <label htmlFor="mensaje"><em>Mensaje de {reserva.solicitante_details.username}:</em></label>
+                          <textarea
+                            className="form-control "
+                            id="mensaje"
+                            rows="4"
+                            value={reserva.mensaje}
+                            readOnly
+                          />
+                        </div>
+
+                      ) : (
+                        <div className="col-2"></div>
+                      )}
 
                       <div className="col-4 d-flex flex-column justify-content-evenly">
                         {reserva.estado === 'pendiente' && (
@@ -158,16 +182,19 @@ export const BuzonMensajes = () => {
                           </>
                         )}
                         {reserva.estado === 'confirmado' && (
-                          <h2>ACEPTADO</h2>
+                          <>
+                            <h4>Has aceptado esta solicitud</h4>
+                            <p className="fs-5"><i>{formatCustomDate(reserva.fecha_inicio)} iniciará el alquiler de este vehículo</i>  </p>
+                          </>
                         )}
                         {reserva.estado === 'activo' && (
                           <h2>Alquiler en curso ...</h2>
                         )}
                         {reserva.estado === 'rechazado' && (
-                          <h4>Has rechazado esta reserva</h4>
+                          <h4 className="text-center mt-2">Has rechazado esta reserva</h4>
                         )}
                         {reserva.estado === 'finalizado' && (
-                          <h4>Alquiler finalizado</h4>
+                          <h4><i>Este alquiler finalizó {formatCustomDate(reserva.fecha_fin)}</i></h4>
                         )}
                       </div>
                     </div>
@@ -180,7 +207,7 @@ export const BuzonMensajes = () => {
 
         ) : (
           <div className="bg-white p-4 buzon-mensajes-row">
-            {estado == 'pendiente' && (<h3 className='text-center'>No tienes ninguna solicitud de alquiler</h3>)}
+            {estado == 'pendiente' && (<h3 className='text-center'>No tienes ninguna solicitud de alquiler pendiente</h3>)}
             {estado == 'confirmado' && (<h3 className='text-center' >No tienes ninguna solicitud de alquiler aceptada</h3>)}
             {estado == 'activo' && (<h3 className='text-center'>No tienes ningún vehículo alquilado actualmente</h3>)}
             {estado == 'rechazado' && (<h3 className='text-center'>No tienes ninguna solicitud de alquiler rechazada</h3>)}

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { api, getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import axios from 'axios'
 import { AuthContext } from '../context/AuthContext';
 
 export const EditVehicle = () => {
@@ -17,7 +16,6 @@ export const EditVehicle = () => {
   const [tipoCambioChoices, setTipoCambioChoices] = useState([])
   const [tipoCombustibleChoices, setTipoCombustibleChoices] = useState([])
   const [imagenes, setImagenes] = useState([])
-  //const [successMessage, setSuccessMessage] = useState('')
   const [address, setAddress] = useState('');
   const [ubicacion, setUbicacion] = useState('')
   const [marca, setMarca] = useState('')
@@ -30,10 +28,10 @@ export const EditVehicle = () => {
       const data = await respuesta.json();
 
       if (data) {
-        console.log(data)
+        //console.log(data)
         const ubi = data.display_name || 'No disponible';
         setUbicacion(ubi)
-        console.log(`La ubicación es en ${ubi}`);
+        //console.log(`La ubicación es en ${ubi}`);
       } else {
         console.log('No se pudo obtener la ubicación');
       }
@@ -45,6 +43,12 @@ export const EditVehicle = () => {
   useEffect(() => {
     console.log(vehiculo)
   }, [vehiculo])
+
+  async function loadModelos(id_marca) {
+    const list_modelos = await getModelosMarca(id_marca)
+    setListModelos(list_modelos.data)
+    return list_modelos.data;
+  }
 
 
   useEffect(() => {
@@ -87,42 +91,35 @@ export const EditVehicle = () => {
       }
     };
     fetchVehicle();
+    //loadModelos(vehiculo.marca_id)
   }, []);
   //}, [id]);
 
   useEffect(() => {
     async function loadData() {
       const list_marcas = await getAllMarcas()
-      const list_modelos = await getAllModelos()
+      //const list_modelos = await getAllModelos()
       const choices = await getVehicleChoices()
-      console.log('Lista de las marcas')
-      console.log(list_marcas)
+      //console.log('Lista de las marcas')
+      //console.log(list_marcas)
       setListMarcas(list_marcas.data);
-      setListModelos(list_modelos.data)
 
       setTipoCarroceriaChoices(choices.data.tipo_carroceria)
       setTipoCambioChoices(choices.data.tipo_cambio)
       setTipoCombustibleChoices(choices.data.tipo_combustible)
-
     }
     loadData()
   }, [])
 
-
-  async function loadModelos(id_marca) {
-    const list_modelos = await getModelosMarca(id_marca)
-    setListModelos(list_modelos.data)
-  }
-
-  // useEffect(() => {
-  //   if (listMarcas.length > 0) {
-  //     loadModelos(listMarcas[0].id)
-  //     const marcaId = listMarcas[0].id;
-  //     console.log(listMarcas[0].id)
-  //     console.log(marcaId)
-  //   }
-  // }, [listMarcas]);
-
+  useEffect(() => {
+    const cargarModelosIniciales = async () => {
+        if (vehiculo.marca_id) {
+            const modelosIniciales = await loadModelos(vehiculo.marca_id);
+            setListModelos(modelosIniciales);
+        }
+    }
+    cargarModelosIniciales();
+}, [vehiculo.marca_id]);
 
   const handleChange = (e) => {
     setVehiculo({
@@ -131,14 +128,26 @@ export const EditVehicle = () => {
     })
   }
 
-  const handleChangeMarca = (e) => {
-    loadModelos(e.target.value)
+  const handleChangeMarca = async (e) => {
+    const marcaId = Number(e.target.value);
 
-    setVehiculo({
-      ...vehiculo,
-      [e.target.name]: Number(e.target.value),
-      modelo_id: listModelos[0].id
-    })
+    //Actualizar primero la marca del vehículo
+    setVehiculo(prevVehiculo => ({
+        ...prevVehiculo,
+        [e.target.name]: marcaId
+    }));
+
+    //Luego cargar los modelos y actualizar el estado del vehículo con el modelo_id
+    const nuevosModelos = await loadModelos(marcaId);
+
+    console.log('LISTA DE LOS MODELOS DE LA MARCA');
+    console.log(nuevosModelos);
+
+    //Comprobar que listModelos esté actualizado antes de actualizar modelo_id
+    setVehiculo(prevVehiculo => ({
+        ...prevVehiculo,
+        modelo_id: nuevosModelos.length > 0 ? nuevosModelos[0].id : null
+    }));
   }
 
 
@@ -154,7 +163,6 @@ export const EditVehicle = () => {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
-        console.log(latLng)
         setVehiculo({
           ...vehiculo,
           latitud: latLng.lat,
@@ -167,14 +175,12 @@ export const EditVehicle = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Enviar los datos actualizados del vehículo al backend
+      //Enviar los datos actualizados del vehículo al backend
       await api.put(`/api/vehicles/${vehiculo.id}/`, vehiculo);
       const successMessage = `${marca} ${modelo} editado con éxito.`
       navigate(`/my-vehicles/${vehiculo.propietario_id}`, { state: { successMessage } })
-      // Redirigir o mostrar un mensaje de éxito
     } catch (error) {
       console.error("Error updating vehicle", error);
-      // Mostrar un mensaje de error al usuario
     }
   }
 

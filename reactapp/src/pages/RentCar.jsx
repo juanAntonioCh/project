@@ -341,7 +341,7 @@ export const RentCar = () => {
         );
       case 2:
         return (
-          <div className='row'>
+          <div className='row d-flex align-content-center flex-column g-5'>
             <div className='col-6'>
               {/* Agrega los campos adicionales para la página 3 aquí */}
               <div className="form-group mb-4 position-relative">
@@ -415,7 +415,7 @@ export const RentCar = () => {
         </div>
       )}
 
-      <div className='container'>
+      <div className='container rent-car-container'>
         <div className="row pt-1">
 
           <div className="col-12 col-lg-7 bg-white">

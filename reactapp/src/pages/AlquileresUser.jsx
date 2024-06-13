@@ -60,14 +60,18 @@ export const AlquileresUser = () => {
         <div className="login-body d-flex justify-content-center">
 
             <div className="container pt-3 pb-5">
-                <div className="bg-white p-4 buzon-mensajes-row d-flex mb-3 w-75 justify-content-center">
-                    <button className='btn btn-secondary mx-3' onClick={() => setEstado('pendiente')}>Pendientes</button>
-                    <button className='btn btn-success mx-3' onClick={() => setEstado('confirmado')}>Aceptados</button>
-                    <button className='btn btn-primary mx-3' onClick={() => setEstado('activo')}>Activos</button>
-                    <button className='btn btn-danger mx-3' onClick={() => setEstado('rechazado')}>Rechazados</button>
-                    <button className='btn btn-secondary mx-3' onClick={() => setEstado('finalizado')}>Finalizados</button>
+                <div className="justify-content-center mb-3">
+                    <div className="col-12 col-lg-10 p-3 bg-white rounded">
+                        <div className="row justify-content-center">
+                            <button className='btn btn-secondary col-4 col-md-2 mb-2 mb-md-0 mx-1' onClick={() => setEstado('pendiente')}>Pendientes</button>
+                            <button className='btn btn-success col-4 col-md-2 mb-2 mb-md-0 mx-1' onClick={() => setEstado('confirmado')}>Aceptados</button>
+                            <button className='btn btn-primary col-4 col-md-2 mb-3 mb-md-0 mx-1' onClick={() => setEstado('activo')}>Activos</button>
+                            <button className='btn btn-danger col-4 col-md-2 mb-2 mb-md-0 mx-1' onClick={() => setEstado('rechazado')}>Rechazados</button>
+                            <button className='btn btn-secondary col-4 col-md-2 mb-2 mb-md-0 mx-1' onClick={() => setEstado('finalizado')}>Finalizados</button>
+                        </div>
+                    </div>
                 </div>
-                
+
                 {reservas.length > 0 ? (
                     <div className="bg-white p-4 buzon-mensajes-row">
                         {reservas.map(reserva => (
@@ -142,7 +146,6 @@ export const AlquileresUser = () => {
                 ) : (
                     <div className="bg-white p-4 buzon-mensajes-row">
                         <h3 className='text-center'>No tinenes ningún alquiler {estado}</h3>
-                        <p className='text-center'>¡Solucionemos eso!</p>
                         <p className='text-center'><Link to='/home'>Busca un vehículo</Link></p>
                     </div>
                 )}

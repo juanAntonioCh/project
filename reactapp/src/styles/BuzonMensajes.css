@@ -1,10 +1,7 @@
 .buzon-mensajes-row {
-    border-radius: 35px;
+    border-radius: 25px;
 }
 
-.solicitudes-botones-container{
-    border-radius: 35px;
-}
 
 .solicitudes-activas-btn{
     background-color: #fff;

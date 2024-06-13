@@ -1,10 +1,17 @@
 .rent-car-body {
     background: linear-gradient(to right, #5ab3fc, white);
     width: 100vw;
-    height: 90vh;
+    min-height: 90vh;
+    padding-bottom: 20px;
+    padding-top: 10px;
+}
+
+
+.rent-car-container .row{
+    min-height: 45vh;
 }
 
 .rent-car-image {
-    background-image: url('../imgs/background1.webp');
+    background-image: url('../imgs/serjan-midili-iUy7WArbyI8-unsplash.jpg');
     background-size: cover;
   }

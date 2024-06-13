@@ -107,74 +107,83 @@ export const BuscadorVehiculos = ({ setError }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="buscador-container">
-                <PlacesAutocomplete
-                    value={address}
-                    onChange={setAddress}
-                    onSelect={handleSelect}
-                >
-                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                        <div className="autocomplete-container">
-                            <input className="form-control" {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
-                            <div className="suggestions-container">
-                                {loading && <div className="loading">Cargando...</div>}
-                                {suggestions.map((suggestion, index) => {
-                                    const className = suggestion.active ? 'suggestion-item active' : 'suggestion-item';
-                                    return (
-                                        <div key={index} {...getSuggestionItemProps(suggestion, { className })}>
-                                            <span>{suggestion.description}</span>
-                                        </div>
-                                    );
-                                })}
+            <div className="buscador-container row">
+                <div className="col-lg-4 col-md-12 mb-3">
+                    <PlacesAutocomplete
+                        value={address}
+                        onChange={setAddress}
+                        onSelect={handleSelect}
+                    >
+                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                            <div className="autocomplete-container">
+                                <input className="form-control" {...getInputProps({ placeholder: 'Buscar ubicaciones ...' })} />
+                                <div className="suggestions-container">
+                                    {loading && <div className="loading">Cargando...</div>}
+                                    {suggestions.map((suggestion, index) => {
+                                        const className = suggestion.active ? 'suggestion-item active' : 'suggestion-item';
+                                        return (
+                                            <div key={index} {...getSuggestionItemProps(suggestion, { className })}>
+                                                <span>{suggestion.description}</span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                             </div>
+                        )}
+                    </PlacesAutocomplete>
+                </div>
+
+                <div className='col-lg-6 date-time-container-2'>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <div className="date-time-container">
+                            <DatePicker
+                                label="Recogida"
+                                onChange={handleStartDateChange}
+                                className="mb-2"
+                                slotProps={{
+                                    textField: {
+                                        helperText: 'MM/DD/YYYY',
+                                    },
+                                }}
+                            />
+                            <TimePicker
+                                label="Hora"
+                                onChange={handleStartHourChange}
+                                className="custom-timepicker mb-3"
+                                viewRenderers={{
+                                    hours: renderTimeViewClock,
+                                    minutes: renderTimeViewClock,
+                                    seconds: renderTimeViewClock,
+                                }}
+                            />
+                            <DatePicker
+                                label="Devolución"
+                                onChange={handleEndDateChange}
+                                className="mb-2"
+                                slotProps={{
+                                    textField: {
+                                        helperText: 'MM/DD/YYYY',
+                                    },
+                                }}
+                            />
+                            <TimePicker
+                                label="Hora"
+                                className="custom-timepicker mb-3"
+                                onChange={handleEndHourChange}
+                                viewRenderers={{
+                                    hours: renderTimeViewClock,
+                                    minutes: renderTimeViewClock,
+                                    seconds: renderTimeViewClock,
+                                }}
+                            />
                         </div>
-                    )}
-                </PlacesAutocomplete>
+                    </LocalizationProvider>
+                </div>
 
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <div className="date-time-container">
-                        <DatePicker
-                            label="Recogida"
-                            onChange={handleStartDateChange}
-                            slotProps={{
-                                textField: {
-                                    helperText: 'MM/DD/YYYY',
-                                },
-                            }}
-                        />
-                        <TimePicker
-                            label="Hora"
-                            onChange={handleStartHourChange}
-                            className="custom-timepicker"
-                            viewRenderers={{
-                                hours: renderTimeViewClock,
-                                minutes: renderTimeViewClock,
-                                seconds: renderTimeViewClock,
-                            }}
-                        />
-                        <DatePicker
-                            label="Devolución"
-                            onChange={handleEndDateChange}
-                            slotProps={{
-                                textField: {
-                                    helperText: 'MM/DD/YYYY',
-                                },
-                            }}
-                        />
-                        <TimePicker
-                            label="Hora"
-                            className="custom-timepicker"
-                            onChange={handleEndHourChange}
-                            viewRenderers={{
-                                hours: renderTimeViewClock,
-                                minutes: renderTimeViewClock,
-                                seconds: renderTimeViewClock,
-                            }}
-                        />
-                    </div>
-                </LocalizationProvider>
 
-                <button type="submit" className="bt buscador-button">Buscar</button>
+                <div className='col-lg-2'>
+                    <button type="submit" className="buscador-button w-100">Buscar</button>
+                </div>
             </div>
         </form>
 

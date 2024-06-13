@@ -2,7 +2,7 @@
 
 ## Descripción
 
-Esta es una aplicación web completa que consiste en un frontend desarrollado con React y un backend desarrollado con Django. La aplicación permite gestionar alquileres de vehículos, incluyendo la administración de usuarios, vehículos, y reservas. El backend está implementado en Python utilizando Django Rest Framework, y el frontend en JavaScript utilizando React. La base de datos utilizada es MySQL.
+Esta es una aplicación web full-stack diseñada para la gestión de alquileres y reservas de vehículos entre particulares. El backend está implementado en Python utilizando Django Rest Framework, y el frontend en JavaScript utilizando React. La base de datos utilizada es MySQL.
 
 ## Despliegue Dockerizado en Local
 

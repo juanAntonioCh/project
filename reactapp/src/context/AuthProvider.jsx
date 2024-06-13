@@ -45,8 +45,8 @@ export const AuthProvider = ({ children }) => {
             }
           })
           setUser(response.data);
-          console.log('EL USUARIO ES  ', response.data)
-          console.log(response.data.id)
+          //console.log('EL USUARIO ES  ', response.data)
+          //console.log(response.data.id)
           //console.log(response)
 
         } catch (error) {
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
       fetchUserDetails();
 
     } else {
-      console.log('NO HAY USUARIO ACTIVO')
+      //console.log('NO HAY USUARIO ACTIVO')
       setUser('')
     }
   }, [isAuthenticated]);

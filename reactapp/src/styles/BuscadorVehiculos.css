@@ -1,20 +1,13 @@
 .buscador-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 15px;
     border: 10px solid #ffb700;
-    /* Borde grande */
     background-color: rgba(255, 255, 255, 0.8);
     /* Fondo semi-transparente para mejor contraste */
     border-radius: 15px;
 }
 
 .autocomplete-container {
-    flex-grow: 3;
-    align-self: self-start;
-    width: 480px;
-    margin-right: 10px;
+    /* width: 480px; */
     position: relative;
 }
 
@@ -23,31 +16,32 @@
     border-radius: 20px;
 }
 
-.buscador-button{
-    align-self: self-start;
+.buscador-button {
     color: white;
     border-radius: 10px;
+    height: 60px;
     border: 2px solid #068323;
     background-color: #068323;
-    width: 150px;
-    height: 60px;
-    margin-left: 15px;
 }
 
-.buscador-button:hover{
+.buscador-button:hover {
     background-color: #04631a;
     border: 2px solid #04631a;
 }
 
-.custom-timepicker{
+.custom-timepicker {
     max-width: 140px;
 }
 
-.date-time-container {
-    flex-grow: 1;
-    display: flex;
-    gap: 10px;
+
+
+@media (min-width: 1356px) {
+    .date-time-container {
+        display: flex;
+        gap: 8px;
+    }
 }
+
 
 .suggestions-container {
     position: absolute;

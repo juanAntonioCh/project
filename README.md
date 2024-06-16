@@ -39,6 +39,15 @@ Antes de ejecutar la aplicación, asegúrate de configurar las variables de ento
    - `MYSQL_HOST`:  Nombre del host de MySQL. (db)
 
 
+Dirígete al directorio reactapp y crea otro archivo .env para definir la ruta a la que vamos a hacer las peticiones:
+
+```bash
+cd reactapp
+```
+
+Copia la siguiente variable de entorno en el .env:
+- `VITE_API_URL`=http://127.0.0.1:8000
+
 ### Construir y Ejecutar los Contenedores
 Asegúrate de que Docker esté ejecutándose. Luego, construye y levanta los contenedores usando el Makefile:
 
@@ -67,4 +76,5 @@ Para detener y eliminar los contenedores, usa el siguiente comando:
 ```bash
 make bajar
 ```
+
 

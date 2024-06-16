@@ -24,7 +24,7 @@ export const Login = () => {
   useEffect(() => {
     // Obtener todos los formularios para aplicarle las clases de Bootstrap
     const forms = document.querySelectorAll('.needs-validation');
-    console.log('los formus son: ', forms);
+    //console.log('los formus son: ', forms);
 
     Array.from(forms).forEach(form => {
       form.addEventListener('submit', event => {
@@ -55,7 +55,7 @@ export const Login = () => {
       const response = await api.post('/auth/login/', { username, password });
       localStorage.setItem('token', response.data.key); // Guardar el token 
       login()
-      console.log('Inicio de sesión exitoso');
+      //console.log('Inicio de sesión exitoso');
       navigate('/', { replace: true });
 
     } catch (error) {
@@ -64,7 +64,7 @@ export const Login = () => {
       setError('Nombre de usuario o contraseña incorrectos')
       setUserNameError(true)
       setPasswordError(true)
-      console.log(e.target)
+      //console.log(e.target)
     } finally {
       setLoading(false)
     }

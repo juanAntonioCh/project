@@ -24,8 +24,7 @@ export const UseFiltros = () => {
     const [tipoCambioChoices, setTipoCambioChoices] = useState([])
     const [tipoCombustibleChoices, setTipoCombustibleChoices] = useState([])
 
-    const { vehiculosFiltrados, vehiculosFiltradosMarca,
-        setVehiculosFiltrados, vehiculosIniciales, calcularPrecioAlquiler } = useContext(VehiclesContext)
+    const { vehiculosFiltrados, vehiculosFiltradosMarca, setVehiculosFiltrados, vehiculosIniciales, calcularPrecioAlquiler } = useContext(VehiclesContext)
 
 
     const handleCloseMarca = () => {
@@ -56,13 +55,8 @@ export const UseFiltros = () => {
         loadFilterData()
     }, [])
 
-    useEffect(() => {
-        console.log(tipoCarroceriaChoices)
-    }, [tipoCarroceriaChoices])
-
-
     const incrementarNumPlazas = () => {
-        console.log(typeof (numPlazas))
+        //console.log(typeof (numPlazas))
         if (numPlazas < 9) {
             setNumPlazas(prevNumPlazas => prevNumPlazas + 1);
         }
@@ -74,10 +68,9 @@ export const UseFiltros = () => {
         }
     };
 
-
     const handleMarcaChange = (e) => {
         const marcaId = parseInt(e.target.value);
-        console.log(e.target.value)
+        //console.log(e.target.value)
         if (e.target.checked) {
             setMarcasSeleccionadas([...marcasSeleccionadas, marcaId]);
         } else {
@@ -87,7 +80,7 @@ export const UseFiltros = () => {
 
     const handleCombustibleChange = (e) => {
         const combus = e.target.value;
-        console.log(e.target.value)
+        //console.log(e.target.value)
         if (e.target.checked) {
             setCombustiblesSeleccionados([...combustiblesSeleccionados, combus]);
         } else {
@@ -97,7 +90,7 @@ export const UseFiltros = () => {
 
     const handleCarroceriaChange = (e) => {
         const carro = e.target.value;
-        console.log(e.target.value)
+        //console.log(e.target.value)
         if (e.target.checked) {
             setCarroceriasSeleccionadas([...carroceriasSeleccionadas, carro]);
         } else {
@@ -107,7 +100,7 @@ export const UseFiltros = () => {
 
     const handleCambioChange = (e) => {
         const cambio = e.target.value;
-        console.log(e.target.value)
+        //console.log(e.target.value)
         if (e.target.checked) {
             setCambiosSeleccionados([...cambiosSeleccionados, cambio]);
         } else {
@@ -122,22 +115,19 @@ export const UseFiltros = () => {
             let filtroMarca = marcasSeleccionadas.length === 0 || marcasSeleccionadas.includes(vehicle.marca);
             let filtroPlazas = numPlazas === '' || vehicle.numero_plazas >= parseInt(numPlazas);
             //let filtroPrecio = precioAlquiler >= priceRange[0] && precioAlquiler <= priceRange[1];
-            console.log(vehicle.tipo_combustible)
             let filtroCombustible = combustiblesSeleccionados.length === 0 || combustiblesSeleccionados.includes(vehicle.tipo_combustible);
             let filtroCarroceria = carroceriasSeleccionadas.length === 0 || carroceriasSeleccionadas.includes(vehicle.tipo_carroceria);
             let filtroCambio = cambiosSeleccionados.length === 0 || cambiosSeleccionados.includes(vehicle.tipo_cambio);
             //return filtroMarca && passesPriceRangeFilter && passesBodyTypeFilters && passesSeatingCapacityFilter;
             return filtroMarca && filtroCarroceria && filtroCambio && filtroPlazas && filtroCombustible
         });
-        console.log(vehiculosFiltrados)
+        //console.log(vehiculosFiltrados)
         setVehiculosFiltrados(vehiculosFiltrados);
-
         setShowMarca(false);
         setShowCarroceria(false)
         setShowCambio(false)
         setShowMoreFilters(false)
     }
-
 
     return {
         showMarca, showCarroceria, showCambio, listMarcas, handleCloseMarca, handleCloseCarroceria, handleShowCarroceria, handleShowMarca,
@@ -146,5 +136,4 @@ export const UseFiltros = () => {
         marca, setMarca, handleCarroceriaChange, carroceriasSeleccionadas, numPlazas, combustiblesSeleccionados,
         handleCombustibleChange, incrementarNumPlazas, decrementarNumplazas
     }
-
 }

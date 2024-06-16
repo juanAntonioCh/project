@@ -8,8 +8,8 @@ import { UseBuscador } from '../hooks/UseBuscador';
 export const VehicleList = ({ vehiculosPagina, vehiculos, rentDuration , setMaxPrice, setMinPrice, setPriceRange}) => {
     const { calcularPrecioAlquiler } = useContext(VehiclesContext);
     const { fromatStartDate, formatEndDate } = useContext(VehiclesContext)
-    console.log(fromatStartDate)
-    console.log(formatEndDate)
+    //console.log(fromatStartDate)
+    //console.log(formatEndDate)
 
     //Ajustar los rangos de Precios en el filtro
     useEffect(() => {
@@ -23,8 +23,6 @@ export const VehicleList = ({ vehiculosPagina, vehiculos, rentDuration , setMaxP
         //console.log(maxPrecio);
     }, [])
     //}, [vehiculos])
-
-    console.log(rentDuration)
 
     return (
         <div className='row'>

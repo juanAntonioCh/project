@@ -35,9 +35,6 @@ export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMes
     })
   }, [user])
 
-  console.log(user)
-  console.log(reserva)
-
   const handleChange = (e) => {
     setReserva({
       ...reserva,
@@ -54,11 +51,11 @@ export const AlquilerCard = ({ setSuccessMessage, setErrorMessage, setWarningMes
 
     try {
       const response = await api.post('/api/alquiler/', reserva, { headers })
-      console.log(response)
+      //console.log(response)
       setSuccessMessage(`Solicitud enviada con éxito. Puedes consultar el estado de la solicitud en el apartado 'Mis alquileres' de tu panel de usuario.`)
 
     } catch (error) {
-      console.error(error)
+      //console.error(error)
       if (error.response && error.response.status === 400) {
         setErrorMessage(error.response.data.detail); // Mostrar el mensaje de advertencia específico
       } else if (error.response && error.response.status === 401) {

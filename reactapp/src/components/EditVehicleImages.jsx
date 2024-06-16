@@ -71,7 +71,7 @@ export const EditVehicleImages = () => {
         await api.delete(`/api/imagenes/${imgId}/`);
       }));
 
-      console.log("Cambios guardados exitosamente");
+      //console.log("Cambios guardados exitosamente");
       navigate(`/my-vehicles/${user.id}`);
     } catch (error) {
       console.error("Error al guardar los cambios", error);

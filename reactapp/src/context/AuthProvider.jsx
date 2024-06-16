@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'
 import { api } from "../api/vehicle.api";
 
 export const AuthProvider = ({ children }) => {
@@ -10,10 +9,6 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [logoutMessage, setLogoutMessage] = useState('')
-
-  useEffect(() => {
-    console.log(error)
-  }, [error])
 
   //botón de X para cerrar la alerta
   const handleCloseAlert = () => {

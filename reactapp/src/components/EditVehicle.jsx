@@ -41,7 +41,7 @@ export const EditVehicle = () => {
   };
 
   useEffect(() => {
-    console.log(vehiculo)
+    //console.log(vehiculo)
   }, [vehiculo])
 
   async function loadModelos(id_marca) {
@@ -55,7 +55,7 @@ export const EditVehicle = () => {
     const fetchVehicle = async () => {
       try {
         const { data } = await api.get(`/api/vehicles/${id}`);
-        console.log(data)
+        //console.log(data)
         setVehiculo({
           id: data.id,
           propietario_id: data.propietario,
@@ -140,8 +140,8 @@ export const EditVehicle = () => {
     //Luego cargar los modelos y actualizar el estado del vehículo con el modelo_id
     const nuevosModelos = await loadModelos(marcaId);
 
-    console.log('LISTA DE LOS MODELOS DE LA MARCA');
-    console.log(nuevosModelos);
+    //console.log('LISTA DE LOS MODELOS DE LA MARCA');
+    //console.log(nuevosModelos);
 
     //Comprobar que listModelos esté actualizado antes de actualizar modelo_id
     setVehiculo(prevVehiculo => ({
@@ -149,7 +149,6 @@ export const EditVehicle = () => {
         modelo_id: nuevosModelos.length > 0 ? nuevosModelos[0].id : null
     }));
   }
-
 
   const handleChangeModelo = (e) => {
     setVehiculo({
@@ -183,7 +182,6 @@ export const EditVehicle = () => {
       console.error("Error updating vehicle", error);
     }
   }
-
 
   return (
     <div className="login-body">

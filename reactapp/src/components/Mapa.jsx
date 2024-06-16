@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GoogleMap, LoadScriptNext, Marker, useJsApiLoader, InfoWindow } from '@react-google-maps/api';
-//import { AdvancedMarkerElement } from '@googlemaps/marker';
 import { VehicleList } from './VehicleList';
 import '../styles/Vehicles.css'
 import Pagination from 'react-bootstrap/Pagination';
@@ -9,8 +8,6 @@ import { getAllVehicles } from '../api/vehicle.api';
 import { AuthContext } from '../context/AuthContext';
 import { VehiclesContext } from '../context/VehiclesContext';
 import { Filtros } from './Filtros';
-import { UseFiltros } from '../hooks/UseFiltros';
-import { MapComponent } from './Map';
 
 const VehiculosPorPagina = 6;
 
@@ -29,7 +26,7 @@ export const Mapa = ({ rentDuration, address }) => {
     useEffect(() => {
         async function loadVehicles() {
             const res = await getAllVehicles()
-            console.log(res.data)
+            //console.log(res.data)
             setVehiculos(res.data)
         }
         loadVehicles()
@@ -82,9 +79,9 @@ export const Mapa = ({ rentDuration, address }) => {
         })
     }
 
-    useEffect(() => {
-        console.log(vehiculosFiltrados)
-    }, [vehiculosFiltrados])
+    // useEffect(() => {
+    //     console.log(vehiculosFiltrados)
+    // }, [vehiculosFiltrados])
 
     useEffect(() => {
         const vehiculosVisibles = filtrarVehiculosVisibles();
@@ -140,9 +137,8 @@ export const Mapa = ({ rentDuration, address }) => {
         filtroPrecio();
     }, [priceRange]);
 
-    console.log(obtenerVehiculosPorPagina())
-    console.log('Google Maps API Key:', import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
-
+    //console.log(obtenerVehiculosPorPagina())
+    //console.log('Google Maps API Key:', import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
 
     function handleChanges(e, newValue) {
         //console.log(newValue)
@@ -239,14 +235,10 @@ export const Mapa = ({ rentDuration, address }) => {
                                 disabled={paginaActual === totalPaginas}
                             />
                         </Pagination>
-
                     </div>
-
                 </div>
             </div>
-
         </div>
-
     )
 }
 

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../api/vehicle.api';
@@ -8,12 +7,11 @@ export const PasswordReset = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null)
-    const navigate = useNavigate();
 
     useEffect(() => {
         // Obtener todos los formularios para aplicarle las clases de Bootstrap
         const forms = document.querySelectorAll('.needs-validation');
-        console.log('los formus son: ', forms);
+        //console.log('los formus son: ', forms);
 
         Array.from(forms).forEach(form => {
             form.addEventListener('submit', event => {
@@ -21,7 +19,6 @@ export const PasswordReset = () => {
                     event.preventDefault();
                     event.stopPropagation();
                 }
-
                 form.classList.add('was-validated');
             }, false);
         });
@@ -43,9 +40,9 @@ export const PasswordReset = () => {
     }, [error]);
 
 
-    useEffect(() => {
-        console.log(email)
-    }, [email])
+    // useEffect(() => {
+    //     console.log(email)
+    // }, [email])
 
     const handleCloseAlert = () => {
         setError(null);
@@ -55,13 +52,13 @@ export const PasswordReset = () => {
     const handlePasswordReset = async (e) => {
         e.preventDefault()
         try {
-            console.log(email)
+            //console.log(email)
             const response = await api.post('/api/forgot-password/', { email });
 
             setSuccess('Se ha enviado un correo electrónico a la dirección proporcionada. Por favor, revise su bandeja de entrada y siga las instrucciones para restablecer su contraseña.')
 
-            console.log(response)
-            console.log('Inicio de sesión exitoso');
+            //console.log(response)
+            //console.log('Inicio de sesión exitoso');
             //navigate('/', { replace: true });
 
         } catch (error) {

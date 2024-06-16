@@ -17,7 +17,7 @@ export const AlquileresUser = () => {
             };
             try {
                 const response = await api.get(`/api/alquileres/solicitante/?estado=${estado}`, { headers })
-                console.log(response)
+                //console.log(response)
                 setReservas(response.data);
             } catch (error) {
                 console.error('Error al obtener las reservas del propietario:', error);
@@ -53,7 +53,7 @@ export const AlquileresUser = () => {
     }
 
     useEffect(() => {
-        console.log(reservas)
+        //console.log(reservas)
     }, [reservas])
 
     return (

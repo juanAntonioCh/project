@@ -43,7 +43,7 @@ export const BuscadorVehiculos = ({ setError }) => {
         const startDateAsDate = new Date(startYear, startMonth - 1, startDay, startHour2, startMinute)
 
         if (startDateAsDate < currentDate) {
-            console.log('Fecha seleccionada ', startDate, ' Hora seleccionada ', startHour)
+            //console.log('Fecha seleccionada ', startDate, ' Hora seleccionada ', startHour)
             setError('La fecha de recogida no puede ser anterior a la fecha actual.')
             return;
         }
@@ -62,19 +62,15 @@ export const BuscadorVehiculos = ({ setError }) => {
         const endDateAsDate = new Date(endYear, endMonth - 1, endDay, endHour2, endMinute)
 
         if (endDateAsDate < startDateAsDate) {
-            console.log('Fecha seleccionada ', endDate, ' Hora seleccionada ', endHour)
+            //console.log('Fecha seleccionada ', endDate, ' Hora seleccionada ', endHour)
             setError('La fecha de devolución no puede ser anterior a la fecha de recogida.')
             return;
         }
 
-        console.log('============================')
-        console.log(typeof (endDateAsDate))
-        console.log(startDateAsDate)
-
         const differenceInMilliseconds = endDateAsDate - startDateAsDate;
         const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
 
-        console.log('LA DIFERENCIA DE HORAS ES: ', differenceInHours)
+        //console.log('LA DIFERENCIA DE HORAS ES: ', differenceInHours)
 
         if (differenceInHours < 1) {
             setError('No es posible alquilar un vehículo por menos de una hora')
@@ -101,7 +97,7 @@ export const BuscadorVehiculos = ({ setError }) => {
         const rentDuration = calculateHourDifference(startDate, startHour, endDate, endHour)
         localStorage.setItem('rentDuration', JSON.stringify(rentDuration));
 
-        console.log('Horas de alquiler:', rentDuration);
+        //console.log('Horas de alquiler:', rentDuration);
         navigate('/vehicle', { state: { rentDuration, address } })
     }
 

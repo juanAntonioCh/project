@@ -10,7 +10,7 @@ export const VehiclesUserPage = () => {
     const [vehis, setVehis] = useState([])
 
     const message = location.state && location.state.successMessage
-    console.log(message)
+    //console.log(message)
 
     const handleCloseAlert = () => {
         setSuccessMessage(null);
@@ -52,10 +52,7 @@ export const VehiclesUserPage = () => {
             )}
 
             <div className="container pt-4">
-                {/* <h1>Mis vehiculos {id}</h1> */}
-
                 <VehiclesUser vehiculos={vehis} setVehiculos={setVehis} setMensaje={setSuccessMessage}/>
-
             </div>
         </div>
     )

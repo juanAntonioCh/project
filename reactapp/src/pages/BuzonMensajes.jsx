@@ -36,7 +36,7 @@ export const BuzonMensajes = () => {
       try {
         const response = await api.post(`/api/alquiler/${reservaId}/confirmar/`, null, { headers });
         setReservas(response.data);
-        console.log(response.data);
+        //console.log(response.data);
 
       } catch (error) {
         console.error('Error al confirmar la reserva:', error);
@@ -54,7 +54,7 @@ export const BuzonMensajes = () => {
 
       try {
         const response = await api.post(`/api/alquiler/${reservaId}/rechazar/`, null, { headers });
-        console.log(response.data);
+        //console.log(response.data);
         setReservas(prevReservas => prevReservas.filter(reserva => reserva.id !== reservaId));
         //setReservas(nuevasReservas)
       } catch (error) {
@@ -90,13 +90,11 @@ export const BuzonMensajes = () => {
   }
 
   useEffect(() => {
-    console.log(reservas)
+    //console.log(reservas)
   }, [reservas])
-
 
   return (
     <div className="login-body d-flex justify-content-center">
-
       <div className="container pt-3 pb-4">
 
         <div className="justify-content-center mb-3">

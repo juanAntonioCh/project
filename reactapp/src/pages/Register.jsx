@@ -33,7 +33,7 @@ export const Register = () => {
   useEffect(() => {
     // Obtener todos los formularios para aplicarle las clases de Bootstrap
     const forms = document.querySelectorAll('.needs-validation');
-    console.log('los formus son: ', forms);
+    //console.log('los formus son: ', forms);
 
     Array.from(forms).forEach(form => {
       form.addEventListener('submit', event => {
@@ -64,7 +64,7 @@ export const Register = () => {
         navigate('/', { replace: true });
 
       } else {
-        console.log(res.data)
+        //console.log(res.data)
         setError(res.data)
       }
 

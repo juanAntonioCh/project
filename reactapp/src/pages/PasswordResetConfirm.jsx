@@ -1,7 +1,5 @@
-// PasswordResetConfirm.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { api } from '../api/vehicle.api';
 
 export const PasswordResetConfirm = () => {
@@ -24,7 +22,7 @@ export const PasswordResetConfirm = () => {
     useEffect(() => {
         // Obtener todos los formularios para aplicarle las clases de Bootstrap
         const forms = document.querySelectorAll('.needs-validation');
-        console.log('los formus son: ', forms);
+        //console.log('los formus son: ', forms);
 
         Array.from(forms).forEach(form => {
             form.addEventListener('submit', event => {
@@ -32,7 +30,6 @@ export const PasswordResetConfirm = () => {
                     event.preventDefault();
                     event.stopPropagation();
                 }
-
                 form.classList.add('was-validated');
             }, false);
         });

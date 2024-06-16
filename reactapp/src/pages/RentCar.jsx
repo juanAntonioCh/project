@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
-// import '../styles/rent-car.css'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { useNavigate, Link } from 'react-router-dom';
 import { api, getAllMarcas, getAllModelos, getModelosMarca, getVehicleChoices } from '../api/vehicle.api'
-import axios from 'axios'
 import '../styles/CrearVehiculoPage.css'
 import { useContext } from "react"
 import { AuthContext } from '../context/AuthContext';
 import { LogoSvg } from '../components/LogoSvg';
-import { useRent } from '../hooks/UseRent';
 
 export const RentCar = () => {
   const { user } = useContext(AuthContext);
@@ -28,11 +25,15 @@ export const RentCar = () => {
     tipo_combustible: '', consumo: '', kilometraje: '', tipo_cambio: '', precio_por_hora: '', latitud: '', longitud: '', color: 'verde',
     autonomia: '', numero_plazas: 5, disponible: true
   })
-  //const [propietario, setPropietario] = useState({});
+
+  const searchOptions = {
+    types: ['(regions)'],
+    componentRestrictions: { country: 'es' } 
+  };
 
   //ver los cambios en el vehiculo
   useEffect(() => {
-    console.log(vehiculo)
+    //console.log(vehiculo)
   }, [vehiculo])
 
 
@@ -46,7 +47,7 @@ export const RentCar = () => {
   useEffect(() => {
     // Obtener todos los formularios para aplicarle las clases de Bootstrap
     const forms = document.querySelectorAll('.needs-validation');
-    console.log('los formus son: ', forms);
+    //console.log('los formus son: ', forms);
 
     Array.from(forms).forEach(form => {
       form.addEventListener('submit', event => {
@@ -117,15 +118,9 @@ export const RentCar = () => {
 
   //actualizar el objeto vehiculo con la primera marca y modelo de la lista
   useEffect(() => {
-    console.log('*********************************')
-    console.log(listMarcas)
-    console.log(listModelos)
     if (listMarcas.length > 0) {
-
       loadModelos(listMarcas[0].id)
       const marcaId = listMarcas[0].id;
-      console.log(listMarcas[0].id)
-      console.log(marcaId)
 
       setVehiculo({
         ...vehiculo,
@@ -137,7 +132,7 @@ export const RentCar = () => {
 
   useEffect(() => {
     if (listMarcas.length > 0 && listModelos.length > 0) {
-      console.log(listModelos[0].nombre)
+      //console.log(listModelos[0].nombre)
       setVehiculo({
         ...vehiculo,
         modelo_id: listModelos[0].id,
@@ -160,7 +155,7 @@ export const RentCar = () => {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    console.log(vehiculo)
+    //console.log(vehiculo)
 
     // if (vehiculo.propietario_id === '') {
     //   setNoLogin('Inicia sesión para publicar tu vehículo ')
@@ -168,17 +163,18 @@ export const RentCar = () => {
     // }
 
     if (!validarVehiculo()) {
-      setError('Porfavor, comprueba que todos los campos del formulario estén completos')
+      //setError('Porfavor, comprueba que todos los campos del formulario estén completos')
+      setError('Es necesario que introduzcas la ubicación en la que se encuentra el vehículo')
       return
     }
 
     const formData = new FormData();
-    console.log(imagenes)
+    //console.log(imagenes)
     imagenes.forEach((imagen) => {
       formData.append('imagen', imagen);
     });
     formData.append('vehiculo', JSON.stringify(vehiculo))
-    console.log(formData)
+    //console.log(formData)
 
     try {
       const response = await api.post('/api/create-vehicle/', formData, {
@@ -186,27 +182,18 @@ export const RentCar = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log(response.data);
+      //console.log(response.data);
       const successMessage = `Vehículo publicado con éxito`
       navigate('/home', { state: { successMessage } })
     } catch (error) {
-      console.error('Error al enviar el formulario:', error.response);
+      //console.error('Error al enviar el formulario:', error.response.data.error);
+      setError(error.response.data.error)
     }
   }
-
 
   const handleImagenesChange = (e) => {
     setImagenes(Array.from(e.target.files))
   }
-
-  useEffect(() => {
-    console.log(imagenes)
-  }, [imagenes])
-
-  useEffect(() => {
-    console.log('miaaaaaaaaaaaauuuuuuuuuuuuuuuuu')
-    console.log(pagination)
-  }, [pagination])
 
   const handleCloseAlert = () => {
     setError(null);
@@ -350,6 +337,7 @@ export const RentCar = () => {
                   value={address}
                   onChange={setAddress}
                   onSelect={handleSelect}
+                  // searchOptions={searchOptions}
                 >
                   {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                     <div className="form-inline d-flex">
@@ -444,6 +432,11 @@ export const RentCar = () => {
                   e.preventDefault();
                   if (!vehiculo.propietario_id) {
                     setNoLogin('Inicia sesión para publicar tu vehículo ')
+                  } else if (vehiculo.autonomia === '' || vehiculo.consumo === '' || vehiculo.matricula === '' || vehiculo.kilometraje === '' || vehiculo.año === ''){
+                    setError('Porfavor, comprueba que todos los campos del formulario estén completos antes de avanzar de página')
+                    //return
+                  } else if (vehiculo.año < 1950 || vehiculo.año > 2024){
+                    setError('El año de fabricación del vehículo no puede ser inferior a 1950 ni superior a 2024')
                   } else {
                     setPagination(pagination + 1);
                   }
@@ -453,7 +446,12 @@ export const RentCar = () => {
               {pagination === 1 && (
                 <button className="btn btn-primary w-25 mb-3" onClick={(e) => {
                   e.preventDefault();
-                  setPagination(pagination + 1);
+                  if (vehiculo.numero_plazas === '' || vehiculo.precio_por_hora === '') {
+                    setError('Número de plazas y precio por hora son campos obligatorios')
+                    //return             
+                  } else {
+                    setPagination(pagination + 1);
+                  }
                 }}>Siguiente</button>
               )}
               {pagination === 2 && (

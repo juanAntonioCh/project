@@ -390,7 +390,7 @@ def reset_password_confirm(request):
 
 @api_view(['POST'])
 def create_vehicle(request):
-    print(request.data['vehiculo'])
+    #print(request.data['vehiculo'])
     vehiculo_data = json.loads(request.data['vehiculo'])
     
     marca_id = vehiculo_data.get('marca_id')
@@ -398,6 +398,10 @@ def create_vehicle(request):
     propietario_id = vehiculo_data.get('propietario_id')
     año = vehiculo_data.get('año')
     matricula = vehiculo_data.get('matricula')
+
+    if Vehicle.objects.filter(matricula=matricula).exists():
+        return Response({'error': f'Ya existe un vehículo con la matrícula {matricula}'}, status=status.HTTP_400_BAD_REQUEST)
+    
     descripcion = vehiculo_data.get('descripcion')
     tipo_carroceria = vehiculo_data.get('tipo_carroceria')
     tipo_combustible = vehiculo_data.get('tipo_combustible')
@@ -412,7 +416,7 @@ def create_vehicle(request):
     numero_plazas = vehiculo_data.get('numero_plazas')
     color = vehiculo_data.get('color')
     
-    print(request.data)
+    #print(request.data)
     user = User.objects.get(pk = propietario_id)
     marca = Marca.objects.get(pk = marca_id)
     modelo = Modelo.objects.get(pk = modelo_id)
@@ -424,8 +428,6 @@ def create_vehicle(request):
 
     # Procesar las imágenes asociadas al vehículo
     for imagen in request.FILES.getlist('imagen'): 
-        print('DENTRO DEL FOOOOOOOOOOOOOOOR')
-        print(imagen)
         # Crear una instancia de UploadedFile a partir de los datos binarios de la imagen
         archivo = ContentFile(imagen.read(), name=imagen.name)
         # Crear una instancia de ImagenVehiculo con el archivo
@@ -476,7 +478,6 @@ class UserDetailsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, format=None):
-        # asumiendo que el usuario está autenticado y el token es válido
         user = request.user
         return Response({
             'username': user.username,

@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import { GoogleMap, LoadScriptNext, Marker, useJsApiLoader } from '@react-google-maps/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AlquilerCard } from './AlquilerCard';
-import { UseBuscador } from '../hooks/UseBuscador';
-import { Button, Modal } from 'react-bootstrap';
 import { VehiclesContext } from '../context/VehiclesContext';
 import { api } from '../api/vehicle.api';
 import { AlertMessage } from './AlertMessage';
@@ -50,14 +47,13 @@ export const VehicleDetailView = () => {
         setErrorMessage('')
     };
 
-    useEffect(() => {
-        console.log(rentDuration)
-    }, [rentDuration])
+    // useEffect(() => {
+    //     console.log(rentDuration)
+    // }, [rentDuration])
 
-    useEffect(() => {
-        console.log(startDate)
-    }, [startDate])
-
+    // useEffect(() => {
+    //     console.log(startDate)
+    // }, [startDate])
 
     useEffect(() => {
         const fetchVehicle = async () => {
@@ -73,7 +69,7 @@ export const VehicleDetailView = () => {
         fetchVehicle();
     }, [id]);
 
-    console.log(vehicle)
+    //console.log(vehicle)
 
     const mapStyles = {
         height: "450px",

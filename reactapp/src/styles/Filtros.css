@@ -3,6 +3,11 @@
     display: none;
 }
 
+.filtro-marca-button{
+    margin-left: 45px;
+    margin-right: 10px;
+}
+
 .custom-checkbox {
     margin-right: 5px;
     display: inline-block;

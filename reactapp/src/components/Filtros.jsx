@@ -1,11 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Slider from '@mui/material/Slider';
 import { Button, Modal } from 'react-bootstrap';
-import { getAllMarcas } from '../api/vehicle.api';
 import '../styles/Filtros.css'
 import { UseFiltros } from '../hooks/UseFiltros';
-import { VehiclesContext } from '../context/VehiclesContext';
-
 
 export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
     const { showMarca, showCarroceria, listMarcas, handleCloseMarca, handleCloseCarroceria, handleShowCarroceria, handleShowMarca,
@@ -17,10 +14,10 @@ export const Filtros = ({ priceRange, handleChanges, minPrice, maxPrice }) => {
     //const { vehiculosFiltrados, vehiculosIniciales } = useContext(VehiclesContext)
 
     return (
-        <div className='d-flex filtros'>
-            <Slider value={priceRange} onChange={handleChanges} valueLabelDisplay="auto" min={minPrice} max={maxPrice} style={{ width: '300px', marginLeft: '30px' }} />
+        <div className='container filtros'>
+            <Slider value={priceRange} onChange={handleChanges} className='filtros-slider' valueLabelDisplay="auto" min={minPrice} max={maxPrice} style={{ width: '250px', marginLeft: '20px' }} />
 
-            <Button variant="btn btn-light" onClick={handleShowMarca} className='mx-5 mb-3'>
+            <Button variant="btn btn-light" onClick={handleShowMarca} className='filtro-marca-button mb-3'>
                 Marca
             </Button>
 

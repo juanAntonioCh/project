@@ -451,8 +451,8 @@ export const RentCar = () => {
                     setError('Número de plazas y precio por hora son campos obligatorios')
                   } else if (vehiculo.numero_plazas <= 0 || vehiculo.numero_plazas > 9){   
                     setError('El número de plazas no puede ser menor a 1 ni superior a 9')  
-                  } else if (vehiculo.precio_por_hora < 0.1 || vehiculo.precio_por_hora > 5){   
-                    setError('El precio por hora no puede ser inferior a 0.1 ni superior a 6')                                
+                  } else if (vehiculo.precio_por_hora < 0.1 || vehiculo.precio_por_hora > 10){   
+                    setError('El precio por hora no puede ser inferior a 0.1 ni superior a 10')                                
                   } else {
                     setPagination(pagination + 1);
                   }

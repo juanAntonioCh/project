@@ -70,10 +70,15 @@ export const BuscadorVehiculos = ({ setError }) => {
         const differenceInMilliseconds = endDateAsDate - startDateAsDate;
         const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
 
-        //console.log('LA DIFERENCIA DE HORAS ES: ', differenceInHours)
+        console.log('LA DIFERENCIA DE HORAS ES: ', differenceInHours)
 
-        if (differenceInHours < 1) {
-            setError('No es posible alquilar un vehículo por menos de una hora')
+        // if (differenceInHours < 1) {
+        //     setError('No es posible alquilar un vehículo por menos de una hora')
+        //     return;
+        // }
+
+        if (differenceInHours < 0.05) {
+            setError('No es posible alquilar un vehículo por menos de 3 minutos')
             return;
         }
 

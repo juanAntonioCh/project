@@ -29,7 +29,7 @@ export const Home = () => {
         setError(null);
         setLogoutMessage(null)
         setSuccessMessage(null)
-      }, 4000);
+      }, 3000);
     }
     return () => clearTimeout(timeout);
   }, [error, logoutMessage, successMessage]);
@@ -89,9 +89,9 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    localStorage.removeItem('coordenadas')
-    localStorage.removeItem('startDate')
-    localStorage.removeItem('endDate')
+    //localStorage.removeItem('coordenadas')
+    //localStorage.removeItem('startDate')
+    //localStorage.removeItem('endDate')
     setSuccessMessage(message)
   }, [])
 

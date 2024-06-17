@@ -46,7 +46,7 @@ cd reactapp
 ```
 
 Copia la siguiente variable de entorno en el .env:
-- `VITE_API_URL`=http://127.0.0.1:8000
+- `VITE_API_URL`=http://127.0.0.1:8001
 
 ### Construir y Ejecutar los Contenedores
 Asegúrate de que Docker esté ejecutándose. Luego, construye y levanta los contenedores usando el Makefile:
@@ -66,7 +66,7 @@ make migrarbd
 ### Acceder a la Aplicación
 Frontend: http://localhost:8080
 
-Backend: http://localhost:8000
+Backend: http://localhost:8001
 
 phpMyAdmin: http://localhost:8081
 

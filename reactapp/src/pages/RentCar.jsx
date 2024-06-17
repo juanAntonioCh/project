@@ -28,7 +28,7 @@ export const RentCar = () => {
 
   const searchOptions = {
     types: ['(regions)'],
-    componentRestrictions: { country: 'es' } 
+    componentRestrictions: { country: 'es' }
   };
 
   //ver los cambios en el vehiculo
@@ -337,7 +337,7 @@ export const RentCar = () => {
                   value={address}
                   onChange={setAddress}
                   onSelect={handleSelect}
-                  // searchOptions={searchOptions}
+                // searchOptions={searchOptions}
                 >
                   {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                     <div className="form-inline d-flex">
@@ -362,7 +362,6 @@ export const RentCar = () => {
                 </PlacesAutocomplete>
               </div>
               <div className="form-group mb-4 position-relative">
-
 
               </div>
             </div>
@@ -419,7 +418,6 @@ export const RentCar = () => {
 
             </form>
 
-
             <div className="d-flex justify-content-between">
               {pagination > 0 && (
                 <button className="btn btn-primary w-25 mb-3" onClick={(e) => {
@@ -430,13 +428,16 @@ export const RentCar = () => {
               {pagination === 0 && (
                 <button className="btn btn-primary w-25 mb-3" onClick={(e) => {
                   e.preventDefault();
+                  const matriculaRegex = /^\d{4}[A-Z]{3}$/;
                   if (!vehiculo.propietario_id) {
                     setNoLogin('Inicia sesión para publicar tu vehículo ')
-                  } else if (vehiculo.autonomia === '' || vehiculo.consumo === '' || vehiculo.matricula === '' || vehiculo.kilometraje === '' || vehiculo.año === ''){
+                  } else if (vehiculo.autonomia === '' || vehiculo.consumo === '' || vehiculo.matricula === '' || vehiculo.kilometraje === '' || vehiculo.año === '') {
                     setError('Porfavor, comprueba que todos los campos del formulario estén completos antes de avanzar de página')
                     //return
-                  } else if (vehiculo.año < 1950 || vehiculo.año > 2024){
+                  } else if (vehiculo.año < 1950 || vehiculo.año > 2024) {
                     setError('El año de fabricación del vehículo no puede ser inferior a 1950 ni superior a 2024')
+                  } else if (!matriculaRegex.test(vehiculo.matricula)){
+                    setError('Matrícula no válida. Debe seguir el formato 0000XXX.')
                   } else {
                     setPagination(pagination + 1);
                   }
@@ -448,7 +449,10 @@ export const RentCar = () => {
                   e.preventDefault();
                   if (vehiculo.numero_plazas === '' || vehiculo.precio_por_hora === '') {
                     setError('Número de plazas y precio por hora son campos obligatorios')
-                    //return             
+                  } else if (vehiculo.numero_plazas <= 0 || vehiculo.numero_plazas > 9){   
+                    setError('El número de plazas no puede ser menor a 1 ni superior a 9')  
+                  } else if (vehiculo.precio_por_hora < 0.1 || vehiculo.precio_por_hora > 5){   
+                    setError('El precio por hora no puede ser inferior a 0.1 ni superior a 6')                                
                   } else {
                     setPagination(pagination + 1);
                   }

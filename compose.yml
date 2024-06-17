@@ -10,6 +10,7 @@ services:
       MYSQL_HOST: db
       MYSQL_PORT: 3306
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      DJANGO_SETTINGS_MODULE: mysite.settings
     depends_on:
       db:
         condition: service_healthy  
@@ -46,7 +47,8 @@ services:
     restart: always
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      timeout: 20s
+      interval: 30s
+      timeout: 10s
       retries: 5
     networks:
       - proyecto

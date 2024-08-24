@@ -208,7 +208,7 @@ export const Mapa = ({ rentDuration, address }) => {
                                     {activeMarker.imagenes.length > 0 ? (
                                         <img src={activeMarker.imagenes[0].imagen} alt={`Imagen de ${activeMarker.marca_details.nombre} ${activeMarker.modelo_details.nombre}`} />
                                     ) : (
-                                        <img src='https://gomore.imgix.net/images/default_car_picture.png?ixlib=rails-2.1.2&amp;w=560&amp;h=373' alt="Imagen por defecto" width={230} height={170}></img>
+                                        <img src='https://gomore.imgix.net/images/default_car_picture.png?ixlib' alt="Imagen por defecto" width={230} height={170}></img>
                                     )}
                                 </div>
                             </InfoWindow>

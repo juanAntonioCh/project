@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import 'react-datepicker/dist/react-datepicker.css';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';

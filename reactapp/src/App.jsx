@@ -24,7 +24,8 @@ import { NotFound } from './pages/NotFound';
 
 
 function App() {
-  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  //const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  const apiKey = 'AIzaSyC_G0xCXyALB3IgkE5D4RpWWAxRIg9xCuQ'
   
   return (
     <LoadScript

@@ -28,4 +28,6 @@ urlpatterns = [
     path('actualizar-alquileres/', views.ejecutar_actualizacion, name='actualizar-alquileres'),
     path('notificaciones/', views.NotificacionList.as_view(), name='notificacion-list'),
     path('notificaciones/marcar-leido/<int:pk>/', views.MarcarNotificacionLeida.as_view(), name='notification-leida'),
+    path('verify/', views.verify_email, name='verify-email'),
+    path('verify/login/<str:username>/', views.verify_login, name='verify-login'),
 ]

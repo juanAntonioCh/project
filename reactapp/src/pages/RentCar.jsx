@@ -80,7 +80,6 @@ export const RentCar = () => {
     loadData()
   }, [])
 
-
   //función para OBTENER TODOS LOS MODELOS de la MARCA seleccionada y actualizar el array de modelos
   async function loadModelos(id_marca) {
     const list_modelos = await getModelosMarca(id_marca)
@@ -404,9 +403,7 @@ export const RentCar = () => {
 
       <div className='container rent-car-container'>
         <div className="row pt-1">
-
           <div className="col-12 col-lg-7 bg-white">
-
             <form className="form-container needs-validation p-4" noValidate>
 
               <div className="text-end">
@@ -462,12 +459,9 @@ export const RentCar = () => {
                 <button className="btn btn-primary w-25 mb-3" onClick={handleSubmit}>Publicar Vehículo</button>
               )}
             </div>
-
-
           </div>
 
           <div className="col-lg-5 d-none d-lg-block rent-car-image"></div>
-
         </div>
       </div>
     </div>

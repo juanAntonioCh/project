@@ -1,7 +1,22 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_verified = models.BooleanField(default=False)
+    verification_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)  # Campo para el token de verificación
+    token_created_at = models.DateTimeField(auto_now_add=True, null=True)  # Fecha de creación del token para manejar expiración
 
+    def __str__(self):
+        return self.user.username
+
+    def token_is_valid(self):
+        # Método para verificar si el token aún es válido (opcional)
+        expiration_time = self.token_created_at + timezone.timedelta(hours=24)  # Ejemplo: expira en 24 horas
+        return timezone.now() < expiration_time
+    
 class Marca(models.Model):
     nombre = models.CharField(max_length=100)
 

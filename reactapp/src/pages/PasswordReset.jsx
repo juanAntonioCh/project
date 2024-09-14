@@ -68,7 +68,7 @@ export const PasswordReset = () => {
     }
 
     return (
-        <div className="login-body">
+        <div className="login-body pt-5">
             {success && (
                 <div className="alert-container">
                     <div className="alert alert-success alert-dismissible fade show" role="alert">
@@ -86,9 +86,9 @@ export const PasswordReset = () => {
                 </div>
             )}
             <div className='container'>
-                <div className="row pt-5">
+                <div className="row bg-white p-4 rounded shadow">
 
-                    <div className="col bg-white">
+                    <div className="col">
 
                         <form className="form-container needs-validation p-4 text-center" noValidate onSubmit={handlePasswordReset}>
                             <h4>Introduce la dirección de correo a la que enviaremos el mensaje para restablecer la contraseña</h4>

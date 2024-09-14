@@ -58,10 +58,10 @@ export const Register = () => {
       });
 
       if (res.data == 'Usuario registrado correctamente') {
-        const response = await api.post('/auth/login/', { username, password });
-        localStorage.setItem('token', response.data.key); // Guardar el token 
-        login()
-        navigate('/', { replace: true });
+        // const response = await api.post('/auth/login/', { username, password });
+        // localStorage.setItem('token', response.data.key); // Guardar el token 
+        // login()
+        navigate('/email/confirm', { replace: true });
 
       } else {
         //console.log(res.data)
@@ -158,7 +158,7 @@ export const Register = () => {
                     </div>
                   )}
                   <div className="invalid-tooltip">
-                    Este campo es obligatorio
+                    La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra y un número
                   </div>
                 </div>
 

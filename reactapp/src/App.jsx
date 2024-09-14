@@ -21,6 +21,8 @@ import { LoadScript } from '@react-google-maps/api';
 import { BuzonMensajes } from './pages/BuzonMensajes';
 import { AlquileresUser } from './pages/AlquileresUser';
 import { NotFound } from './pages/NotFound';
+import { EmailConfirm } from './pages/EmailConfirm';
+import { EmailVerification } from './pages/EmailVerification';
 
 
 function App() {
@@ -78,6 +80,8 @@ function AppRoutes() {
         <Route path="/reset-password-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
         <Route path='/reservas/recibidas' element={<BuzonMensajes/>}></Route>
         <Route path='/alquileres' element={<AlquileresUser/>}></Route>
+        <Route path='/email/confirm' element={<EmailConfirm/>}></Route>
+        <Route path='/verify' element={<EmailVerification/>}></Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

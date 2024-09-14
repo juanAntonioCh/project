@@ -43,7 +43,7 @@ export const Login = () => {
     if (error) {
       timeout = setTimeout(() => {
         setError(null);
-      }, 4000);
+      }, 5000);
     }
     return () => clearTimeout(timeout);
   }, [error]);
@@ -51,23 +51,39 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const response = await api.post('/auth/login/', { username, password });
-      localStorage.setItem('token', response.data.key); // Guardar el token 
-      login()
-      //console.log('Inicio de sesión exitoso');
-      navigate('/', { replace: true });
+      //intentamos loguear al usuario mediante el username y la contraseña
+      const response = await api.post('/auth/login/', { username, password }); 
+
+      try {
+        //verificamos si el usuario ha verificado su cuenta mediante el enlace enviado a su correo
+        const verify_user = await api.get(`/api/verify/login/${username}/`)
+        console.log(verify_user)
+
+        //si se ha logueado correctamente y su cuenta esta verificada, puede acceder a la aplicación
+        localStorage.setItem('token', response.data.key); // Guardar el token
+        login()
+        //console.log('Inicio de sesión exitoso');
+        navigate('/', { replace: true });
+
+      } catch (error) {
+        console.log(error.response.data.error)
+        setError(error.response.data.error)
+
+      }
+
 
     } catch (error) {
-      //console.error('Error en el inicio de sesión');
-      console.log('Error en el inicio de sesión', error)
+      console.log('Error en el inicio de sesión', error.response.data)
       setError('Nombre de usuario o contraseña incorrectos')
-      setUserNameError(true)
-      setPasswordError(true)
-      //console.log(e.target)
+      //setUserNameError(true)
+      //setPasswordError(true)
+
     } finally {
       setLoading(false)
     }
+    
   }
 
   return (

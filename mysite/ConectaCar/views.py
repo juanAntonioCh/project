@@ -1,9 +1,11 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework import status
 import json
+from django.core.mail import EmailMessage
+from django.shortcuts import get_object_or_404
+from django.utils.html import strip_tags
 from django.core.files.base import ContentFile
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -30,8 +32,7 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMultiAlternatives
-from django.utils import timezone
-from datetime import datetime
+import uuid
 from datetime import timedelta
 from .models import *
 
@@ -68,10 +69,9 @@ def ejecutar_actualizacion(request):
 #funcion para actualizar el estado de los alquileres en funcion de las fechas de inicio y fin de forma automatica,
 #sin que el propietario del vehiculo tenga que realizar ninguna accion.
 def update_alquiler():
-    current_dateTime = datetime.now()
-
-    print(current_dateTime)
-    now = timezone.now()
+    # current_dateTime = datetime.now()
+    # print(current_dateTime)
+    #now = timezone.now()
     now_adjusted = timezone.now() + timedelta(hours=2)
     print('*****************')
     print('\nFecha actual', now_adjusted)
@@ -301,6 +301,63 @@ def get_vehiculo_choices(request):
     })
 
 
+
+def send_verification_email(user, token):
+    #verification_link = f'http://127.0.0.1:5173/verify/?token={token}'
+    verification_link = f'https://conectacar.ne.choreoapps.dev/verify/?token={token}'
+    
+    email_body = render_to_string('email_verification.html', {
+        'user': user,
+        'verification_link': verification_link,
+    })
+    
+    subject = 'Verifica tu cuenta en ConectaCar'
+    
+    email = EmailMultiAlternatives(
+        subject,
+        email_body,
+        '1817826@alu.murciaeduca.es',
+        [user.email],
+    )
+    email.attach_alternative(email_body, "text/html")
+    email.send()
+
+
+
+def verify_login(request, username):
+    user = User.objects.get(username = username)
+    user_profile = UserProfile.objects.get(user = user)
+
+    print (user_profile)
+
+    if user_profile.is_verified:
+        return JsonResponse({'message': 'Usuario verificado.'}, status=200)
+    else:
+        return JsonResponse({'error': 'Cuenta no verificada. Verifica tu cuenta mediante el enlace enviado a tu correo.'}, status=400)
+    
+
+
+def verify_email(request):
+    token = request.GET.get('token')  # Captura el token desde la URL
+    print(token)
+    if not token:
+        return JsonResponse({'error': 'Token de verificación no proporcionado.'}, status=400)
+
+    try:
+        # Busca el perfil de usuario con el token de verificación proporcionado
+        user_profile = get_object_or_404(UserProfile, verification_token=token)
+
+        # Marca la cuenta como verificada
+        user_profile.is_verified = True
+        #user_profile.verification_token = None  #Eliminar el token después de verificar
+        user_profile.save()
+
+        return JsonResponse({'message': 'Correo verificado con éxito.'}, status=200)
+
+    except UserProfile.DoesNotExist:
+        return JsonResponse({'error': 'Token de verificación no válido o ya utilizado.'}, status=400)
+    
+
 @api_view(['POST'])
 def register(request):
     username = request.data.get('username')
@@ -321,8 +378,18 @@ def register(request):
         return Response('El nombre de usuario ya existe')
         #return Response({'error': 'El nombre de usuario ya existe'},
         #                status=status.HTTP_400_BAD_REQUEST)
+
+    elif User.objects.filter(email = email).exists():
+        return Response('Ya existe un usuario registrado con este correo')
     
-    User.objects.create_user(username=username, password=password, email=email)
+    user = User.objects.create_user(username=username, password=password, email=email)
+
+    user_profile = user.userprofile
+    print(user_profile)
+    token = user_profile.verification_token
+    print(token)
+
+    send_verification_email(user, token)
 
     return Response('Usuario registrado correctamente')
 
@@ -343,7 +410,7 @@ def forgot_password(request):
     protocol = 'https' if request.is_secure() else 'http'
     
     # Construct the password reset URL
-    reset_url = f"https://6c4143d1-64a1-4e95-98b6-c1f27c54e5c1.e1-eu-north-azure.choreoapps.dev/reset-password-confirm/{uid}/{token}"
+    reset_url = f"https://conectacar.ne.choreoapps.dev/reset-password-confirm/{uid}/{token}"
 
     # Render the email template with context
     email_subject = 'Solicitud de cambio de contraseña'

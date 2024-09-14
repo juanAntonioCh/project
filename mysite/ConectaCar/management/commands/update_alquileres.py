@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from datetime import datetime
+#from datetime import datetime
 from datetime import timedelta
 from ConectaCar.models import Alquiler
 
@@ -8,10 +8,9 @@ class Command(BaseCommand):
     help = 'Actualiza el estado de los alquileres basándose en las fechas de inicio y fin'
 
     def handle(self, *args, **kwargs):
-        current_dateTime = datetime.now()
-
-        print(current_dateTime)
-        now = timezone.now()
+        # current_dateTime = datetime.now()
+        # print(current_dateTime)
+        #now = timezone.now()
         now_adjusted = timezone.now() + timedelta(hours=2)
         print('Fecha actual', now_adjusted)
 

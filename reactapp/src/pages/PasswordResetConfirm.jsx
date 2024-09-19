@@ -1,13 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { api } from '../api/vehicle.api';
 
 export const PasswordResetConfirm = () => {
     const { uidb64, token } = useParams();
     const [password, setPassword] = useState('');
+    const [showPassword1, setShowPassword1] = useState(false)
+    const [showPassword2, setShowPassword2] = useState(false)
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+
+    const passwordVisibility1 = () => {
+        setShowPassword1(!showPassword1)
+    }
+
+    const passwordVisibility2 = () => {
+        setShowPassword2(!showPassword2)
+    }
 
     useEffect(() => {
         let timeout;
@@ -80,14 +91,14 @@ export const PasswordResetConfirm = () => {
                         <form className="form-container text-center needs-validation p-4" noValidate onSubmit={handlePasswordResetConfirm}>
                             <h3>Restablecer Contraseña</h3>
 
-                            <div className="form-group mb-4 mt-4 position-relative">
+                            <div className="form-group mb-4 mt-5">
                                 <div className="row align-items-center">
                                     <div className="col-md-3 text-md-end">
                                         <label className="form-label mb-0">Nueva contraseña:</label>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 position-relative">
                                         <input
-                                            type="password"
+                                            type={showPassword1 ? 'text' : 'password'}
                                             value={password}
                                             className="form-control"
                                             onChange={(e) => setPassword(e.target.value)}
@@ -101,20 +112,27 @@ export const PasswordResetConfirm = () => {
                                             </div>
                                         )}
                                         <div className="invalid-tooltip">
-                                            Este campo es obligatorio
+                                            La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra y un número
                                         </div>
+                                        <span
+                                            className="position-absolute end-0 translate-middle-y top-50 me-4"
+                                            onClick={passwordVisibility1}
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            {showPassword1 ? <FaEye /> : <FaEyeSlash />}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="form-group mb-4 mt-4 text-center position-relative">
+                            <div className="form-group mb-4 mt-4 text-center">
                                 <div className="row align-items-center">
                                     <div className="col-md-3 text-md-end">
                                         <label className="form-label mb-0">Confirmar nueva contraseña:</label>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 position-relative">
                                         <input
-                                            type="password"
+                                            type={showPassword2 ? 'text' : 'password'}
                                             className="form-control"
                                             value={confirmPassword}
                                             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -128,15 +146,23 @@ export const PasswordResetConfirm = () => {
                                             </div>
                                         )}
                                         <div className="invalid-tooltip">
-                                            Este campo es obligatorio
+                                            La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra y un número
                                         </div>
+
+                                        <span
+                                            className="position-absolute end-0 top-50 translate-middle-y me-4"
+                                            onClick={passwordVisibility2}
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            {showPassword2 ? <FaEye /> : <FaEyeSlash />}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
 
 
                             <div className="form-action text-center">
-                                <button className="btn btn-primary w-50 mb-3" type="submit">Restablecer contraseña</button>
+                                <button className="btn btn-primary w-50 mb-3 mt-3" type="submit">Restablecer contraseña</button>
                             </div>
 
                         </form>

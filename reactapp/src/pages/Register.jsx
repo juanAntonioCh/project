@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Register.css'
-import axios from 'axios';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { LogoSvg } from '../components/LogoSvg';
 import { api } from '../api/vehicle.api';
 import LoadingIndicator from '../components/LoadingIndicator';
@@ -11,6 +11,7 @@ export const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
@@ -19,6 +20,10 @@ export const Register = () => {
   const handleCloseAlert = () => {
     setError(null);
   };
+
+  const passwordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
 
   useEffect(() => {
     let timeout;
@@ -144,7 +149,11 @@ export const Register = () => {
 
                 <div className="form-group mb-4 position-relative">
                   <label htmlFor="inputPassword5" className="form-label">Contraseña</label>
-                  <input type="password" id="inputPassword5" className="form-control" value={password}
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="inputPassword5"
+                    className="form-control"
+                    value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                     title="La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra y un número"
@@ -160,7 +169,17 @@ export const Register = () => {
                   <div className="invalid-tooltip">
                     La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra y un número
                   </div>
+
+                  <span
+                    className="position-absolute end-0 top-50 me-3"
+                    onClick={passwordVisibility}
+                    style={{ cursor: "pointer", transform: 'translateY(10%)' }}
+                  >
+                    {showPassword ? <FaEye /> : <FaEyeSlash />}
+                  </span>
                 </div>
+
+
 
                 {loading && (
                   <div className="d-flex justify-content-center mb-3">

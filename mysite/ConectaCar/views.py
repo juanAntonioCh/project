@@ -3,6 +3,7 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework import status
 import json
+import os
 from django.core.mail import EmailMessage
 from django.shortcuts import get_object_or_404
 from django.utils.html import strip_tags
@@ -33,6 +34,8 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMultiAlternatives
 import uuid
+from mailjet_rest import Client
+from django.conf import settings
 from datetime import timedelta
 from .models import *
 
@@ -303,8 +306,11 @@ def get_vehiculo_choices(request):
 
 
 def send_verification_email(user, token):
-    #verification_link = f'http://127.0.0.1:5173/verify/?token={token}'
-    verification_link = f'https://conectacar.ne.choreoapps.dev/verify/?token={token}'
+    verification_link = f'http://127.0.0.1:5173/verify/?token={token}'
+    api_key = 'ebfe7b9b592fb77f0eb5615a351c7e44'
+    api_secret = '60507f05e06d8af8ce2894d096036f8f'
+    mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+    #verification_link = f'https://conectacar.ne.choreoapps.dev/verify/?token={token}'
     
     email_body = render_to_string('email_verification.html', {
         'user': user,
@@ -313,14 +319,34 @@ def send_verification_email(user, token):
     
     subject = 'Verifica tu cuenta en ConectaCar'
     
-    email = EmailMultiAlternatives(
-        subject,
-        email_body,
-        '1817826@alu.murciaeduca.es',
-        [user.email],
-    )
-    email.attach_alternative(email_body, "text/html")
-    email.send()
+        # Configurar el mensaje
+    data = {
+        'Messages': [
+            {
+                "From": {
+                    "Email": settings.DEFAULT_FROM_EMAIL,
+                    "Name": "ConectaCar"
+                },
+                "To": [
+                    {
+                        "Email": user.email,
+                        "Name": user.username
+                    }
+                ],
+                "Subject": subject,
+                "TextPart": "Por favor, verifica tu cuenta en ConectaCar.",
+                "HTMLPart": email_body,
+            }
+        ]
+    }
+
+    # Enviar el correo
+    result = mailjet.send.create(data=data)
+    
+    # Manejar posibles errores en la respuesta de Mailjet
+    if result.status_code != 200:
+        print(f"Error enviando email: {result.status_code} {result.json()}")
+
 
 
 
@@ -328,7 +354,7 @@ def verify_login(request, username):
     user = User.objects.get(username = username)
     user_profile = UserProfile.objects.get(user = user)
 
-    print (user_profile)
+    #print (user_profile)
 
     if user_profile.is_verified:
         return JsonResponse({'message': 'Usuario verificado.'}, status=200)
@@ -397,22 +423,24 @@ def register(request):
 @api_view(['POST'])
 def forgot_password(request):
     email = request.data.get('email')
+    
+    # Comprobar si el usuario existe
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
-        #return Response('Mal')
         return Response('No user associated with this email', status=400)
 
+    # Generar token y URL de restablecimiento de contraseña
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     current_site = get_current_site(request)
     domain = current_site.domain
     protocol = 'https' if request.is_secure() else 'http'
-    
-    # Construct the password reset URL
-    reset_url = f"https://conectacar.ne.choreoapps.dev/reset-password-confirm/{uid}/{token}"
 
-    # Render the email template with context
+    reset_url = f"http://127.0.0.1:5173/reset-password-confirm/{uid}/{token}"
+    #reset_url = f"https://conectacar.ne.choreoapps.dev/reset-password-confirm/{uid}/{token}"
+
+    # Renderizar el cuerpo del email con el template HTML
     email_subject = 'Solicitud de cambio de contraseña'
     email_body = render_to_string('password_reset_email.html', {
         'user': user,
@@ -420,19 +448,42 @@ def forgot_password(request):
         'domain': domain,
     })
 
-    #print(user.email)
+    # Configurar la API de Mailjet
+    api_key = settings.EMAIL_HOST_USER
+    api_secret = settings.EMAIL_HOST_PASSWORD
 
-    email = EmailMultiAlternatives(
-        email_subject,
-        email_body,
-        '1817826@alu.murciaeduca.es',
-        [user.email]
-    )
-    email.attach_alternative(email_body, "text/html")
-    email.send()
+    mailjet = Client(auth=(api_key, api_secret), version='v3.1')
 
-    return Response('Email sent', status=200)
-    #return Response('Bien')
+    # Crear el cuerpo del mensaje en Mailjet
+    data = {
+        'Messages': [
+            {
+                "From": {
+                    "Email": settings.DEFAULT_FROM_EMAIL,
+                    "Name": "ConectaCar"
+                },
+                "To": [
+                    {
+                        "Email": user.email,
+                        "Name": user.username
+                    }
+                ],
+                "Subject": email_subject,
+                "HTMLPart": email_body
+            }
+        ]
+    }
+
+    # Enviar el email mediante Mailjet
+    result = mailjet.send.create(data=data)
+
+    # Comprobar si el envío del email fue exitoso
+    if result.status_code == 200:
+        return Response('Email sent', status=200)
+    else:
+        return Response(f"Failed to send email: {result.json()}", status=500)
+
+
 
 @api_view(['POST'])
 def reset_password_confirm(request):

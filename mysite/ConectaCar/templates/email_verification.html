@@ -1,8 +1,79 @@
-{% load i18n %}
-<p>Hola {{ user.username }},</p>
-<p>Gracias por registrarte en nuestra aplicación. Para completar el proceso de registro, por favor verifica tu dirección de correo electrónico haciendo clic en el siguiente enlace:</p>
-<p><a href="{{ verification_link }}">Verificar Correo</a></p>
-<p>Si no te has registrado en nuestra aplicación, por favor ignora este correo.</p>
-<p>¡Gracias y que tengas un gran día!</p>
-<p>El equipo de ConectaCar</p>
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Correo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #7f99ee;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        p {
+            color: #555555;
+            line-height: 1.6;
+        }
+
+        .button {
+            background-color: #3498db;
+            color: white !important;
+            padding: 10px 20px;
+            text-decoration: none !important;
+            border-radius: 5px;
+            font-size: 16px;
+            display: inline-block;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #2980b9 !important;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #888888;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>¡Verifica tu correo electrónico!</h1>
+        <p>Hola {{ user.username }},</p>
+        <p>Gracias por registrarte en nuestra aplicación. Para completar el proceso de registro, por favor verifica tu
+            dirección de correo electrónico haciendo clic en el siguiente botón:</p>
+        <p>
+            <a href="{{ verification_link }}" class="button"
+                style="background-color: #3498db; color: white !important; padding: 10px 20px; text-decoration: none !important; border-radius: 5px; font-size: 16px; display: inline-block;">Verificar
+                Correo</a>
+        </p>
+        <p>Si no te has registrado en nuestra aplicación, por favor ignora este correo.</p>
+        <p>¡Gracias y que tengas un gran día!</p>
+        <p>El equipo de ConectaCar</p>
+
+        <div class="footer">
+            <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
+        </div>
+    </div>
+</body>
+
+</html>

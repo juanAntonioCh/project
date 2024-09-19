@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import '../styles/Login.css'
 import { AuthContext } from '../context/AuthContext';
 import { LogoSvg } from '../components/LogoSvg';
@@ -10,8 +10,7 @@ import LoadingIndicator from '../components/LoadingIndicator';
 export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameError, setUserNameError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
@@ -20,6 +19,10 @@ export const Login = () => {
   const handleCloseAlert = () => {
     setError(null);
   };
+
+  const passwordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
 
   useEffect(() => {
     // Obtener todos los formularios para aplicarle las clases de Bootstrap
@@ -43,7 +46,7 @@ export const Login = () => {
     if (error) {
       timeout = setTimeout(() => {
         setError(null);
-      }, 5000);
+      }, 6000);
     }
     return () => clearTimeout(timeout);
   }, [error]);
@@ -54,7 +57,7 @@ export const Login = () => {
 
     try {
       //intentamos loguear al usuario mediante el username y la contraseña
-      const response = await api.post('/auth/login/', { username, password }); 
+      const response = await api.post('/auth/login/', { username, password });
 
       try {
         //verificamos si el usuario ha verificado su cuenta mediante el enlace enviado a su correo
@@ -77,13 +80,11 @@ export const Login = () => {
     } catch (error) {
       console.log('Error en el inicio de sesión', error.response.data)
       setError('Nombre de usuario o contraseña incorrectos')
-      //setUserNameError(true)
-      //setPasswordError(true)
 
     } finally {
       setLoading(false)
     }
-    
+
   }
 
   return (
@@ -127,7 +128,7 @@ export const Login = () => {
 
               <div className="form-group mb-4 position-relative">
                 <label htmlFor="inputPassword5" className="form-label">Contraseña</label>
-                <input type="password" id="inputPassword5" className="form-control" value={password}
+                <input type={showPassword ? 'text' : 'password'} id="inputPassword5" className="form-control" value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   // pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                   // title="La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra y un número"
@@ -143,6 +144,14 @@ export const Login = () => {
                 <div className="invalid-tooltip">
                   Este campo es obligatorio
                 </div>
+
+                <span
+                  className="position-absolute end-0 top-50 me-3"
+                  onClick={passwordVisibility}
+                  style={{ cursor: "pointer", transform: 'translateY(10%)' }}
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
               </div>
 
               {loading && (
